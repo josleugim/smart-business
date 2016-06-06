@@ -1,0 +1,26 @@
+{
+  "name": "smart-business",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@josleugim",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "crypto": "0.0.3",
+    "express": "^4.13.4",
+    "jsonwebtoken": "^7.0.0",
+    "mongoose": "^4.4.20",
+    "mongoose-timestamp": "^0.5.0",
+    "nib": "^1.1.0",
+    "path": "^0.12.7",
+    "stylus": "^0.54.5"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.0.7"
+  }
+}

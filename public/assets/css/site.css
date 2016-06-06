@@ -1,0 +1,18 @@
+html,
+body {
+  height: 100%;
+}
+.navbar {
+  margin-bottom: 0px;
+}
+.content {
+  height: 100%;
+  background-color: #4cae4c;
+}
+.content .ng-view-content {
+  background-color: #f8f8f8;
+  height: 100%;
+}
+footer {
+  background-color: #f8f8f8;
+}

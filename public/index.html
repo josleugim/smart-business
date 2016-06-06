@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="smartBusiness">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <title>Smart Business</title>
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Smart Business</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/register">Registro</a></li>
+                <li><a href="/location">Tiendas</a></li>
+                <li><a href="/seller">Vendedores</a></li>
+                <li><a href="/brand">Marcas</a></li>
+                <li><a href="/product">Productos</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Iniciar sesión <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <div id="login" ng-controller="LoginCtrl">
+                                <form name="loginForm" class="navbar-form navbar-left" role="search">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Correo electrónico">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Contraseña">
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Entrar</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<section class="content">
+    <div class="container ng-view-content">
+        <ng-view></ng-view>
+    </div>
+</section>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <p>Heuristic Forge</p>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="vendor/jquery/dist/jquery.min.js"></script>
+<script src="vendor/angular/angular.min.js"></script>
+<script src="vendor/angular-route/angular-route.min.js"></script>
+<script src="vendor/angular-resource/angular-resource.min.js"></script>
+<script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="templates/account/RegisterCtrl.js"></script>
+<script type="text/javascript" src="templates/account/LoginCtrl.js"></script>
+<script type="text/javascript" src="templates/location/LocationCtrl.js"></script>
+<script type="text/javascript" src="templates/account/SellerCtrl.js"></script>
+<script type="text/javascript" src="templates/brand/BrandCtrl.js"></script>
+<script type="text/javascript" src="templates/product/ProductCtrl.js"></script>
+</body>
+</html>

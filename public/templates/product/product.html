@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2>Productos</h2>
+        <p>Estos son los productos de tu tienda virtual.</p>
+        <p>Cada que renueves tu productos físicos, te recomendamos agregarlos virtualmente.</p>
+        <p>El control de inventario y métricas tendrán un mejor desempeño si agregas tus productos físicos.</p>
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <form name="productForm">
+                <div class="form-group">
+                    <label>Si la lista es muy larga puedes filtrarla escribiendo una marca:</label>
+                    <input type="text" ng-model="brandFilter" name="brandFilter" placeholder="Ejemplo: Apple">
+                    <label>Selecciona una marca</label>
+                    <select>
+                        <option>Motorola</option>
+                        <option>Apple</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="productName">Nombre del producto</label>
+                    <input type="text" class="form-control" id="productName" placeholder="Nombre">
+                </div>
+                <div class="form-group">
+                    <label for="price">Precio del producto</label>
+                    <input type="text" class="form-control" id="price" placeholder="Precio">
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripción del producto</label>
+                    <input type="text" class="form-control" id="description" placeholder="Descripción">
+                </div>
+                <div class="form-group">
+                    <label>Cantidad de productos</label>
+                    <i class="glyphicon glyphicon-chevron-up" aria-hidden="true" ng-click="upCountProduct()"></i>
+                    <div class="badge">
+                        <div>{{productCount}}</div>
+                    </div>
+                    <i class="glyphicon glyphicon-chevron-down" aria-hidden="true" ng-click="downCountProduct()"></i>
+                </div>
+                <div class="form-group">
+                    <label>Código de barras</label>
+                    <input ng-repeat="barcode in product.barCodes track by $index" type='text' ng-model='product.barCodes[$index]' placeholder='Códifo de barras' class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="image">Imagen del producto</label>
+                    <input type="file" id="image" ng-model="file" name="file" image-file="file">
+                    <p class="help-block">La imagen del producto, ayudará a que el vendedor lo identifique visualmente en el punto de venta.</p>
+                    <img ng-src="{{file}}">
+                </div>
+                <button type="submit" class="btn btn-default">Agregar producto</button>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
