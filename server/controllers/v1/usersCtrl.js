@@ -13,20 +13,25 @@ exports.post = function (req, res) {
         email: req.query.email,
         hashed_pwd: req.query.password
     };
-    console.log(req.query.email);
     User.findOne({email: query.email}, function (err, user) {
         if(err) {
             console.log('Error finding user, error: ' + err);
             res.status(401).json({ success: false });
         }
-        if(!user) res.status(401).json({ success: false })
+        if(!user) res.status(401).json({ success: false });
         else if(query.hashed_pwd) {
             if(encrypt.hashPwd(user.salt, query.hashed_pwd) === user.hashed_pwd) {
-                console.log(config.development.tokenSecret);
-                var token = jwt.sign({roles: user.roles}, config.development.tokenSecret);
+                var token = jwt.sign({roles: user.roles, user_id: user._id}, config.development.tokenSecret);
 
+                var objectUser = user.toObject();
+                delete objectUser.hashed_pwd;
+                delete objectUser.salt;
+                delete objectUser.__v;
+                delete objectUser.createdAt;
+                delete objectUser.updatedAt;
+                objectUser.token = token;
                 res.status(200).json({
-                    token: token,
+                    user: objectUser,
                     success: true
                 })
             } else res.status(401).json({ success: false });

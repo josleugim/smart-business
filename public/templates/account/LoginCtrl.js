@@ -3,17 +3,15 @@
  */
 "use strict";
 angular.module('smartBusiness')
-.controller('LoginCtrl', ['$scope', 'UserService', '$location', LoginCtrl]);
+.controller('LoginCtrl', ['$scope', 'AuthService', '$location', LoginCtrl]);
 
-function LoginCtrl($scope, UserService, $location) {
-    console.log('LoginCtrl');
+function LoginCtrl($scope, AuthService, $location) {
     $scope.login = function () {
         var query = {
             email: $scope.email,
             password: $scope.password
         };
-        console.log(query);
-        UserService.post(query).then(function (success) {
+        AuthService.authenticate(query).then(function (success) {
             if(success) {
                 $location.path('/users');
             }
