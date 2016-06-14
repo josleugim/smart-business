@@ -17,6 +17,7 @@ module.exports = {
     production: {
         db: 'mongodb://localhost/smart-business-prod',
         rootPath: rootPath,
-        port: process.env.PORT || 5000
+        port: process.env.PORT || 5000,
+        tokenSecret: "chelpfilove16"
     }
 };
