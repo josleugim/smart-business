@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken'),
     User = mongoose.model('User'),
     config = require('../../config/configuration');
 
+
 exports.post = function (req, res) {
     console.log('POST User login');
     var query = {

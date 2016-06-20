@@ -30,4 +30,8 @@ smartBusiness.config(['$routeProvider', '$locationProvider', function ($routePro
             templateUrl: 'templates/product/product.html',
             controller: 'ProductCtrl'
         })
+        .when('/mqtt-client', {
+            templateUrl: 'templates/mqtt/mqtt-client.html',
+            controller: 'mqttCtrl'
+        })
 }]);
