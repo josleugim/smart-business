@@ -8,10 +8,21 @@ module.exports = function (client) {
     
     function postMqtt(req, res) {
         console.log('Publishing to broker');
-        client.publish('josleugim/groundfloor/frontyard/lamp2', '1',
+        console.log(req.query);
+        var query = {};
+        if(req.query.status == "true") {
+            query.status = "1";
+        }
+        if(req.query.status == "false") {
+            query.status = "0";
+        }
+        console.log(query);
+        client.publish('josleugim/groundfloor/frontyard/lamp2', query.status,
             {
                 retain: false,
                 qa: 0
             });
+        res.status(200).json({success: true});
+        res.end();
     }
 };
