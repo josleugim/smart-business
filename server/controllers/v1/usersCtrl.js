@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken'),
     User = mongoose.model('User'),
     config = require('../../config/configuration');
 
-exports.post = function (req, res) {
+exports.login = function (req, res) {
     console.log('POST User login');
     var query = {
         email: req.query.email,
@@ -30,8 +30,9 @@ exports.post = function (req, res) {
                 delete objectUser.createdAt;
                 delete objectUser.updatedAt;
                 objectUser.token = token;
+                
                 res.status(200).json({
-                    user: objectUser,
+                    token: token,
                     success: true
                 })
             } else res.status(401).json({ success: false });

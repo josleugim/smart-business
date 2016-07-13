@@ -3,9 +3,9 @@
  */
 "use strict";
 angular.module('smartBusiness')
-    .factory('AuthService', ['$q', '$http', '$location', 'mvIdentity', 'CookieStore', AuthService]);
+    .factory('AuthService', ['$q', '$http', '$location', 'AuthToken', AuthService]);
 
-function AuthService($q, $http, $location, mvIdentity, CookieStore) {
+function AuthService($q, $http, $location, AuthToken) {
     var host = 'http://' + $location.host() + ':5000/';
     return {
         authenticate: loginUser,
@@ -24,8 +24,7 @@ function AuthService($q, $http, $location, mvIdentity, CookieStore) {
             }
         }).then(function successCallback(response) {
             if(response.data.success) {
-                console.log(response.data.user);
-                CookieStore.setCookie(response.data.user);
+                AuthToken.setToken(response.data.token);
                 dfd.resolve(true);
             }
         }, function errorCallback() {

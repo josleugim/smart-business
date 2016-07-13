@@ -2,7 +2,8 @@
  * Created by Mordekaiser on 06/06/16.
  */
 var mongoose = require('mongoose'),
-    userModel = require('../models/User');
+    userModel = require('../models/User'),
+    locationModel = require('../models/Location');
 
 module.exports = function (config) {
     mongoose.connect(config.db);
@@ -10,7 +11,7 @@ module.exports = function (config) {
 
     db.on('error', console.error.bind(console, 'connection error...'));
     db.once('open', function callback() {
-        console.log('Litus db opened');
+        console.log('Smart business db opened');
     });
 
     userModel.createDefaultUsers();

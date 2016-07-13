@@ -2,7 +2,7 @@
  * Created by Mordekaiser on 04/06/16.
  */
 "use strict";
-var smartBusiness = angular.module('smartBusiness', ['ngResource', 'ngRoute', 'ngCookies']);
+var smartBusiness = angular.module('smartBusiness', ['ngResource', 'ngRoute']);
 
 smartBusiness.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode({

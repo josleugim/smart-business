@@ -3,9 +3,8 @@
  */
 "use strict";
 angular.module('smartBusiness')
-.controller('LocationCtrl', ['$scope', 'mvIdentity', LocationCtrl]);
+.controller('LocationCtrl', ['$scope', 'AuthToken', LocationCtrl]);
 
-function LocationCtrl($scope, mvIdentity) {
-    $scope.identity = mvIdentity.currentUser;
-    console.log($scope.identity);
+function LocationCtrl($scope, AuthToken) {
+	
 }
