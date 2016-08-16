@@ -3,8 +3,19 @@
  */
 "use strict";
 angular.module('smartBusiness')
-.controller('LocationCtrl', ['$scope', 'AuthToken', LocationCtrl]);
+.controller('LocationCtrl', ['$scope', 'AuthToken', 'LocationService', LocationCtrl]);
 
-function LocationCtrl($scope, AuthToken) {
-	
+function LocationCtrl($scope, AuthToken, LocationService) {
+	$scope.createLocation = function() {
+		var data = {
+			name: $scope.name,
+			description: $scope.description
+		};
+
+		LocationService.post(data).then(function(success) {
+			if(success) {
+
+			}
+		})
+	}
 }
