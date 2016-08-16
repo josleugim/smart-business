@@ -7,6 +7,7 @@ module.exports = function (app, config) {
 	// api routes
     app.post('/api/v1/login', userCtrl.login);
     app.post('/api/v1/locations', locationCtrl.post);
+    app.get('/api/v1/locations', locationCtrl.get);
 
     app.get('*', function (req, res) {
         res.sendFile(config.rootPath + 'public/index.html');

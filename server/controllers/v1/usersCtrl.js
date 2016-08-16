@@ -23,13 +23,13 @@ exports.login = function (req, res) {
             if(encrypt.hashPwd(user.salt, query.hashed_pwd) === user.hashed_pwd) {
                 var token = jwt.sign({roles: user.roles, user_id: user._id}, config.development.tokenSecret);
 
-                var objectUser = user.toObject();
+                /*var objectUser = user.toObject();
                 delete objectUser.hashed_pwd;
                 delete objectUser.salt;
                 delete objectUser.__v;
                 delete objectUser.createdAt;
                 delete objectUser.updatedAt;
-                objectUser.token = token;
+                objectUser.token = token;*/
                 
                 res.status(200).json({
                     token: token,

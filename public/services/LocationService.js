@@ -6,13 +6,33 @@ angular.module('smartBusiness')
     	var host = 'http://' + $location.host() + ':5000/';
 
     	return {
+            get: getAll,
     		post: post
     	};
 
+        function getAll() {
+            var dfd = $q.defer();
+
+            $http({
+                method: 'GET',
+                url: host + 'api/v1/locations',
+                params: {token: AuthToken.getToken()},
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function successCallback(response) {
+                if(response.data) {
+                    dfd.resolve(response.data);
+                }
+            }, function errorCallback() {
+                dfd.resolve(false);
+            });
+
+            return dfd.promise;
+        }
+
     	function post(data) {
     		var dfd = $q.defer();
-
-            console.log(data);
 
     		$http({
     			method: 'POST',
