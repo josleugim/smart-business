@@ -23,10 +23,10 @@
     </div>
     <div class="col-md-3"></div>
 </div>
-<div class="row">
+<div class="row" ng-repeat="location in locations">
     <div class="col-md-6">
-        <p>Nombre de la localidad</p>
-        <p>Descripción</p>
+        <p> <strong>Nombre: </strong> {{location.name}}</p>
+        <p>{{location.description}}</p>
     </div>
     <div class="col-md-6">
         <button class="btn btn-default">Desactivar</button>

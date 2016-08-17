@@ -14,8 +14,7 @@
                     <input type="text" ng-model="brandFilter" name="brandFilter" placeholder="Ejemplo: Apple">
                     <label>Selecciona una marca</label>
                     <select>
-                        <option>Motorola</option>
-                        <option>Apple</option>
+                        <option ng-repeat="brand in brands">{{brand.name}}</option>
                     </select>
                 </div>
                 <div class="form-group">

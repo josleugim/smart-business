@@ -1,22 +1,18 @@
-/**
- * Created by Mordekaiser on 06/06/16.
- */
 "use strict";
 var mongoose = require('mongoose'),
     timestamps = require('mongoose-timestamp');
 
-var LocationSchema = mongoose.Schema({
-    user_id: {type: String},
+var BrandSchema = mongoose.Schema({
     name: {
         type: String,
         required: 'Nombre requerido'
     },
-    description: {type: String},
+    slug: {type: String},
     isActive: {
     	type: Boolean,
     	default: true
     }
 });
 
-LocationSchema.plugin(timestamps);
-module.exports = mongoose.model('Location', LocationSchema);
+BrandSchema.plugin(timestamps);
+module.exports = mongoose.model('Brand', BrandSchema);

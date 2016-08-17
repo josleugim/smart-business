@@ -3,11 +3,15 @@
  */
 "use strict";
 angular.module('smartBusiness')
-    .controller('ProductCtrl', ['$scope', ProductCtrl]);
+    .controller('ProductCtrl', ['$scope', 'BrandService', ProductCtrl]);
 
-function ProductCtrl($scope) {
+function ProductCtrl($scope, BrandService) {
     $scope.productCount = 0;
     $scope.product = {barCodes:[]};
+
+    BrandService.get().then(function(data) {
+        $scope.brands = data;
+    })
 
     $scope.upCountProduct = function () {
         $scope.productCount++;

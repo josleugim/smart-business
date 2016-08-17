@@ -39,7 +39,7 @@ exports.get = function (req, res) {
 
 	if(req.query.token) {
 		Location.find(query)
-		.sort({name: -1})
+		.sort({name: 1})
 		.exec(function (err, locations) {
 			if(err) {
 				res.status(500).json({success: false});
