@@ -13,21 +13,19 @@
                     <label>Si la lista es muy larga puedes filtrarla escribiendo una marca:</label>
                     <input type="text" ng-model="brandFilter" name="brandFilter" placeholder="Ejemplo: Apple">
                     <label>Selecciona una marca</label>
-                    <select>
-                        <option ng-repeat="brand in brands">{{brand.name}}</option>
-                    </select>
+                    <select ng-model="brandList" ng-options="brand.name for brand in brands | filter: brandFilter track by brand._id"></select>
                 </div>
                 <div class="form-group">
                     <label for="productName">Nombre del producto</label>
-                    <input type="text" class="form-control" id="productName" placeholder="Nombre">
+                    <input type="text" class="form-control" id="productName" ng-model="productName" name="productName" placeholder="Nombre">
                 </div>
                 <div class="form-group">
                     <label for="price">Precio del producto</label>
-                    <input type="text" class="form-control" id="price" placeholder="Precio">
+                    <input type="number" class="form-control" id="price" ng-model="price" name="price" placeholder="Precio">
                 </div>
                 <div class="form-group">
                     <label for="description">Descripción del producto</label>
-                    <input type="text" class="form-control" id="description" placeholder="Descripción">
+                    <input type="text" class="form-control" id="description" ng-model="description" name="description" placeholder="Descripción">
                 </div>
                 <div class="form-group">
                     <label>Cantidad de productos</label>
@@ -47,7 +45,7 @@
                     <p class="help-block">La imagen del producto, ayudará a que el vendedor lo identifique visualmente en el punto de venta.</p>
                     <img ng-src="{{file}}">
                 </div>
-                <button type="submit" class="btn btn-default">Agregar producto</button>
+                <button type="submit" class="btn btn-default" ng-click="addProduct()">Agregar producto</button>
             </form>
         </div>
         <div class="col-md-3"></div>

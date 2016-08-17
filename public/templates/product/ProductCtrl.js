@@ -13,6 +13,18 @@ function ProductCtrl($scope, BrandService) {
         $scope.brands = data;
     })
 
+    $scope.addProduct = function() {
+        console.log($scope.brandList);
+        console.log($scope.product.barCodes);
+        var data = {
+            brand_id: $scope.brand_id,
+            name: $scope.productName,
+            location_id: $scope.location_id,
+            price: price,
+            description: description
+        }
+    }
+
     $scope.upCountProduct = function () {
         $scope.productCount++;
         $scope.product.barCodes.push('');
