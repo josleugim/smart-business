@@ -8,20 +8,30 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <form name="productForm">
+            <form name="productForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Selecciona la localidad a la cual vas agregar tus productos:</label>
+                    <div ng-repeat="location in locations">
+                        <p><input type="radio" ng-model="$parent.location_id" name="location_id" ng-value="location._id" required/> {{location.name}}</p>
+                    </div>
+                    <span class="error", ng-show="productForm.location_id.$error.required">* requerido</span>
+                </div>
                 <div class="form-group">
                     <label>Si la lista es muy larga puedes filtrarla escribiendo una marca:</label>
                     <input type="text" ng-model="brandFilter" name="brandFilter" placeholder="Ejemplo: Apple">
                     <label>Selecciona una marca</label>
-                    <select ng-model="brandList" ng-options="brand.name for brand in brands | filter: brandFilter track by brand._id"></select>
+                    <select ng-model="brandList" ng-options="brand.name for brand in brands | filter: brandFilter track by brand._id" required></select>
+                    <span class="error", ng-show="productForm.brandList.$error.required">* requerido</span>
                 </div>
                 <div class="form-group">
                     <label for="productName">Nombre del producto</label>
-                    <input type="text" class="form-control" id="productName" ng-model="productName" name="productName" placeholder="Nombre">
+                    <input type="text" class="form-control" id="productName" ng-model="productName" name="productName" placeholder="Nombre" required>
+                    <span class="error", ng-show="productForm.productName.$error.required">* requerido</span>
                 </div>
                 <div class="form-group">
                     <label for="price">Precio del producto</label>
-                    <input type="number" class="form-control" id="price" ng-model="price" name="price" placeholder="Precio">
+                    <input type="number" class="form-control" id="price" ng-model="price" name="price" placeholder="Precio" required>
+                    <span class="error", ng-show="productForm.price.$error.required">* requerido</span>
                 </div>
                 <div class="form-group">
                     <label for="description">Descripción del producto</label>
@@ -41,11 +51,11 @@
                 </div>
                 <div class="form-group">
                     <label for="image">Imagen del producto</label>
-                    <input type="file" id="image" ng-model="file" name="file" image-file="file">
+                    <input type="file" id="image" ng-model="image" name="file" image-file="files">
                     <p class="help-block">La imagen del producto, ayudará a que el vendedor lo identifique visualmente en el punto de venta.</p>
                     <img ng-src="{{file}}">
                 </div>
-                <button type="submit" class="btn btn-default" ng-click="addProduct()">Agregar producto</button>
+                <button type="button" class="btn btn-default" ng-click="addProduct()" ng-disabled="productForm.$invalid">Agregar producto</button>
             </form>
         </div>
         <div class="col-md-3"></div>

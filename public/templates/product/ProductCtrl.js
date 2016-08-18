@@ -3,9 +3,20 @@
  */
 "use strict";
 angular.module('smartBusiness')
-    .controller('ProductCtrl', ['$scope', 'BrandService', ProductCtrl]);
+    .directive('imageFile', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function (scope, elm, attrs) {
+                elm.bind('change', function () {
+                    $parse(attrs.imageFile).assign(scope, elm[0].files[0])
+                    scope.$apply();
+                })
+            }
+        }
+    }])
+    .controller('ProductCtrl', ['$scope', 'BrandService', 'LocationService', 'ProductService', ProductCtrl]);
 
-function ProductCtrl($scope, BrandService) {
+function ProductCtrl($scope, BrandService, LocationService, ProductService) {
     $scope.productCount = 0;
     $scope.product = {barCodes:[]};
 
@@ -13,16 +24,31 @@ function ProductCtrl($scope, BrandService) {
         $scope.brands = data;
     })
 
+    LocationService.get().then(function(data) {
+        $scope.locations = data;
+    })
+
     $scope.addProduct = function() {
-        console.log($scope.brandList);
-        console.log($scope.product.barCodes);
         var data = {
-            brand_id: $scope.brand_id,
+            brand_id: $scope.brandList._id,
             name: $scope.productName,
             location_id: $scope.location_id,
-            price: price,
-            description: description
+            price: $scope.price,
+            description: $scope.description,
+            image: $scope.files,
+            barcode: $scope.product.barCodes
         }
+        console.log(data);
+
+        ProductService.post(data).then(function(success) {
+            if(success) {
+                $scope.productName = "";
+                $scope.price = "";
+                $scope.description = "";
+                $scope.files = "";
+                $scope.product.barCodes = "";
+            }
+        });
     }
 
     $scope.upCountProduct = function () {

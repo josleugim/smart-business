@@ -4,7 +4,8 @@
 var mongoose = require('mongoose'),
     userModel = require('../models/User'),
     locationModel = require('../models/Location'),
-    brandModel = require('../models/Brand');
+    brandModel = require('../models/Brand'),
+    productModel = require('../models/Product');
 
 module.exports = function (config) {
     mongoose.connect(config.db);

@@ -3,7 +3,10 @@
  */
 var userCtrl = require('../controllers/v1/usersCtrl'),
 	locationCtrl = require('../controllers/v1/locationsCtrl'),
-	brandCtrl = require('../controllers/v1/brandsCtrl');
+	brandCtrl = require('../controllers/v1/brandsCtrl'),
+    productCtrl = require('../controllers/v1/productsCtrl'),
+    multer = require('multer'),
+    upload = multer({dest: 'public/assets/products/'});
 
 module.exports = function (app, config) {
 	// api routes
@@ -12,6 +15,7 @@ module.exports = function (app, config) {
     app.get('/api/v1/locations', locationCtrl.get);
     app.post('/api/v1/brands', brandCtrl.post);
     app.get('/api/v1/brands', brandCtrl.get);
+    app.post('/api/v1/products', upload.single('image'), productCtrl.post);
 
     app.get('*', function (req, res) {
         res.sendFile(config.rootPath + 'public/index.html');
