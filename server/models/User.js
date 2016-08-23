@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
     encrypt = require('../utilities/encryption');
 
 var UserSchema = mongoose.Schema({
+    location_id: {type: String},
     name: {
         type: String,
         required: 'Nombre requerido'

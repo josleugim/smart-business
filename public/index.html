@@ -9,11 +9,16 @@
 </head>
 <body>
 <ng-include src="'templates/common/menu.html'"></ng-include>
-<aside class=""></aside>
-<section class="content">
-    <div class="container ng-view-content">
+<section class="container-fluid mark-up">
+    <a href="#" class="toggle-menu"></a>
+    <aside class="aside-menu">
+        <ul>
+            <li><a href="/checkout">Caja</a></li>
+        </ul>
+    </aside>
+    <section class="container-fluid views-content">
         <ng-view></ng-view>
-    </div>
+    </section>
 </section>
 <footer>
     <div class="container">
@@ -38,10 +43,12 @@
 <script type="text/javascript" src="templates/brand/BrandCtrl.js"></script>
 <script type="text/javascript" src="templates/product/ProductCtrl.js"></script>
 <script type="text/javascript" src="templates/common/MenuCtrl.js"></script>
+<script type="text/javascript" src="templates/checkout/CheckoutCtrl.js"></script>
 <script type="text/javascript" src="services/UserService.js"></script>
 <script type="text/javascript" src="services/AuthService.js"></script>
 <script type="text/javascript" src="services/LocationService.js"></script>
 <script type="text/javascript" src="services/BrandService.js"></script>
 <script type="text/javascript" src="services/ProductService.js"></script>
+<script type="text/javascript" src="services/SellerService.js"></script>
 </body>
 </html>

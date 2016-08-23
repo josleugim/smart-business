@@ -39,3 +39,27 @@ exports.login = function (req, res) {
         } else res.status(401).json({ success: false });
     })
 };
+
+exports.postSeller = function(req, res) {
+    console.log('POST Seller');
+
+    if(req.query.token) {
+        var data = {
+            name: req.body.name,
+            hashed_pwd: req.body.password,
+            location_id: req.body.location_id,
+            roles: ['seller', 'user']
+        };
+
+        var user = new User(data);
+        user.save(function(err, collection) {
+            if(err) {
+               res.status(500).json({success: false});
+               res.end();
+           } else {
+               res.status(201).json({success: true});
+               res.end();
+           }
+       })
+    }
+}

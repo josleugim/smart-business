@@ -1,0 +1,33 @@
+<div class="row">
+	<div class="col-md-12">
+		<h2>Artículos</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<form name="itemForm">
+			<input type="text" name="itemBarcode" ng-model="itemBarcode" barcode-focus="keepFocus" autofocus autocomplete="off">
+			<button type="submit" class="btn btn-default" ng-click="addItem()" ng-disabled="itemForm.$invalid"></button>
+		</form>
+	</div>
+	<div class="col-md-6">
+		<form name="itemSearchForm">
+			<input type="text" name="itemName" ng-model="itemName" required>
+			<button type="button" class="btn btn-default" ng-click="searchItem()" ng-disabled="itemSearchForm.$invalid">Buscar</button>
+		</form>
+		<div ng-repeat="item in searchItems.products track by $index"></div>
+	</div>
+	<div class="col-md-12">
+		<div>
+			<div ng-repeat="product in carItems.products track by $index">
+				<p>{{product.name}}</p>
+				<p>Precio: {{product.price}}</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div>
+			<p>Total: {{total}}</p>
+		</div>
+	</div>
+</div>

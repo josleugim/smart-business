@@ -5,21 +5,24 @@ body {
 .navbar {
   margin-bottom: 0px;
 }
-aside {
-  float: left;
-  height: 100%;
-  width: 300px;
-}
-section {
-  float: left;
-}
-.content {
+.mark-up {
   height: 100%;
   background-color: #4cae4c;
+  position: relative;
 }
-.content .ng-view-content {
-  background-color: #f8f8f8;
+.mark-up .toggle-menu {
+  background: url("../images/on-off-button.png") no-repeat 0 0;
+  display: block;
+  left: 0;
+  margin: 0 0 0 0;
+  position: absolute;
+  width: 62px;
+  height: 55px;
+}
+.mark-up .aside-menu {
   height: 100%;
+  position: absolute;
+  width: 0px;
 }
 footer {
   background-color: #f8f8f8;

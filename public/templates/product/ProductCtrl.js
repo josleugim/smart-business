@@ -38,7 +38,6 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService) {
             image: $scope.files,
             barcode: $scope.product.barCodes
         }
-        console.log(data);
 
         ProductService.post(data).then(function(success) {
             if(success) {

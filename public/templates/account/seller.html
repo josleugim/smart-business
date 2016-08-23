@@ -7,26 +7,28 @@
 <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-        <form name="registerForm">
+        <form name="sellerForm">
             <div class="form-group">
                 <label for="name">Tienda</label>
-                <select name="locations">
-                    <option ng-repeat="location in locations">{{location.name}}</option>
-                </select>
+                <select ng-model="locationList" ng-options="location.name for location in locations track by location._id" required></select>
             </div>
             <div class="form-group">
                 <label for="name">Nombre del usuario</label>
-                <input type="text" class="form-control" id="name" placeholder="Nombre" ng-model="name">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" ng-model="name" required>
+                <span ng-show="sellerForm.name.$error.required">*Campo requerido</span>
             </div>
             <div class="form-group">
                 <label for="pass">Contraseña</label>
-                <input type="password" class="form-control" id="pass" placeholder="Contraseña" ng-model="pass">
+                <input type="password" class="form-control" id="pass" name="pass" placeholder="Contraseña" ng-model="pass" required>
+                <span ng-show="sellerForm.pass.$error.required">*Campo requerido</span>
             </div>
             <div class="form-group">
                 <label for="confPass">Confirmar contraseña</label>
-                <input type="password" class="form-control" id="confPass" placeholder="Confirmar contraseña" ng-model="confPass">
+                <input type="password" class="form-control" id="confPass" name="confPass" placeholder="Confirmar contraseña" ng-model="confPass" pw-check="pass" required>
+                <span ng-show="sellerForm.confPass.$error.required">*Campo requerido</span>
+                <span class="msg-error" ng-show="sellerForm.confPass.$error.pwmatch">Las contraseñas no coinciden</span>
             </div>
-            <button type="submit" class="btn btn-default">Crear vendedor</button>
+            <button type="submit" class="btn btn-default" ng-click="addSeller()" ng-disabled="sellerForm.$invalid">Crear vendedor</button>
         </form>
 
     </div>
