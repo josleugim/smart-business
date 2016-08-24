@@ -43,17 +43,31 @@ exports.login = function (req, res) {
 exports.postSeller = function(req, res) {
     console.log('POST Seller');
 
+    var roles = [];
+    var salt, hash;
+
     if(req.query.token) {
         var data = {
             name: req.body.name,
-            hashed_pwd: req.body.password,
-            location_id: req.body.location_id,
-            roles: ['seller', 'user']
+            email: req.body.email,
+            location_id: req.body.location_id
         };
+
+        roles.push('user');
+        roles.push('seller');
+        data.roles = roles;
+
+        if(req.body.password) {
+            salt = encrypt.createSalt();
+            hash = encrypt.hashPwd(salt, req.body.password);
+            data.salt = salt;
+            data.hashed_pwd = hash;
+        }
 
         var user = new User(data);
         user.save(function(err, collection) {
             if(err) {
+                console.log(err);
                res.status(500).json({success: false});
                res.end();
            } else {

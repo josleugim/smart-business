@@ -17,7 +17,7 @@ module.exports = function (app, config) {
     app.get('/api/v1/brands', brandCtrl.get);
     app.post('/api/v1/products', upload.single('image'), productCtrl.post);
     app.get('/api/v1/products', productCtrl.get);
-    app.post('/api/v1/users', userCtrl.postSeller);
+    app.post('/api/v1/sellers', userCtrl.postSeller);
 
     app.get('*', function (req, res) {
         res.sendFile(config.rootPath + 'public/index.html');

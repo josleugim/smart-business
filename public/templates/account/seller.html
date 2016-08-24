@@ -18,6 +18,11 @@
                 <span ng-show="sellerForm.name.$error.required">*Campo requerido</span>
             </div>
             <div class="form-group">
+                <label for="name">Correo electrónico</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="email@dominio.com" ng-model="email" required>
+                <span ng-show="sellerForm.email.$error.required">*Campo requerido</span>
+            </div>
+            <div class="form-group">
                 <label for="pass">Contraseña</label>
                 <input type="password" class="form-control" id="pass" name="pass" placeholder="Contraseña" ng-model="pass" required>
                 <span ng-show="sellerForm.pass.$error.required">*Campo requerido</span>

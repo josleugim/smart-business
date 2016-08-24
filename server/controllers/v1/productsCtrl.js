@@ -41,29 +41,33 @@ exports.post = function(req, res) {
 exports.get = function(req, res) {
     console.log('GET Product');
 
-    var query = {};
+    var data = {};
     
     if(req.query.token) {
-        Product.find(query)
+
+        if(req.body.name)
+            data.name = {$regex: req.body.name, $options: 'i'};
+
+        Product.find(data)
         .sort({name: 1})
-        .exec(function (err, locations) {
+        .exec(function (err, products) {
             if(err) {
                 res.status(500).json({success: false});
                 res.end();
             }
 
-            var objectLocation = [];
+            var objectProduct = [];
 
-            locations.forEach(function(values) {
-                var location = values.toObject();
-                delete location.user_id;
-                delete location.__v;
-                delete location.createdAt;
-                delete location.updatedAt;
-                objectLocation.push(location);
+            products.forEach(function(values) {
+                var product = values.toObject();
+                delete product.isActive;
+                delete product.__v;
+                delete product.createdAt;
+                delete product.updatedAt;
+                objectProduct.push(product);
             })
 
-            res.status(200).json(objectLocation);
+            res.status(200).json(objectProduct);
             res.end();
         })
     } else {

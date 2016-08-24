@@ -1,8 +1,8 @@
 "use strict";
 angular.module('smartBusiness')
-.factory('SellerService', ['$q', '$http', '$location', SellerService]);
+.factory('SellerService', ['$q', '$http', '$location', 'AuthToken', SellerService]);
 
-function SellerService($q, $http, $location) {
+function SellerService($q, $http, $location, AuthToken) {
     var host = 'http://' + $location.host() + ':5000/';
 
     return {

@@ -34,12 +34,16 @@ function SellerCtrl($scope, $location, LocationService, $rootScope, SellerServic
     	var data = {
     		location_id: $scope.locationList._id,
     		name: $scope.name,
-    		hashed_pwd: $scope.pass
+    		email: $scope.email,
+    		password: $scope.pass
     	};
 
     	SellerService.post(data).then(function(success) {
     		if(success) {
-
+    			$scope.name = "";
+    			$scope.email = "";
+    			$scope.pass = "";
+    			$scope.confPass = "";
     		}
     	})
     }
