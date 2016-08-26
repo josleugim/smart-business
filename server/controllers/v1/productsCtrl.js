@@ -40,13 +40,21 @@ exports.post = function(req, res) {
 
 exports.get = function(req, res) {
     console.log('GET Product');
-
-    var data = {};
     
     if(req.query.token) {
+        var data = {};
 
-        if(req.body.name)
-            data.name = {$regex: req.body.name, $options: 'i'};
+        if(req.query.searchType == 'byName') {
+            if(req.query.name)
+                data.name = {$regex: req.query.name, $options: 'i'};
+        }
+
+        if(req.query.searchType == 'byBarcode') {
+            data.barcode = {$in: [req.query.barcode]};
+            /*var data = {
+                'barcode': {$in: [req.query.barcode]}
+            };*/
+        }
 
         Product.find(data)
         .sort({name: 1})
@@ -66,10 +74,14 @@ exports.get = function(req, res) {
                 delete product.updatedAt;
                 objectProduct.push(product);
             })
-
-            res.status(200).json(objectProduct);
-            res.end();
-        })
+            if(req.query.searchType == 'byBarcode') {
+                res.status(200).json(objectProduct[0]);
+                res.end();
+            } else {
+                res.status(200).json(objectProduct);
+                res.end();
+            }
+        });
     } else {
         res.status(500).json({success: false});
         res.end();

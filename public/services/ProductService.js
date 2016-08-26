@@ -7,17 +7,17 @@ function ProductService($q, $http, $location, AuthToken) {
 
 	return {
     	post: post,
-        getByName: getByName
+        get: get
     };
 
-    function getByName(data) {
+    function get(query) {
         var dfd = $q.defer();
 
+        query.token = AuthToken.getToken()
         $http({
             method: 'GET',
             url: host + 'api/v1/products',
-            params: {token: AuthToken.getToken()},
-            data: data,
+            params: query,
             headers: {
                 'Content-Type': 'application/json'
             }

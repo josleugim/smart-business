@@ -10,30 +10,81 @@ angular.module('smartBusiness')
 			}
 		}
 	})
-    .controller('CheckoutCtrl', ['$scope', 'ProductService', CheckoutCtrl]);
+    .controller('CheckoutCtrl', ['$scope', 'ProductService', '$rootScope', CheckoutCtrl]);
 
-function CheckoutCtrl($scope, ProductService) {
-	$scope.carItems = {products:[]};
-	$scope.searchItems = {products:[]};
+function CheckoutCtrl($scope, ProductService, $rootScope) {
+	//$scope.carItems = {products:[]};
+	//$scope.searchItems = {products:[]};
+	$scope.searchItems = "";
 	$scope.total = 0;
-	var info = {
-		name: $scope.itemName
-	};
+	$scope.searchProducts = "";
+	$scope.carItems = [];
 
-	ProductService.getByName(info).then(function(data) {
-		if(data) {
-			console.log(data);
-		}
-	})
-
-	$scope.addItem = function() {
-		$scope.itemBarcode = "";
+	$scope.addItem = function(itemBarcode) {
 		$scope.keepFocus();
-		$scope.carItems.products.push({'name':'Iphone 6', 'price':'1799.99'});
-		total(1799.99)
+		var query = {
+			barcode: itemBarcode,
+			searchType: 'byBarcode'
+		};
+		if($scope.carItems.length > 0) {
+			angular.forEach($scope.carItems, function(value, key) {
+				console.log(value.barcode);
+				if(value.barcode.indexOf(itemBarcode) == -1) {
+					addItemToList(query);
+				} else {
+					console.log('Item already in list');
+				}
+			});
+		} else {
+			addItemToList(query);
+		}
+		$scope.itemBarcode = "";
+	}
+
+	function addItemToList(query) {
+		ProductService.get(query).then(function(data) {
+			if(data) {
+				$scope.carItems.push(data);
+				total(data.price);
+			}
+		});
 	}
 
 	function total(price) {
 		$scope.total = $scope.total + price;
 	}
+
+	$scope.searchItem = function() {
+		$rootScope.$broadcast('updateItemsList', "");
+		var info = {
+			name: $scope.itemName,
+			searchType: 'byName'
+		};
+
+		ProductService.get(info).then(function(data) {
+			if(data) {
+				$rootScope.$broadcast('updateItemsList', data);
+			}
+		})
+	}
+
+	$scope.addToCheckoutList = function(product) {
+		$rootScope.$broadcast('updateCheckoutList', product);
+	}
+
+	$scope.$on("updateItemsList", function(event, data){
+		$scope.searchProducts = data;
+    });
+
+    $scope.$on("updateCheckoutList", function(event, data){
+		$scope.carItems.push(data);
+		$rootScope.$broadcast('updateItemsList', "");
+		total(data.price);
+    });
+
+    var formatter = new Intl.NumberFormat('es-MX', {
+    	style: 'currency',
+    	currency: 'MXN',
+    	minimumFractionDigits: 2
+    });
 }    
