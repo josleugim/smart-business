@@ -7,7 +7,8 @@ var ProductSchema = mongoose.Schema({
     brand_id: {type: String},
     name: {
         type: String,
-        required: 'Nombre requerido'
+        required: 'Nombre requerido',
+        unique: true
     },
     slug: {type: String},
     image: {type: String},

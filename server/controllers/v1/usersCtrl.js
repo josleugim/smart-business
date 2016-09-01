@@ -21,7 +21,7 @@ exports.login = function (req, res) {
         if(!user) res.status(401).json({ success: false });
         else if(query.hashed_pwd) {
             if(encrypt.hashPwd(user.salt, query.hashed_pwd) === user.hashed_pwd) {
-                var token = jwt.sign({roles: user.roles, user_id: user._id}, config.development.tokenSecret);
+                var token = jwt.sign({roles: user.roles, user_id: user._id, location_id: user.location_id}, config.development.tokenSecret);
 
                 /*var objectUser = user.toObject();
                 delete objectUser.hashed_pwd;

@@ -13,11 +13,14 @@
 			<div ng-repeat="product in carItems track by $index" class="checkout-product">
 				<p>{{product.name}}</p>
 				<p>Precio: {{product.price}}</p>
-				<a href="#" class="remove-icon" remove-item>Quitar producto</a>
+				<a href="#" class="remove-icon" ng-click="removeItem(product)">Quitar producto</a>
 			</div>
 		</div>
 		<div class="total">
 			<p>Total: {{total}}</p>
+		</div>
+		<div>
+			<button type="button" class="checkout-btn" ng-click="checkout()" class="btn btn-default">Realizar venta</button>
 		</div>
 	</div>
 	<div class="col-md-6">

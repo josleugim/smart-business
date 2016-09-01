@@ -10,11 +10,9 @@ angular.module('smartBusiness')
 			}
 		}
 	})
-    .controller('CheckoutCtrl', ['$scope', 'ProductService', '$rootScope', CheckoutCtrl]);
+    .controller('CheckoutCtrl', ['$scope', 'ProductService', '$rootScope', 'CheckoutService', CheckoutCtrl]);
 
-function CheckoutCtrl($scope, ProductService, $rootScope) {
-	//$scope.carItems = {products:[]};
-	//$scope.searchItems = {products:[]};
+function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService) {
 	$scope.searchItems = "";
 	$scope.total = 0;
 	$scope.searchProducts = "";
@@ -28,7 +26,6 @@ function CheckoutCtrl($scope, ProductService, $rootScope) {
 		};
 		if($scope.carItems.length > 0) {
 			angular.forEach($scope.carItems, function(value, key) {
-				console.log(value.barcode);
 				if(value.barcode.indexOf(itemBarcode) == -1) {
 					addItemToList(query);
 				} else {
@@ -54,6 +51,19 @@ function CheckoutCtrl($scope, ProductService, $rootScope) {
 		$scope.total = $scope.total + price;
 	}
 
+	$scope.checkout = function() {
+		console.log($scope.carItems);
+		var data = {
+			products: $scope.carItems,
+			total: $scope.total
+		}
+		CheckoutService.post(data).then(function(success) {
+			if(success) {
+
+			}
+		})
+	}
+
 	$scope.searchItem = function() {
 		$rootScope.$broadcast('updateItemsList', "");
 		var info = {
@@ -66,6 +76,10 @@ function CheckoutCtrl($scope, ProductService, $rootScope) {
 				$rootScope.$broadcast('updateItemsList', data);
 			}
 		})
+	}
+
+	$scope.removeItem = function(product) {
+		$rootScope.$broadcast('removeItemFromCheckout', product);
 	}
 
 	$scope.addToCheckoutList = function(product) {
@@ -81,6 +95,12 @@ function CheckoutCtrl($scope, ProductService, $rootScope) {
 		$rootScope.$broadcast('updateItemsList', "");
 		total(data.price);
     });
+
+    $scope.$on("removeItemFromCheckout", function(event, product) {
+    	var index = $scope.carItems.indexOf(product._id);
+    	$scope.carItems.splice(index, 1);
+    	total(-1 * product.price);
+    })
 
     var formatter = new Intl.NumberFormat('es-MX', {
     	style: 'currency',

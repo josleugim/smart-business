@@ -32,22 +32,22 @@ function BrandService($q, $http, $location, AuthToken) {
 
 	function post(data) {
 		var dfd = $q.defer();
-    		$http({
-    			method: 'POST',
-            	url: host + 'api/v1/brands',
-            	params: {token: AuthToken.getToken()},
-            	data: data,
-            	headers: {
-                	'Content-Type': 'application/json'
-            	}
-        	}).then(function successCallback(response) {
-            	if(response.data.success) {
-                	dfd.resolve(true);
-            	}
-        	}, function errorCallback() {
-            	dfd.resolve(false);
-        	});
+        $http({
+            method: 'POST',
+            url: host + 'api/v1/brands',
+            params: {token: AuthToken.getToken()},
+            data: data,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function successCallback(response) {
+            if(response.data.success) {
+            dfd.resolve(true);
+            }
+        }, function errorCallback() {
+            dfd.resolve(false);
+        });
 
-        	return dfd.promise;
+        return dfd.promise;
 	}
 }    

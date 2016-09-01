@@ -9,4 +9,13 @@ exports.getUserId = function(token) {
         	return decoded.payload.user_id;
     	}
 	}
-}	
+};
+
+exports.getLocationId = function(token) {
+	if(token) {
+		var decoded = jwt.decode(token, {complete: true});
+		if (decoded.payload) {
+			return decoded.payload.location_id;
+		};
+	}
+}

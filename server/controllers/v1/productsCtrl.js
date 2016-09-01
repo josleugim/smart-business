@@ -10,6 +10,9 @@ exports.post = function(req, res) {
     if(req.query.token) {
         if(req.body.location_id)
             data.location_id = req.body.location_id
+        else {
+            data.location_id = jwtValidation.getLocationId(req.query.token);
+        }
         if(req.body.brand_id)
             data.brand_id = req.body.brand_id
         if(req.body.name) {
@@ -42,21 +45,22 @@ exports.get = function(req, res) {
     console.log('GET Product');
     
     if(req.query.token) {
-        var data = {};
+        var query = {
+            isActive: true
+        };
+        
+        query.location_id = jwtValidation.getLocationId(req.query.token);
 
         if(req.query.searchType == 'byName') {
             if(req.query.name)
-                data.name = {$regex: req.query.name, $options: 'i'};
+                query.name = {$regex: req.query.name, $options: 'i'};
         }
 
         if(req.query.searchType == 'byBarcode') {
-            data.barcode = {$in: [req.query.barcode]};
-            /*var data = {
-                'barcode': {$in: [req.query.barcode]}
-            };*/
+            query.barcode = {$in: [req.query.barcode]};
         }
 
-        Product.find(data)
+        Product.find(query)
         .sort({name: 1})
         .exec(function (err, products) {
             if(err) {

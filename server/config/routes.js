@@ -6,7 +6,8 @@ var userCtrl = require('../controllers/v1/usersCtrl'),
 	brandCtrl = require('../controllers/v1/brandsCtrl'),
     productCtrl = require('../controllers/v1/productsCtrl'),
     multer = require('multer'),
-    upload = multer({dest: 'public/assets/products/'});
+    upload = multer({dest: 'public/assets/products/'}),
+    checkoutCtrl = require('../controllers/v1/checkoutCtrl');
 
 module.exports = function (app, config) {
 	// api routes
@@ -18,6 +19,7 @@ module.exports = function (app, config) {
     app.post('/api/v1/products', upload.single('image'), productCtrl.post);
     app.get('/api/v1/products', productCtrl.get);
     app.post('/api/v1/sellers', userCtrl.postSeller);
+    app.post('/api/v1/checkout', checkoutCtrl.post);
 
     app.get('*', function (req, res) {
         res.sendFile(config.rootPath + 'public/index.html');
