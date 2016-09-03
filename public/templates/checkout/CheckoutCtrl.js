@@ -59,7 +59,7 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService) {
 		}
 		CheckoutService.post(data).then(function(success) {
 			if(success) {
-
+				console.log('Venta realizada');
 			}
 		})
 	}

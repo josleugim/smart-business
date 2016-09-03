@@ -45,7 +45,8 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService) {
                 $scope.price = "";
                 $scope.description = "";
                 $scope.files = "";
-                $scope.product.barCodes = "";
+                $scope.product = {barCodes:[]};
+                $scope.productCount = 0;
             }
         });
     }
