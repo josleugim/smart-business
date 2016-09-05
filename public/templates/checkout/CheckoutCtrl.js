@@ -59,6 +59,8 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService) {
 		}
 		CheckoutService.post(data).then(function(success) {
 			if(success) {
+				$scope.carItems = [];
+				$scope.total = 0;
 				console.log('Venta realizada');
 			}
 		})
@@ -90,6 +92,7 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService) {
 		$scope.searchProducts = data;
     });
 
+	// updates the checkout list
     $scope.$on("updateCheckoutList", function(event, data){
 		$scope.carItems.push(data);
 		$rootScope.$broadcast('updateItemsList', "");

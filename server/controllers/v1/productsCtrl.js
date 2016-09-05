@@ -10,9 +10,9 @@ exports.post = function(req, res) {
     if(req.query.token) {
         if(req.body.location_id)
             data.location_id = req.body.location_id
-        else {
+        else
             data.location_id = jwtValidation.getLocationId(req.query.token);
-        }
+
         if(req.body.brand_id)
             data.brand_id = req.body.brand_id
         if(req.body.name) {
@@ -25,19 +25,22 @@ exports.post = function(req, res) {
             data.price = req.body.price;
         if(req.body.barcode)
             data.barcode = req.body.barcode;
+        if(req.body.sim)
+            data.sim = req.body.sim;
         if(req.body.description)
             data.description = req.body.description;
 
         var product = new Product(data);
         product.save(function(err, collection) {
             if(err) {
-               res.status(500).json({success: false});
-               res.end();
-           } else {
+                console.log(err);
+                res.status(500).json({success: false});
+                res.end();
+            } else {
                res.status(201).json({success: true});
                res.end();
-           }
-       })
+            }
+        })
     }
 }
 
@@ -57,17 +60,21 @@ exports.get = function(req, res) {
         }
 
         if(req.query.searchType == 'byBarcode') {
-            query.barcode = {$in: [req.query.barcode]};
+            query.barcode = req.query.barcode;
         }
+
+        console.log(query);
 
         Product.find(query)
         .sort({name: 1})
         .exec(function (err, products) {
             if(err) {
+                console.log(err);
                 res.status(500).json({success: false});
                 res.end();
             }
 
+            console.log(products);
             var objectProduct = [];
 
             products.forEach(function(values) {

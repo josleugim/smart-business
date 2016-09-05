@@ -37,18 +37,31 @@
                     <label for="description">Descripción del producto</label>
                     <input type="text" class="form-control" id="description" ng-model="description" name="description" placeholder="Descripción">
                 </div>
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label>Cantidad de productos</label>
                     <i class="glyphicon glyphicon-chevron-up" aria-hidden="true" ng-click="upCountProduct()"></i>
                     <div class="badge">
-                        <div>{{productCount}}</div>
+                        <div>{{codesCount}}</div>
                     </div>
                     <i class="glyphicon glyphicon-chevron-down" aria-hidden="true" ng-click="downCountProduct()"></i>
+                </div>-->
+                <div class="form-group">
+                    <label for="description">Código de barras o IMEI</label>
+                    <input type="text" class="form-control" ng-model="barcode" name="barcode" placeholder="IMEI">
                 </div>
                 <div class="form-group">
-                    <label>Código de barras</label>
-                    <input ng-repeat="barcode in product.barCodes track by $index" type='text' ng-model='product.barCodes[$index]' placeholder='Códifo de barras' class="form-control">
+                    <label for="description">SIM o chip amigo</label>
+                    <input type="text" class="form-control" ng-model="sim" name="sim" placeholder="SIM">
                 </div>
+                <!--<div class="form-group codes-group">
+                    <label>Códigos de barras y SIM por producto</label>
+                    <div class="imei">
+                        <input ng-repeat="barcode in product.barCodes track by $index" type='text' ng-model='product.barCodes[$index]' placeholder='Códifo de barras o IMEI No. {{$index}}' class="form-control">
+                    </div>
+                    <div class="sim">
+                        <input ng-repeat="sim in item.sims track by $index" type='text' ng-model='item.sims[$index]' placeholder='SIM o chip amigo No. {{$index}}' class="form-control">
+                    </div>
+                </div>-->
                 <div class="form-group">
                     <label for="image">Imagen del producto</label>
                     <input type="file" id="image" ng-model="image" name="file" image-file="files">

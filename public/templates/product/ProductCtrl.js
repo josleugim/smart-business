@@ -17,8 +17,10 @@ angular.module('smartBusiness')
     .controller('ProductCtrl', ['$scope', 'BrandService', 'LocationService', 'ProductService', ProductCtrl]);
 
 function ProductCtrl($scope, BrandService, LocationService, ProductService) {
-    $scope.productCount = 0;
+    /*$scope.codesCount = 0;
     $scope.product = {barCodes:[]};
+    $scope.item = {sims:[]};
+    var cont = 0;*/
 
     BrandService.get().then(function(data) {
         $scope.brands = data;
@@ -31,13 +33,23 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService) {
     $scope.addProduct = function() {
         var data = {
             brand_id: $scope.brandList._id,
-            name: $scope.productName,
             location_id: $scope.location_id,
+            name: $scope.productName,
             price: $scope.price,
             description: $scope.description,
             image: $scope.files,
-            barcode: $scope.product.barCodes
-        }
+            barcode: $scope.barcode,
+            sim: $scope.sim
+        };
+
+        /*angular.forEach($scope.product.barCodes, function(item, key) {
+            var tempCode = {
+                barcode: item,
+                sim: $scope.item.sims[cont]
+            };
+            data.codes.push(tempCode);
+            cont = cont + 1;
+        });*/
 
         ProductService.post(data).then(function(success) {
             if(success) {
@@ -45,22 +57,28 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService) {
                 $scope.price = "";
                 $scope.description = "";
                 $scope.files = "";
-                $scope.product = {barCodes:[]};
-                $scope.productCount = 0;
+                $scope.sim = "";
+                $scope.barcode = "";
+                /*$scope.product = {barCodes:[]};
+                $scope.item = {sims:[]};
+                $scope.codesCount = 0;
+                cont = 0;*/
             }
         });
     }
 
-    $scope.upCountProduct = function () {
-        $scope.productCount++;
+    /*$scope.upCountProduct = function () {
+        $scope.codesCount++;
         $scope.product.barCodes.push('');
+        $scope.item.sims.push('');
     };
 
     $scope.downCountProduct = function () {
-        if($scope.productCount > 0) {
-            $scope.productCount--;
+        if($scope.codesCount > 0) {
+            $scope.codesCount--;
             var index = $scope.product.barCodes.length;
             $scope.product.barCodes.splice(index -1);
+            $scope.item.sims.splice(index -1);
         }
-    };
+    };*/
 }

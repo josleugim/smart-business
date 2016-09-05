@@ -7,14 +7,23 @@ var ProductSchema = mongoose.Schema({
     brand_id: {type: String},
     name: {
         type: String,
-        required: 'Nombre requerido',
-        unique: true
+        required: 'Nombre requerido'
     },
     slug: {type: String},
     image: {type: String},
-    price: {type: Number},
+    price: {
+        type: Number,
+        required: 'Price required'
+    },
     description: {type: String},
-    barcode: [{type: String}],
+    barcode: {
+        type: String,
+        required: 'Barcode required',
+        unique: true
+    },
+    sim: {
+        type: String
+    },
     isActive: {
     	type: Boolean,
     	default: true

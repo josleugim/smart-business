@@ -13,6 +13,8 @@
 			<div ng-repeat="product in carItems track by $index" class="checkout-product">
 				<p>{{product.name}}</p>
 				<p>Precio: {{product.price}}</p>
+				<p>IMEI: {{product.barcode}}</p>
+				<p>SIM: {{product.sim}}</p>
 				<a href="#" class="remove-icon" ng-click="removeItem(product)">Quitar producto</a>
 			</div>
 		</div>
