@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
     locationModel = require('../models/Location'),
     brandModel = require('../models/Brand'),
     productModel = require('../models/Product'),
-    checkoutModel = require('../models/Checkout');
+    checkoutModel = require('../models/Checkout'),
+    categoryModel = require('../models/Category');
 
 module.exports = function (config) {
     mongoose.connect(config.db);

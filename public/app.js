@@ -38,4 +38,8 @@ smartBusiness.config(['$routeProvider', '$locationProvider', function ($routePro
             templateUrl: 'templates/sales/index.html',
             controller: 'SalesCtrl'
         })
+        .when('/categories', {
+            templateUrl: 'templates/category/index.html',
+            controller: 'CategoryCtrl'
+        })
 }]);

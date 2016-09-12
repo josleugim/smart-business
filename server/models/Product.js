@@ -5,9 +5,10 @@ var mongoose = require('mongoose'),
 var ProductSchema = mongoose.Schema({
     location_id: {type: String},
     brand_id: {type: String},
+    category_id: {type: String},
     name: {
         type: String,
-        required: 'Nombre requerido'
+        required: 'Product name required'
     },
     slug: {type: String},
     image: {type: String},
@@ -21,9 +22,7 @@ var ProductSchema = mongoose.Schema({
         required: 'Barcode required',
         unique: true
     },
-    sim: {
-        type: String
-    },
+    sim: {type: String},
     isActive: {
     	type: Boolean,
     	default: true

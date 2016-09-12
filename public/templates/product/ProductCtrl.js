@@ -14,9 +14,9 @@ angular.module('smartBusiness')
             }
         }
     }])
-    .controller('ProductCtrl', ['$scope', 'BrandService', 'LocationService', 'ProductService', ProductCtrl]);
+    .controller('ProductCtrl', ['$scope', 'BrandService', 'LocationService', 'ProductService', 'CategoryService', ProductCtrl]);
 
-function ProductCtrl($scope, BrandService, LocationService, ProductService) {
+function ProductCtrl($scope, BrandService, LocationService, ProductService, CategoryService) {
     /*$scope.codesCount = 0;
     $scope.product = {barCodes:[]};
     $scope.item = {sims:[]};
@@ -24,16 +24,21 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService) {
 
     BrandService.get().then(function(data) {
         $scope.brands = data;
-    })
+    });
 
     LocationService.get().then(function(data) {
         $scope.locations = data;
-    })
+    });
+
+    CategoryService.get().then(function(data) {
+        $scope.categories = data;
+    });
 
     $scope.addProduct = function() {
         var data = {
             brand_id: $scope.brandList._id,
             location_id: $scope.location_id,
+            category_id: $scope.categoryList._id,
             name: $scope.productName,
             price: $scope.price,
             description: $scope.description,

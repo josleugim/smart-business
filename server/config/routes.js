@@ -8,7 +8,8 @@ var userCtrl = require('../controllers/v1/usersCtrl'),
     multer = require('multer'),
     upload = multer({dest: 'public/assets/products/'}),
     checkoutCtrl = require('../controllers/v1/checkoutCtrl'),
-    salesCtrl = require('../controllers/v1/salesCtrl');
+    salesCtrl = require('../controllers/v1/salesCtrl'),
+    categoriesCtrl = require('../controllers/v1/categoriesCtrl');
 
 module.exports = function (app, config) {
 	// api routes
@@ -22,6 +23,8 @@ module.exports = function (app, config) {
     app.post('/api/v1/sellers', userCtrl.postSeller);
     app.post('/api/v1/checkout', checkoutCtrl.post);
     app.get('/api/v1/sales', salesCtrl.get);
+    app.post('/api/v1/categories', categoriesCtrl.post);
+    app.get('/api/v1/categories', categoriesCtrl.get);
 
     app.get('*', function (req, res) {
         res.sendFile(config.rootPath + 'public/index.html');

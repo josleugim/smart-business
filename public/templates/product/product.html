@@ -24,6 +24,13 @@
                     <span class="error", ng-show="productForm.brandList.$error.required">* requerido</span>
                 </div>
                 <div class="form-group">
+                    <label>Si la lista es muy larga puedes filtrarla escribiendo una categoría:</label>
+                    <input type="text" ng-model="categoryFilter" name="categoryFilter" placeholder="Ejemplo: Accesorios">
+                    <label>Selecciona una categoría</label>
+                    <select ng-model="categoryList" ng-options="category.name for category in categories | filter: categoryFilter track by category._id" required></select>
+                    <span class="error", ng-show="productForm.categoryList.$error.required">* requerido</span>
+                </div>
+                <div class="form-group">
                     <label for="productName">Nombre del producto</label>
                     <input type="text" class="form-control" id="productName" ng-model="productName" name="productName" placeholder="Nombre" required>
                     <span class="error", ng-show="productForm.productName.$error.required">* requerido</span>

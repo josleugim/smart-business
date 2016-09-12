@@ -13,6 +13,8 @@ exports.post = function(req, res) {
         else
             data.location_id = jwtValidation.getLocationId(req.query.token);
 
+        if(req.body.category_id)
+            data.category_id = req.body.category_id
         if(req.body.brand_id)
             data.brand_id = req.body.brand_id
         if(req.body.name) {
