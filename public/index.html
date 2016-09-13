@@ -8,53 +8,19 @@
     <link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Smart Business</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/register">Registro</a></li>
-                <li><a href="/location">Tiendas</a></li>
-                <li><a href="/seller">Vendedores</a></li>
-                <li><a href="/brand">Marcas</a></li>
-                <li><a href="/product">Productos</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Iniciar sesión <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <div id="login" ng-controller="LoginCtrl">
-                                <form name="loginForm" class="navbar-form navbar-left" role="search">
-                                    <div class="form-group">
-                                        <input type="email" class="form-control" placeholder="Correo electrónico" ng-model="email">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" class="form-control" placeholder="Contraseña" ng-model="password">
-                                    </div>
-                                    <button type="submit" class="btn btn-default" ng-click="login()">Entrar</button>
-                                </form>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
-<section class="content">
-    <div class="container ng-view-content">
+<ng-include src="'templates/common/menu.html'"></ng-include>
+<section class="container-fluid mark-up">
+    <a href="#" class="toggle-menu"></a>
+    <aside class="aside-menu">
+        <ul>
+            <li><a href="/checkout">Caja</a></li>
+            <li><a href="/sales">Ventas</a></li>
+            <li><a href="/inventory">Inventario</a></li>
+        </ul>
+    </aside>
+    <section class="container-fluid views-content">
         <ng-view></ng-view>
-    </div>
+    </section>
 </section>
 <footer>
     <div class="container">
@@ -69,20 +35,31 @@
 <script src="vendor/angular/angular.min.js"></script>
 <script src="vendor/angular-route/angular-route.min.js"></script>
 <script src="vendor/angular-resource/angular-resource.min.js"></script>
-<script src="vendor/angular-cookies/angular-cookies.min.js"></script>
 <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.1.3.js"></script>
+<script src="//d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript" src="app.js"></script>
 <script type="text/javascript" src="templates/account/RegisterCtrl.js"></script>
 <script type="text/javascript" src="templates/account/LoginCtrl.js"></script>
 <script type="text/javascript" src="templates/location/LocationCtrl.js"></script>
 <script type="text/javascript" src="templates/account/SellerCtrl.js"></script>
-<script type="text/javascript" src="templates/account/mvIdentity.js"></script>
+<script type="text/javascript" src="templates/account/AuthToken.js"></script>
 <script type="text/javascript" src="templates/brand/BrandCtrl.js"></script>
 <script type="text/javascript" src="templates/product/ProductCtrl.js"></script>
+<script type="text/javascript" src="templates/common/MenuCtrl.js"></script>
+<script type="text/javascript" src="templates/checkout/CheckoutCtrl.js"></script>
+<script type="text/javascript" src="templates/sales/SalesCtrl.js"></script>
+<script type="text/javascript" src="templates/category/CategoryCtrl.js"></script>
 <script type="text/javascript" src="services/UserService.js"></script>
 <script type="text/javascript" src="services/AuthService.js"></script>
-<script type="text/javascript" src="templates/common/CookieStore.js"></script>
 <script type="text/javascript" src="templates/mqtt/mqttCtrl.js"></script>
 <script type="text/javascript" src="services/mqttService.js"></script>
+<script type="text/javascript" src="services/LocationService.js"></script>
+<script type="text/javascript" src="services/BrandService.js"></script>
+<script type="text/javascript" src="services/ProductService.js"></script>
+<script type="text/javascript" src="services/SellerService.js"></script>
+<script type="text/javascript" src="services/CheckoutService.js"></script>
+<script type="text/javascript" src="services/SalesService.js"></script>
+<script type="text/javascript" src="services/CategoryService.js"></script>
 </body>
 </html>

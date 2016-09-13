@@ -7,8 +7,7 @@ var jwt = require('jsonwebtoken'),
     User = mongoose.model('User'),
     config = require('../../config/configuration');
 
-
-exports.post = function (req, res) {
+exports.login = function (req, res) {
     console.log('POST User login');
     var query = {
         email: req.query.email,
@@ -22,20 +21,59 @@ exports.post = function (req, res) {
         if(!user) res.status(401).json({ success: false });
         else if(query.hashed_pwd) {
             if(encrypt.hashPwd(user.salt, query.hashed_pwd) === user.hashed_pwd) {
-                var token = jwt.sign({roles: user.roles, user_id: user._id}, config.development.tokenSecret);
+                var token = jwt.sign({roles: user.roles, user_id: user._id, location_id: user.location_id}, config.development.tokenSecret);
 
-                var objectUser = user.toObject();
+                /*var objectUser = user.toObject();
                 delete objectUser.hashed_pwd;
                 delete objectUser.salt;
                 delete objectUser.__v;
                 delete objectUser.createdAt;
                 delete objectUser.updatedAt;
-                objectUser.token = token;
+                objectUser.token = token;*/
+                
                 res.status(200).json({
-                    user: objectUser,
+                    token: token,
                     success: true
                 })
             } else res.status(401).json({ success: false });
         } else res.status(401).json({ success: false });
     })
 };
+
+exports.postSeller = function(req, res) {
+    console.log('POST Seller');
+
+    var roles = [];
+    var salt, hash;
+
+    if(req.query.token) {
+        var data = {
+            name: req.body.name,
+            email: req.body.email,
+            location_id: req.body.location_id
+        };
+
+        roles.push('user');
+        roles.push('seller');
+        data.roles = roles;
+
+        if(req.body.password) {
+            salt = encrypt.createSalt();
+            hash = encrypt.hashPwd(salt, req.body.password);
+            data.salt = salt;
+            data.hashed_pwd = hash;
+        }
+
+        var user = new User(data);
+        user.save(function(err, collection) {
+            if(err) {
+                console.log(err);
+               res.status(500).json({success: false});
+               res.end();
+           } else {
+               res.status(201).json({success: true});
+               res.end();
+           }
+       })
+    }
+}

@@ -2,7 +2,7 @@
  * Created by Mordekaiser on 04/06/16.
  */
 "use strict";
-var smartBusiness = angular.module('smartBusiness', ['ngResource', 'ngRoute', 'ngCookies']);
+var smartBusiness = angular.module('smartBusiness', ['ngResource', 'ngRoute', 'ui.bootstrap']);
 
 smartBusiness.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode({
@@ -30,8 +30,22 @@ smartBusiness.config(['$routeProvider', '$locationProvider', function ($routePro
             templateUrl: 'templates/product/product.html',
             controller: 'ProductCtrl'
         })
+<<<<<<< HEAD
         .when('/mqtt-client', {
             templateUrl: 'templates/mqtt/mqtt-client.html',
             controller: 'mqttCtrl'
+=======
+        .when('/checkout', {
+            templateUrl: 'templates/checkout/index.html',
+            controller: 'CheckoutCtrl'
+        })
+        .when('/sales', {
+            templateUrl: 'templates/sales/index.html',
+            controller: 'SalesCtrl'
+        })
+        .when('/categories', {
+            templateUrl: 'templates/category/index.html',
+            controller: 'CategoryCtrl'
+>>>>>>> master
         })
 }]);

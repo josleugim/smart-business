@@ -1,0 +1,40 @@
+<div class="row">
+	<div class="col-md-12">
+		<h2>Artículos</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<form name="itemForm">
+			<input type="text" name="itemBarcode" ng-model="itemBarcode" barcode-focus="keepFocus" autofocus autocomplete="off">
+			<button type="submit" class="btn btn-default" ng-click="addItem(itemBarcode)" ng-disabled="itemForm.$invalid"></button>
+		</form>
+		<div>
+			<div ng-repeat="product in carItems track by $index" class="checkout-product">
+				<p>{{product.name}}</p>
+				<p>Precio: {{product.price}}</p>
+				<p>IMEI: {{product.barcode}}</p>
+				<p>SIM: {{product.sim}}</p>
+				<a href="#" class="remove-icon" ng-click="removeItem(product)">Quitar producto</a>
+			</div>
+		</div>
+		<div class="total">
+			<p>Total: {{total}}</p>
+		</div>
+		<div>
+			<button type="button" class="checkout-btn" ng-click="checkout()" class="btn btn-default">Realizar venta</button>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<form name="itemSearchForm">
+			<input type="text" name="itemName" ng-model="itemName" required>
+			<button type="button" class="btn btn-default" ng-click="searchItem()" ng-disabled="itemSearchForm.$invalid">Buscar</button>
+		</form>
+		<div ng-repeat="product in searchProducts">
+			<p>{{product.name}}</p>
+			<p>Precio: {{product.price}}</p>
+			<input class="amount" type="number" min="0" name="amount" ng-model="amount">
+			<button type="button" ng-click="addToCheckoutList(product)">Agregar al carrito</button>
+		</div>
+	</div>
+</div>
