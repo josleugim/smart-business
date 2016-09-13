@@ -1,7 +1,6 @@
 /**
  * Created by Mordekaiser on 04/06/16.
  */
-var mqttCtrl = require('../controllers/v1/mqttCtrl')(client);
 var userCtrl = require('../controllers/v1/usersCtrl'),
 	locationCtrl = require('../controllers/v1/locationsCtrl'),
 	brandCtrl = require('../controllers/v1/brandsCtrl'),
@@ -14,6 +13,7 @@ var userCtrl = require('../controllers/v1/usersCtrl'),
 
 module.exports = function (app, config, client) {
 	// api routes
+    var mqttCtrl = require('../controllers/v1/mqttCtrl')(client);
     app.post('/api/v1/login', userCtrl.login);
     app.post('/api/v1/locations', locationCtrl.post);
     app.get('/api/v1/locations', locationCtrl.get);
