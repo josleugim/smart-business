@@ -23,12 +23,30 @@
     </div>
     <div class="col-md-3"></div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <h4>Listado de localidades</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <p><strong>Localidades</strong></p>
+    </div>
+    <div class="col-md-4">
+        <p><strong>Descripciones</strong></p>
+    </div>
+    <div class="col-md-4">
+        <p><strong>Opciones</strong></p>
+    </div>
+</div>
 <div class="row" ng-repeat="location in locations">
-    <div class="col-md-6">
-        <p> <strong>Nombre: </strong> {{location.name}}</p>
+    <div class="col-md-4">
+        <p>{{location.name}}</p>
+    </div>
+    <div class="col-md-4">
         <p>{{location.description}}</p>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <button class="btn btn-default">Desactivar</button>
     </div>
 </div>

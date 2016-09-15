@@ -36,7 +36,7 @@ exports.post = function(req, res) {
         product.save(function(err, collection) {
             if(err) {
                 console.log(err);
-                res.status(500).json({success: false});
+                res.status(500).json({success: false, error: err});
                 res.end();
             } else {
                res.status(201).json({success: true});

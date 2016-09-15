@@ -3,9 +3,9 @@
  */
 "use strict";
 angular.module('smartBusiness')
-	.controller('LocationCtrl', ['$scope', 'AuthToken', 'LocationService', LocationCtrl]);
+	.controller('LocationCtrl', ['$scope', 'AuthToken', 'LocationService', 'mvNotifier', LocationCtrl]);
 
-function LocationCtrl($scope, AuthToken, LocationService) {
+function LocationCtrl($scope, AuthToken, LocationService, mvNotifier) {
 	$scope.locations = "";
 	updateLocations();
 
@@ -17,9 +17,12 @@ function LocationCtrl($scope, AuthToken, LocationService) {
 
 		LocationService.post(data).then(function(success) {
 			if(success) {
+				mvNotifier.notify('Localidad creada correctamente.');
 				$scope.name = "";
 				$scope.description = "";
 				updateLocations();
+			} else {
+				mvNotifier.error('No se pudo crear la localidad');
 			}
 		})
 	}

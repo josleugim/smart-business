@@ -14,9 +14,9 @@ angular.module('smartBusiness')
             }
         }
     }])
-    .controller('ProductCtrl', ['$scope', 'BrandService', 'LocationService', 'ProductService', 'CategoryService', ProductCtrl]);
+    .controller('ProductCtrl', ['$scope', 'BrandService', 'LocationService', 'ProductService', 'CategoryService', 'mvNotifier', ProductCtrl]);
 
-function ProductCtrl($scope, BrandService, LocationService, ProductService, CategoryService) {
+function ProductCtrl($scope, BrandService, LocationService, ProductService, CategoryService, mvNotifier) {
     /*$scope.codesCount = 0;
     $scope.product = {barCodes:[]};
     $scope.item = {sims:[]};
@@ -56,8 +56,10 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService, Cate
             cont = cont + 1;
         });*/
 
-        ProductService.post(data).then(function(success) {
-            if(success) {
+        ProductService.post(data).then(function(response) {
+            console.log(response);
+            if(response.success) {
+                mvNotifier.notify('Producto creado correctamente');
                 $scope.productName = "";
                 $scope.price = "";
                 $scope.description = "";
@@ -68,6 +70,8 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService, Cate
                 $scope.item = {sims:[]};
                 $scope.codesCount = 0;
                 cont = 0;*/
+            } else {
+                mvNotifier.error('No se pudo crear el producto. ' + response.error.message);
             }
         });
     }

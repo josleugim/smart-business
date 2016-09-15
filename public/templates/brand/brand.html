@@ -19,9 +19,22 @@
     </div>
     <div class="col-md-3"></div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <h4>Listado de marcas</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <p>Marcas</p>
+    </div>
+    <div class="col-md-6">
+        <p>Opciones</p>
+    </div>
+</div>
 <div class="row" ng-repeat="brand in brands">
     <div class="col-md-6">
-        <p> <strong>Nombre: </strong> {{brand.name}}</p>
+        <p>{{brand.name}}</p>
     </div>
     <div class="col-md-6">
         <button class="btn btn-default">Desactivar</button>

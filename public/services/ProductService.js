@@ -45,10 +45,10 @@ function ProductService($q, $http, $location, AuthToken) {
     		}
     	}).then(function successCallback(response) {
     		if(response.data.success) {
-    			dfd.resolve(true);
+    			dfd.resolve(response.data);
     		}
-    	}, function errorCallback() {
-    		dfd.resolve(false);
+    	}, function errorCallback(response) {
+    		dfd.resolve(response.data);
     	});
 
     	return dfd.promise;

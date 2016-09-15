@@ -5,6 +5,9 @@ body {
 .navbar {
   margin-bottom: 0px;
 }
+#toast-container {
+  margin: 40px auto auto auto;
+}
 .mark-up {
   height: 100%;
   background-color: #3e9bba;

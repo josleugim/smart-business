@@ -6,7 +6,29 @@ function SellerService($q, $http, $location, AuthToken) {
     var host = 'http://' + $location.host() + ':5000/';
 
     return {
+        get: get,
     	post: post
+    };
+
+    function get() {
+        var dfd = $q.defer();
+
+        $http({
+            method: 'GET',
+            url: host + 'api/v1/sellers',
+            params: {token: AuthToken.getToken()},
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function successCallback(response) {
+            if(response.data) {
+                dfd.resolve(response.data);
+            }
+        }, function errorCallback() {
+            dfd.resolve(false);
+        });
+
+        return dfd.promise;
     };
 
     function post(data) {

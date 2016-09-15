@@ -17,14 +17,16 @@ angular.module('smartBusiness')
 			}
 		}
 	}])
-    .controller('SellerCtrl', ['$scope', '$location', 'LocationService', '$rootScope', 'SellerService', SellerCtrl]);
+    .controller('SellerCtrl', ['$scope', '$location', 'LocationService', '$rootScope', 'SellerService', 'mvNotifier', SellerCtrl]);
 
-function SellerCtrl($scope, $location, LocationService, $rootScope, SellerService) {
+function SellerCtrl($scope, $location, LocationService, $rootScope, SellerService, mvNotifier) {
 	LocationService.get().then(function(data) {
 		if(data) {
 			$scope.locations = data;
 		}
-	})
+	});
+
+	updateSellers();
 
 	$scope.$on("updateLocations", function(event, data){
 		$scope.locations.push(data);
@@ -40,11 +42,23 @@ function SellerCtrl($scope, $location, LocationService, $rootScope, SellerServic
 
     	SellerService.post(data).then(function(success) {
     		if(success) {
+    			updateSellers();
+    			mvNotifier.notify('Vendedor creado correctamente.');
     			$scope.name = "";
     			$scope.email = "";
     			$scope.pass = "";
     			$scope.confPass = "";
+    		} else {
+    			mvNotifier.error('No se pudo crear el vendedor.');
     		}
     	})
     }
+
+    function updateSellers() {
+		SellerService.get().then(function(data) {
+			if(data) {
+				$scope.sellers = data;
+			}
+		});
+	};
 }

@@ -29,7 +29,11 @@ var UserSchema = mongoose.Schema({
     roles: [{
         type: String,
         required: 'Required'
-    }]
+    }],
+    isActive: {
+        type: Boolean,
+        default: true
+    }
 });
 
 UserSchema.plugin(timestamps);

@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken'),
     encrypt = require('../../utilities/encryption'),
     mongoose = require('mongoose'),
     User = mongoose.model('User'),
+    Location = mongoose.model('Location'),
     config = require('../../config/configuration');
 
 exports.login = function (req, res) {
@@ -38,6 +39,65 @@ exports.login = function (req, res) {
             } else res.status(401).json({ success: false });
         } else res.status(401).json({ success: false });
     })
+};
+
+exports.getSeller = function(req, res) {
+    console.log('GET Seller');
+    var query = {
+        roles: {
+            $ne: 'owner'
+        }
+    };
+
+    User.find(query)
+    .sort({name: -1})
+    .limit(10)
+    .exec(function (err, users) {
+        if(err) {
+            console.log('Error at GET method: ' + err);
+            res.status(500).json({error: err});
+            res.end()
+        } else {
+            var objectSellers = [];
+            // wait for the construction of the new object, before sending the response
+            var waiting = users.length;
+
+            if(waiting > 0) {
+
+                users.forEach(function(values) {
+                    Location.findOne({_id: values.location_id}, function(err, location) {
+                        if(location) {
+                            var document = {
+                                location: location.name,
+                                name: values.name,
+                                email: values.email
+                            };
+                            /*var doc = values.toObject();
+                            doc.location = location.name;
+                            delete doc.isActive;
+                            delete doc.__v;
+                            delete doc.createdAt;
+                            delete doc.updatedAt;
+                            delete doc.roles;
+                            delete doc.salt;
+                            delete doc.hashed_pwd;*/
+                            objectSellers.push(document);
+                        };
+
+                        waiting--;
+
+                        if(waiting == 0) {
+                            res.status(200).json(objectSellers);
+                            res.end();
+                        }
+                    });
+                });
+            } else {
+                res.status(200).json(objectSellers);
+                res.end();
+            }
+        }
+    });
 };
 
 exports.postSeller = function(req, res) {

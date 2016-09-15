@@ -1,8 +1,8 @@
 "use strict";
 angular.module('smartBusiness')
-    .controller('CategoryCtrl', ['$scope', 'CategoryService', CategoryCtrl]);
+    .controller('CategoryCtrl', ['$scope', 'CategoryService', 'mvNotifier', CategoryCtrl]);
 
-function CategoryCtrl($scope, CategoryService) {
+function CategoryCtrl($scope, CategoryService, mvNotifier) {
 	updateCategories();
 
 	$scope.addCategory = function() {
@@ -13,9 +13,12 @@ function CategoryCtrl($scope, CategoryService) {
 
 		CategoryService.post(data).then(function(success) {
 			if(success) {
+				mvNotifier.notify('Categoría creada correctamente.');
 				$scope.categoryName = "";
 				$scope.description = "";
 				updateCategories();
+			} else {
+				mvNotifier.error('No se pudo crear la categoría');
 			}
 		});
 	}
