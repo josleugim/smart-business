@@ -7,8 +7,55 @@ function CategoryService($q, $http, $location, AuthToken) {
 
 	return {
 		get: get,
-		post: post
+		post: post,
+        getById: getById,
+        put: put
 	};
+
+    function put(query, data) {
+        var dfd = $q.defer();
+        query.token = AuthToken.getToken();
+        
+        $http({
+            method: 'PUT',
+            url: host + 'api/v1/categories',
+            params: query,
+            data: data,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function successCallback(response) {
+            if(response.data.success) {
+            dfd.resolve(true);
+            }
+        }, function errorCallback() {
+            dfd.resolve(false);
+        });
+
+        return dfd.promise;
+    };
+
+    function getById(query) {
+        var dfd = $q.defer();
+        query.token = AuthToken.getToken();
+
+        $http({
+            method: 'GET',
+            url: host + 'api/v1/categories',
+            params: query,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function successCallback(response) {
+            if(response.data) {
+                dfd.resolve(response.data);
+            }
+        }, function errorCallback() {
+            dfd.resolve(false);
+        });
+
+        return dfd.promise;
+    };
 
 	function get() {
 		var dfd = $q.defer();

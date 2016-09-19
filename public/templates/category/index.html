@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row category-form">
     <div class="col-md-3"></div>
     <div class="col-md-6">
         <form name="categoryForm">
@@ -10,7 +10,8 @@
                 <label for="description">Descripción de la categoría</label>
                 <input type="text" class="form-control" id="description" ng-model="description" name="description" placeholder="Descripción">
             </div>
-            <button type="submit" class="btn btn-default" ng-click="addCategory()">Agregar categoría</button>
+            <button type="submit" id="create-category" class="btn btn-default" ng-click="addCategory()">Agregar categoría</button>
+            <button type="submit" id="save-category" class="btn btn-default" ng-click="saveCategory()">Guardar</button>
         </form>
     </div>
     <div class="col-md-3"></div>
@@ -34,5 +35,10 @@
 	</div>
 	<div class="col-md-4">
 		<p>{{category.description}}</p>
+	</div>
+	<div>
+		<p>
+			<button class="btn btn-default" ng-click="editCategory(category._id)">Modificar</button>
+		</p>
 	</div>
 </div>

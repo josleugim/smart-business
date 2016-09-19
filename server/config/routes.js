@@ -28,6 +28,7 @@ module.exports = function (app, config) {
     app.get('/api/v1/sales', salesCtrl.get);
     app.post('/api/v1/categories', categoriesCtrl.post);
     app.get('/api/v1/categories', categoriesCtrl.get);
+    app.put('/api/v1/categories', categoriesCtrl.put);
 
     app.get('*', function (req, res) {
         res.sendFile(config.rootPath + 'public/index.html');
