@@ -24,28 +24,74 @@ exports.post = function(req, res) {
 	});
 };
 
-exports.get = function(req, res) {
-	console.log('Brand GET');
-	var query = {};
-	Brand.find(query)
-		.sort({name: 1})
-		.exec(function (err, brands) {
-			if(err) {
-				res.status(500).json({success: false});
-				res.end();
-			}
+exports.put = function(req, res) {
+	console.log('Brand PUT');
 
-			var objectBrand = [];
+	var data = {};
+	var query = {
+		_id: req.query._id
+	};
 
-			brands.forEach(function(values) {
-				var brand = values.toObject();
-				delete brand.__v;
-				delete brand.createdAt;
-				delete brand.updatedAt;
-				objectBrand.push(brand);
-			})
+	if(req.body.name)
+		data.name = req.body.name;
 
-			res.status(200).json(objectBrand);
+	Brand.update(query, {$set: data}, function (err) {
+		if (err) {
+			console.log(err);
+			res.status(401).json({success: false, error: err});
+		} else {
+			res.status(201).json({success: true});
 			res.end();
-		})
+		}
+    });
+};
+
+exports.get = function(req, res) {
+	if(req.query.token) {
+		var query = {
+			_id: req.query._id
+		};
+
+		if(req.query._id) {
+			console.log('Brand GET by _id');
+			Brand.findOne(query, function(err, doc) {
+				if(doc) {
+					delete doc.__v;
+					delete doc.createdAt;
+					delete doc.updatedAt;
+
+					res.status(200).json(doc);
+					res.end();
+                };
+            });
+		} else {
+			console.log('Brand GET');
+			Brand.find({})
+			.sort({name: 1})
+			.exec(function (err, brands) {
+				if(err) {
+					res.status(500).json({success: false});
+					res.end();
+				}
+
+				var objectBrand = [];
+
+				brands.forEach(function(values) {
+					var brand = values.toObject();
+					delete brand.__v;
+					delete brand.createdAt;
+					delete brand.updatedAt;
+					objectBrand.push(brand);
+				})
+
+				res.status(200).json(objectBrand);
+				res.end();
+			});
+		}
+	} else {
+		res.status(401).json({success: false});
+		res.end();
+	}
+
+	
 }

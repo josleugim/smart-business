@@ -62,7 +62,7 @@ function LocationCtrl($scope, AuthToken, LocationService, mvNotifier) {
 
 		LocationService.getById(query).then(function(data) {
 			if(data) {
-				mvNotifier.notify('Información cargada');
+				mvNotifier.notify('Localidad cargada en el formulario.');
 				$scope.name = data.name;
 				$scope.description = data.description;
 				$scope.id = data._id;

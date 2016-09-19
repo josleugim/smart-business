@@ -21,6 +21,45 @@ function BrandCtrl($scope, BrandService, mvNotifier) {
 				mvNotifier.error('No se pudo crear la marca.')
 			}
 		})
+	};
+
+	$scope.editBrand = function(id) {
+		$('.mark-up .views-content .product-form #create-brand').hide();
+		$('.mark-up .views-content .product-form #save-brand').show();
+
+		var query = {
+			_id: id
+		};
+
+		BrandService.getById(query).then(function(data) {
+			if(data) {
+				mvNotifier.notify('Marca cargada en el formulario.');
+				$scope.brand = data.name;
+				$scope.id = data._id;
+			}
+		});
+	};
+
+	$scope.saveBrand = function() {
+		var data = {};
+		var query = {
+			_id: $scope.id
+		};
+
+		if(!$scope.brandForm.brand.$pristine)
+			data.name = $scope.brand;
+
+		if(!$scope.brandForm.$pristine) {
+			BrandService.put(query, data).then(function(success) {
+				if(success) {
+					$scope.id = "";
+					$scope.name = "";
+					mvNotifier.notify('Marca actualizada correctamente.');
+				} else
+					mvNotifier.error('No se pudo actualizar la marca.');
+			});
+		} else
+			mvNotifier.error('Modifica la marca para poder actualizarla.');
 	}
 
 	function updateBrands() {

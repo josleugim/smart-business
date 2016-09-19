@@ -7,8 +7,33 @@ function BrandService($q, $http, $location, AuthToken) {
 
 	return {
 		post: post,
-        get: get
+        get: get,
+        getById: getById,
+        put: put
 	};
+
+    function getById(query) {
+        var dfd = $q.defer();
+        
+        query.token = AuthToken.getToken();
+
+        $http({
+            method: 'GET',
+            url: host + 'api/v1/brands',
+            params: query,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function successCallback(response) {
+            if(response.data) {
+                dfd.resolve(response.data);
+            }
+        }, function errorCallback() {
+            dfd.resolve(false);
+        });
+
+        return dfd.promise;
+    };
 
     function get() {
         var dfd = $q.defer();
@@ -28,7 +53,30 @@ function BrandService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-    }
+    };
+
+    function put(query, data) {
+        var dfd = $q.defer();
+        query.token = AuthToken.getToken();
+        
+        $http({
+            method: 'PUT',
+            url: host + 'api/v1/brands',
+            params: query,
+            data: data,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function successCallback(response) {
+            if(response.data.success) {
+            dfd.resolve(true);
+            }
+        }, function errorCallback() {
+            dfd.resolve(false);
+        });
+
+        return dfd.promise;
+    };
 
 	function post(data) {
 		var dfd = $q.defer();
@@ -49,5 +97,5 @@ function BrandService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-	}
+	};
 }    

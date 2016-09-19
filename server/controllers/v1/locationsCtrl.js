@@ -43,8 +43,6 @@ exports.put = function (req, res) {
 	if(req.body.description)
 		data.description = req.body.description;
 
-	console.log(query);
-	console.log(data);
 	Location.update(query, {$set: data}, function (err) {
 		if (err) {
 			console.log(err);
