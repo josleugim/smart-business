@@ -18,6 +18,6 @@ module.exports = function (app, config) {
         src: config.rootPath + '/public',
         compile: compile
     }));
-    app.use(express.static(config.rootPath + '/public'));
+    app.use(express.static(config.rootPath + 'public'));
     app.set('jwtTokenSecret', config.secret);
 };
