@@ -57,7 +57,6 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService, Cate
         });*/
 
         ProductService.post(data).then(function(response) {
-            console.log(response);
             if(response.success) {
                 mvNotifier.notify('Producto creado correctamente');
                 $scope.productName = "";

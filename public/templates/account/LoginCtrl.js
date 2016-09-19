@@ -3,9 +3,9 @@
  */
 "use strict";
 angular.module('smartBusiness')
-.controller('LoginCtrl', ['$scope', 'AuthService', '$location', 'AuthToken', '$window', LoginCtrl]);
+.controller('LoginCtrl', ['$scope', 'AuthService', '$location', 'AuthToken', '$window', 'mvNotifier', LoginCtrl]);
 
-function LoginCtrl($scope, AuthService, $location, AuthToken, $window) {
+function LoginCtrl($scope, AuthService, $location, AuthToken, $window, mvNotifier) {
     $scope.login = function () {
         var query = {
             email: $scope.email,
@@ -13,14 +13,16 @@ function LoginCtrl($scope, AuthService, $location, AuthToken, $window) {
         };
         AuthService.authenticate(query).then(function (success) {
             if(success) {
-                $location.path('/users');
+                mvNotifier.notify('Acceso exitoso');
+                $location.path('/products');
                 $window.location.reload();
-            }
+            } else
+                mvNotifier.error('No se puedo iniciar sesión');
         });
     }
 
     $scope.logout = function() {
-        console.log('Logout');
+        mvNotifier.notify('Sesisón finalizada');
         AuthToken.removeToken();
         $location.path('/');
         $window.location.reload();

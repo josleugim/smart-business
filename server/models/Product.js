@@ -22,7 +22,10 @@ var ProductSchema = mongoose.Schema({
         required: 'Barcode required',
         unique: true
     },
-    sim: {type: String},
+    sim: {
+        type: String,
+        unique: false
+    },
     isActive: {
     	type: Boolean,
     	default: true

@@ -16,6 +16,7 @@ module.exports = function (app, config) {
     app.post('/api/v1/login', userCtrl.login);
     app.post('/api/v1/locations', locationCtrl.post);
     app.get('/api/v1/locations', locationCtrl.get);
+    app.put('/api/v1/locations', locationCtrl.put);
     app.post('/api/v1/brands', brandCtrl.post);
     app.get('/api/v1/brands', brandCtrl.get);
     app.post('/api/v1/products', upload.single('image'), productCtrl.post);

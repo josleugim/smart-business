@@ -30,6 +30,9 @@ body {
   background-color: #f8f8f8;
   height: 100%;
 }
+.mark-up .views-content .product-form #save-location {
+  display: none;
+}
 .checkout-product {
   background-color: #82dabf;
   border: 2px transparent;
