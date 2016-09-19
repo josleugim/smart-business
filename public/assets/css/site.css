@@ -33,6 +33,12 @@ body {
 .mark-up .views-content .product-form #save-location {
   display: none;
 }
+.mark-up .views-content .category-form #save-category {
+  display: none;
+}
+.mark-up .views-content .brand-form #save-brand {
+  display: none;
+}
 .checkout-product {
   background-color: #82dabf;
   border: 2px transparent;
