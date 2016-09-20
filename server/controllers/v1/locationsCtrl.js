@@ -33,25 +33,30 @@ exports.post = function (req, res) {
 
 exports.put = function (req, res) {
 	console.log('Location PUT');
-	var data = {};
-	var query = {
-		_id: req.query._id
+	if(req.query.token) {
+		var data = {};
+		var query = {
+			_id: req.query._id
+		};
+
+		if(req.body.name)
+			data.name = req.body.name;
+		if(req.body.description)
+			data.description = req.body.description;
+
+		Location.update(query, {$set: data}, function (err) {
+			if (err) {
+				console.log(err);
+				res.status(401).json({success: false, error: err});
+			} else {
+				res.status(201).json({success: true});
+				res.end();
+			}
+		});
+	} else {
+		res.status(401).json({success: false});
+		res.end();
 	};
-
-	if(req.body.name)
-		data.name = req.body.name;
-	if(req.body.description)
-		data.description = req.body.description;
-
-	Location.update(query, {$set: data}, function (err) {
-		if (err) {
-			console.log(err);
-			res.status(401).json({success: false, error: err});
-		} else {
-			res.status(201).json({success: true});
-			res.end();
-		}
-    });
 };
 
 exports.get = function (req, res) {

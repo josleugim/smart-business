@@ -24,6 +24,7 @@ module.exports = function (app, config) {
     app.get('/api/v1/products', productCtrl.get);
     app.post('/api/v1/sellers', userCtrl.postSeller);
     app.get('/api/v1/sellers', userCtrl.getSeller);
+    app.put('/api/v1/sellers', userCtrl.putSeller);
     app.post('/api/v1/checkout', checkoutCtrl.post);
     app.get('/api/v1/sales', salesCtrl.get);
     app.post('/api/v1/categories', categoriesCtrl.post);

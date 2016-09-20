@@ -52,19 +52,33 @@ exports.getSeller = function(req, res) {
                 _id: req.query._id
             };
             
-            User.findOne(query, function(err, doc) {
-                if(doc) {
-                    delete doc.__v;
-                    delete doc.createdAt;
-                    delete doc.updatedAt;
-                    delete doc.roles;
-                    delete doc.hashed_pwd;
-                    delete doc.salt;
-                    delete doc.isActive;
+            var objectSellers = [];
 
-                    res.status(200).json(doc);
-                    res.end();
-                };
+            User.findOne(query, function(usrErr, doc) {
+                if(doc) {
+                    Location.findOne({_id: doc.location_id}, function(err, loc) {
+                        if(loc) {
+                            var document = {
+                                _id: doc._id,
+                                location_id: loc._id,
+                                location: loc.name,
+                                name: doc.name,
+                                email: doc.email
+                            };
+
+                            objectSellers.push(document);
+
+                            res.status(200).json(objectSellers[0]);
+                            res.end();
+                        } else {
+                            res.status(500).json({error: err});
+                            res.end()
+                        }
+                    });
+                } else {
+                    res.status(500).json({error: usrErr});
+                    res.end()
+                }
             });
         } else {
             console.log('GET Seller');
@@ -90,7 +104,7 @@ exports.getSeller = function(req, res) {
                     if(waiting > 0) {
 
                         users.forEach(function(values) {
-                            Location.findOne({_id: values.location_id}, function(err, location) {
+                            Location.findOne({_id: values.location_id}, function(locErr, location) {
                                 if(location) {
                                     var document = {
                                         _id: values._id,
@@ -144,7 +158,7 @@ exports.postSeller = function(req, res) {
             hash = encrypt.hashPwd(salt, req.body.password);
             data.salt = salt;
             data.hashed_pwd = hash;
-        }
+        };
 
         var user = new User(data);
         user.save(function(err, collection) {
@@ -158,4 +172,44 @@ exports.postSeller = function(req, res) {
            }
        })
     }
-}
+};
+
+exports.putSeller = function(req, res) {
+    console.log('Seller PUT');
+    if(req.query.token) {
+        var salt, hash;
+        var data = {};
+        var query = {
+            roles: {
+                $ne: 'owner'
+            },
+            _id: req.query._id
+        };
+
+        if(req.body.name)
+            data.name = req.body.name;
+        if(req.body.email)
+            data.email = req.body.email;
+        if(req.body.location_id)
+            data.location_id = req.body.location_id;
+        if(req.body.password) {
+            salt = encrypt.createSalt();
+            hash = encrypt.hashPwd(salt, req.body.password);
+            data.salt = salt;
+            data.hashed_pwd = hash;
+        };
+
+        User.update(query, {$set: data}, function (err) {
+            if (err) {
+                console.log(err);
+                res.status(401).json({success: false, error: err});
+            } else {
+                res.status(201).json({success: true});
+                res.end();
+            }
+        });
+    } else {
+        res.status(401).json({success: false});
+        res.end();
+    }
+};

@@ -68,7 +68,7 @@ function SellerCtrl($scope, $location, LocationService, $rootScope, SellerServic
 				$scope.name = data.name;
 				$scope.email = data.email;
 				$scope.id = data._id;
-				$('.mark-up .views-content .seller-form .location').hide();
+				$scope.locationList = {'_id': data.location_id, 'name': data.location};
 			}
 		});
     };
@@ -87,19 +87,24 @@ function SellerCtrl($scope, $location, LocationService, $rootScope, SellerServic
 			data.password = $scope.pass;
 		}
 
+		data.location_id = $scope.locationList._id;
+
 		if(!$scope.sellerForm.$pristine) {
-			CategoryService.put(query, data).then(function(success) {
+			SellerService.put(query, data).then(function(success) {
 				if(success) {
 					$scope.id = "";
-					$scope.categoryName = "";
-					$scope.description = "";
-					mvNotifier.notify('Categoría actualizada correctamente.');
-					updateCategories();
+					$scope.name = "";
+					$scope.email = "";
+					$scope.locationList = "";
+					$scope.pass = "";
+					$scope.confPass = "";
+					mvNotifier.notify('Vendedor actualizado correctamente.');
+					updateSellers();
 				} else
-					mvNotifier.error('No se pudo actualizar la categoría.');
+					mvNotifier.error('No se pudo actualizar el vendedor.');
 			});
 		} else
-			mvNotifier.error('Modifica la categoría para poder actualizarla.');
+			mvNotifier.error('Modifica el vendedor para poder actualizarlo.');
     }
 
     function updateSellers() {
