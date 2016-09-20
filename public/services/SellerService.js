@@ -7,8 +7,31 @@ function SellerService($q, $http, $location, AuthToken) {
 
     return {
         get: get,
-    	post: post
+    	post: post,
+        getById: getById
     };
+
+    function getById(query) {
+        var dfd = $q.defer();
+        query.token = AuthToken.getToken();
+
+        $http({
+            method: 'GET',
+            url: host + 'api/v1/sellers',
+            params: query,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function successCallback(response) {
+            if(response.data) {
+                dfd.resolve(response.data);
+            }
+        }, function errorCallback() {
+            dfd.resolve(false);
+        });
+
+        return dfd.promise;
+    }
 
     function get() {
         var dfd = $q.defer();

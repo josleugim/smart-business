@@ -4,11 +4,11 @@
         <p>Estas cuentas seran tus vendedores virtuales, te recomendamos que solo tengas 1 vendedor por localidad.</p>
     </div>
 </div>
-<div class="row">
+<div class="row seller-form">
     <div class="col-md-3"></div>
     <div class="col-md-6">
         <form name="sellerForm">
-            <div class="form-group">
+            <div class="form-group location">
                 <label for="name">Tienda</label>
                 <select ng-model="locationList" ng-options="location.name for location in locations track by location._id" required></select>
             </div>
@@ -33,7 +33,8 @@
                 <span ng-show="sellerForm.confPass.$error.required">*Campo requerido</span>
                 <span class="msg-error" ng-show="sellerForm.confPass.$error.pwmatch">Las contraseñas no coinciden</span>
             </div>
-            <button type="submit" class="btn btn-default" ng-click="addSeller()" ng-disabled="sellerForm.$invalid">Crear vendedor</button>
+            <button type="submit" id="create-seller" class="btn btn-default" ng-click="addSeller()" ng-disabled="sellerForm.$invalid">Crear vendedor</button>
+            <button type="submit" id="save-seller" class="btn btn-default" ng-click="saveSeller()" ng-disabled="sellerForm.$invalid">Guardar</button>
         </form>
 
     </div>
@@ -63,6 +64,9 @@
         <p>{{seller.location}}</p>
     </div>
     <div class="col-md-4">
-        <button class="btn btn-default">Desactivar</button>
+        <p>
+            <button class="btn btn-default" ng-click="editSeller(seller._id)">Modificar</button>
+            <button class="btn btn-default">Desactivar</button>
+        </p>
     </div>
 </div>

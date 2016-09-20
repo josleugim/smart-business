@@ -42,62 +42,84 @@ exports.login = function (req, res) {
 };
 
 exports.getSeller = function(req, res) {
-    console.log('GET Seller');
-    var query = {
-        roles: {
-            $ne: 'owner'
-        }
-    };
+    if(req.query.token) {
+        if(req.query._id) {
+            console.log('Seller GET by _id');
+            var query = {
+                roles: {
+                    $ne: 'owner'
+                },
+                _id: req.query._id
+            };
+            
+            User.findOne(query, function(err, doc) {
+                if(doc) {
+                    delete doc.__v;
+                    delete doc.createdAt;
+                    delete doc.updatedAt;
+                    delete doc.roles;
+                    delete doc.hashed_pwd;
+                    delete doc.salt;
+                    delete doc.isActive;
 
-    User.find(query)
-    .sort({name: -1})
-    .limit(10)
-    .exec(function (err, users) {
-        if(err) {
-            console.log('Error at GET method: ' + err);
-            res.status(500).json({error: err});
-            res.end()
+                    res.status(200).json(doc);
+                    res.end();
+                };
+            });
         } else {
-            var objectSellers = [];
-            // wait for the construction of the new object, before sending the response
-            var waiting = users.length;
+            console.log('GET Seller');
+            var query = {
+                roles: {
+                    $ne: 'owner'
+                }
+            };
 
-            if(waiting > 0) {
+            User.find(query)
+            .sort({name: -1})
+            .limit(10)
+            .exec(function (err, users) {
+                if(err) {
+                    console.log('Error at GET method: ' + err);
+                    res.status(500).json({error: err});
+                    res.end()
+                } else {
+                    var objectSellers = [];
+                    // wait for the construction of the new object, before sending the response
+                    var waiting = users.length;
 
-                users.forEach(function(values) {
-                    Location.findOne({_id: values.location_id}, function(err, location) {
-                        if(location) {
-                            var document = {
-                                location: location.name,
-                                name: values.name,
-                                email: values.email
-                            };
-                            /*var doc = values.toObject();
-                            doc.location = location.name;
-                            delete doc.isActive;
-                            delete doc.__v;
-                            delete doc.createdAt;
-                            delete doc.updatedAt;
-                            delete doc.roles;
-                            delete doc.salt;
-                            delete doc.hashed_pwd;*/
-                            objectSellers.push(document);
-                        };
+                    if(waiting > 0) {
 
-                        waiting--;
+                        users.forEach(function(values) {
+                            Location.findOne({_id: values.location_id}, function(err, location) {
+                                if(location) {
+                                    var document = {
+                                        _id: values._id,
+                                        location: location.name,
+                                        name: values.name,
+                                        email: values.email
+                                    };
+                                    objectSellers.push(document);
+                                };
 
-                        if(waiting == 0) {
-                            res.status(200).json(objectSellers);
-                            res.end();
-                        }
-                    });
-                });
-            } else {
-                res.status(200).json(objectSellers);
-                res.end();
-            }
+                                waiting--;
+
+                                if(waiting == 0) {
+                                    res.status(200).json(objectSellers);
+                                    res.end();
+                                }
+                            });
+                        });
+                    } else {
+                        res.status(200).json(objectSellers);
+                        res.end();
+                    }
+                }
+            });
         }
-    });
+    } else {
+        res.status(401).json({success: false});
+        res.end();
+    }
 };
 
 exports.postSeller = function(req, res) {
