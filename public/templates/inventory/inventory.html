@@ -1,0 +1,49 @@
+<div class="row">
+	<div class="col-md-12">
+		<h3>Inventario</h3>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="col-md-3">
+		<p>Para ver el inventario de una localidad, <strong>seleccionala de la lista</strong>:</p>
+	</div>
+	<div class="col-md-3">
+		<select ng-model="locList" ng-options="location.name for location in locations track by location._id" ng-change="updateInventory(locList._id)"></select>
+	</div>
+	<div class="col-md-3"></div>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		<p>Nombre</p>
+	</div>
+	<div class="col-md-2">
+		<p>Precio</p>
+	</div>
+	<div class="col-md-2">
+		<p>Código de barras o IMEI</p>
+	</div>
+	<div class="col-md-2">
+		<p>SIM</p>
+	</div>
+	<div class="col-md-2">
+		<p>Opciones</p>
+	</div>
+</div>
+<div class="row" ng-repeat="product in products">
+	<div class="col-md-3">
+		<p>{{product.name}}</p>
+	</div>
+	<div class="col-md-2">
+		<p>{{product.price}}</p>
+	</div>
+	<div class="col-md-2">
+		<p>{{product.barcode}}</p>
+	</div>
+	<div class="col-md-2">
+		<p>{{product.sim}}</p>
+	</div>
+	<div class="col-md-2">
+		<button class="btn btn-primary" type="submit">Modificar</button>
+	</div>
+</div>

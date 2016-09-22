@@ -53,8 +53,11 @@ exports.get = function(req, res) {
         var query = {
             isActive: true
         };
-        
-        query.location_id = jwtValidation.getLocationId(req.query.token);
+
+        if(jwtValidation.getLocationId(req.query.token) != undefined)
+            query.location_id = jwtValidation.getLocationId(req.query.token);
+        else
+            query.location_id = req.query.location_id;
 
         if(req.query.searchType == 'byName') {
             if(req.query.name)
@@ -74,9 +77,7 @@ exports.get = function(req, res) {
                 console.log(err);
                 res.status(500).json({success: false});
                 res.end();
-            }
-
-            console.log(products);
+            };
             var objectProduct = [];
 
             products.forEach(function(values) {

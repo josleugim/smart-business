@@ -18,4 +18,13 @@ exports.getLocationId = function(token) {
 			return decoded.payload.location_id;
 		};
 	}
-}
+};
+
+exports.validateAdmin = function(token) {
+	if(token) {
+		var decoded = jwt.decode(token, {complete: true});
+		if (decoded.payload) {
+			return decoded.payload.location_id;
+		};
+	}
+};

@@ -60,11 +60,17 @@ exports.put = function (req, res) {
 };
 
 exports.get = function (req, res) {
-	var query = {
-		user_id: jwtValidation.getUserId(req.query.token)
-	};
-
 	if(req.query.token) {
+		var query = {};
+
+		var owner = jwtValidation.validateAdmin(req.query.token);
+		console.log(owner);
+		
+		if (jwtValidation.rolIsOwner())
+			query.user_id = jwtValidation.getUserId(req.query.token);
+		else
+			query._id = jwtValidation.getLocationId(req.query.token);
+
 		if(req.query._id) {
 			console.log('Location GET By _id');
 			Location.findOne({_id: req.query._id}, function(err, doc) {

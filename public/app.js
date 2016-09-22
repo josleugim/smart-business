@@ -42,4 +42,8 @@ smartBusiness.config(['$routeProvider', '$locationProvider', function ($routePro
             templateUrl: 'templates/category/index.html',
             controller: 'CategoryCtrl'
         })
+        .when('/inventory', {
+            templateUrl: 'templates/inventory/inventory.html',
+            controller: 'InventoryCtrl'
+        })
 }]);
