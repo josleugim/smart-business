@@ -24,8 +24,8 @@ function BrandCtrl($scope, BrandService, mvNotifier) {
 	};
 
 	$scope.editBrand = function(id) {
-		$('.mark-up .views-content .product-form #create-brand').hide();
-		$('.mark-up .views-content .product-form #save-brand').show();
+		$('.mark-up .views-content .brand-form #create-brand').hide();
+		$('.mark-up .views-content .brand-form #save-brand').show();
 
 		var query = {
 			_id: id
@@ -53,7 +53,8 @@ function BrandCtrl($scope, BrandService, mvNotifier) {
 			BrandService.put(query, data).then(function(success) {
 				if(success) {
 					$scope.id = "";
-					$scope.name = "";
+					$scope.brand = "";
+					updateBrands();
 					mvNotifier.notify('Marca actualizada correctamente.');
 				} else
 					mvNotifier.error('No se pudo actualizar la marca.');
