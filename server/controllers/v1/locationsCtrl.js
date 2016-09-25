@@ -62,11 +62,8 @@ exports.put = function (req, res) {
 exports.get = function (req, res) {
 	if(req.query.token) {
 		var query = {};
-
-		var owner = jwtValidation.validateAdmin(req.query.token);
-		console.log(owner);
 		
-		if (jwtValidation.rolIsOwner())
+		if (jwtValidation.isOwner(req.query.token))
 			query.user_id = jwtValidation.getUserId(req.query.token);
 		else
 			query._id = jwtValidation.getLocationId(req.query.token);
@@ -108,7 +105,7 @@ exports.get = function (req, res) {
 				res.status(200).json(objectLocation);
 				res.end();
 			});
-		}
+		};
 	} else {
 		res.status(500).json({success: false});
 		res.end();

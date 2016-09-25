@@ -20,11 +20,14 @@ exports.getLocationId = function(token) {
 	}
 };
 
-exports.validateAdmin = function(token) {
+exports.isOwner = function(token) {
 	if(token) {
 		var decoded = jwt.decode(token, {complete: true});
 		if (decoded.payload) {
-			return decoded.payload.location_id;
+			if(decoded.payload.roles.indexOf('owner') === -1)
+				return false;
+			else
+				return true;
 		};
 	}
 };
