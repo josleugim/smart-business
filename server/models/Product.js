@@ -29,6 +29,10 @@ var ProductSchema = mongoose.Schema({
     isActive: {
     	type: Boolean,
     	default: true
+    },
+    soldOut: {
+        type: Boolean,
+        default: false
     }
 });
 

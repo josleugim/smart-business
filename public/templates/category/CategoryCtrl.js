@@ -67,6 +67,17 @@ function CategoryCtrl($scope, CategoryService, mvNotifier) {
 			mvNotifier.error('Modifica la categoría para poder actualizarla.');
 	};
 
+	$scope.deleteCategory = function(id) {
+		CategoryService.delCategory({_id: id}).then(function(success) {
+			if(success) {
+				mvNotifier.notify('Categoría borrada correctamente.');
+				updateCategories();
+			} else {
+				mvNotifier.error('Ocurrió un error al intentar borrar la categoría.');
+			}
+		});
+	};
+
 	function updateCategories() {
 		CategoryService.get().then(function(data) {
 			if(data) {

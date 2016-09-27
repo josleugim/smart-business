@@ -61,7 +61,17 @@ function BrandCtrl($scope, BrandService, mvNotifier) {
 			});
 		} else
 			mvNotifier.error('Modifica la marca para poder actualizarla.');
-	}
+	};
+
+	$scope.deleteBrand = function(id) {
+		BrandService.delBrand({_id: id}).then(function(success) {
+			if(success) {
+				mvNotifier.notify('Marca borrada correctamente.');
+				updateBrands();
+			} else
+				mvNotifier.error('Ocurrió un error al intentar borrar la marca.');
+		})
+	};
 
 	function updateBrands() {
 		BrandService.get().then(function(data) {

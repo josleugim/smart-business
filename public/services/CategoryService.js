@@ -9,8 +9,33 @@ function CategoryService($q, $http, $location, AuthToken) {
 		get: get,
 		post: post,
         getById: getById,
-        put: put
+        put: put,
+        delCategory: delCategory
 	};
+
+    function delCategory(query) {
+        var dfd = $q.defer();
+
+        query.token = AuthToken.getToken();
+        
+        //More information about the http service at: https://docs.angularjs.org/api/ng/service/$http
+        $http({
+            method: 'DELETE',
+            url: host + 'api/v1/categories',
+            params: query,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function successCallback(response) {
+            if(response.data.success) {
+                dfd.resolve(true);
+            }
+        }, function errorCallback(response) {
+            dfd.resolve(false);
+        });
+
+        return dfd.promise;
+    };
 
     function put(query, data) {
         var dfd = $q.defer();
@@ -97,4 +122,4 @@ function CategoryService($q, $http, $location, AuthToken) {
 
         return dfd.promise;
 	}
-}    
+};

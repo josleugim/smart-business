@@ -8,7 +8,8 @@ var mongoose = require('mongoose'),
 exports.get = function(req, res) {
 	if(req.query.token) {
 		var query = {
-			_id: req.query._id
+			_id: req.query._id,
+			isActive: true
 		};
 		if(req.query._id) {
 			console.log('Category GET by _id');
@@ -25,7 +26,7 @@ exports.get = function(req, res) {
 		} else {
 			console.log('Category GET');
 
-			Category.find()
+			Category.find({isActive: true})
 			.sort({name: 1})
 			.exec(function (err, categories) {
 				if(err) {
@@ -108,3 +109,30 @@ exports.post = function(req, res) {
 		}
 	});
 };
+
+exports.del = function(req, res) {
+	console.log('Category DELETE');
+
+	if(req.query.token) {
+		var data = {
+			isActive: false
+		};
+
+		var query = {
+			_id: req.query._id
+		};
+
+		Category.update(query, {$set: data}, function (err) {
+			if (err) {
+				console.log(err);
+				res.status(401).json({success: false, error: err});
+			} else {
+				res.status(201).json({success: true});
+				res.end();
+			}
+		});
+	} else {
+		res.status(401).json({success: false});
+		res.end();
+	};
+}

@@ -105,7 +105,17 @@ function SellerCtrl($scope, $location, LocationService, $rootScope, SellerServic
 			});
 		} else
 			mvNotifier.error('Modifica el vendedor para poder actualizarlo.');
-    }
+    };
+
+    $scope.deleteSeller = function(id) {
+    	SellerService.delSeller({_id: id}).then(function(success) {
+    		if(success) {
+    			mvNotifier.notify('Vendedor borrado correctamente.');
+    			updateSellers();
+    		} else
+    			mvNotifier.error('Ocurrió un error al intentar borrar el vendedor.');
+    	});
+    };
 
     function updateSellers() {
 		SellerService.get().then(function(data) {

@@ -49,7 +49,8 @@ exports.getSeller = function(req, res) {
                 roles: {
                     $ne: 'owner'
                 },
-                _id: req.query._id
+                _id: req.query._id,
+                isActive: true
             };
             
             var objectSellers = [];
@@ -85,7 +86,8 @@ exports.getSeller = function(req, res) {
             var query = {
                 roles: {
                     $ne: 'owner'
-                }
+                },
+                isActive: true
             };
 
             User.find(query)
@@ -213,3 +215,33 @@ exports.putSeller = function(req, res) {
         res.end();
     }
 };
+
+exports.delSeller = function(req, res) {
+    console.log('Seller DELETE');
+
+    if(req.query.token) {
+        var data = {
+            isActive: false
+        };
+
+        var query = {
+            roles: {
+                $ne: 'owner'
+            },
+            _id: req.query._id
+        };
+
+        User.update(query, {$set: data}, function (err) {
+            if (err) {
+                console.log(err);
+                res.status(401).json({success: false, error: err});
+            } else {
+                res.status(201).json({success: true});
+                res.end();
+            }
+        });
+    } else {
+        res.status(401).json({success: false});
+        res.end();
+    }
+}

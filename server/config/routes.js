@@ -20,16 +20,19 @@ module.exports = function (app, config) {
     app.post('/api/v1/brands', brandCtrl.post);
     app.get('/api/v1/brands', brandCtrl.get);
     app.put('/api/v1/brands', brandCtrl.put);
+    app.delete('/api/v1/brands', brandCtrl.del);
     app.post('/api/v1/products', upload.single('image'), productCtrl.post);
     app.get('/api/v1/products', productCtrl.get);
     app.post('/api/v1/sellers', userCtrl.postSeller);
     app.get('/api/v1/sellers', userCtrl.getSeller);
     app.put('/api/v1/sellers', userCtrl.putSeller);
+    app.delete('/api/v1/sellers', userCtrl.delSeller);
     app.post('/api/v1/checkout', checkoutCtrl.post);
     app.get('/api/v1/sales', salesCtrl.get);
     app.post('/api/v1/categories', categoriesCtrl.post);
     app.get('/api/v1/categories', categoriesCtrl.get);
     app.put('/api/v1/categories', categoriesCtrl.put);
+    app.delete('/api/v1/categories', categoriesCtrl.del);
 
     app.get('*', function (req, res) {
         res.sendFile(config.rootPath + 'public/index.html');
