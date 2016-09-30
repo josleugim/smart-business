@@ -25,7 +25,7 @@ function LocationCtrl($scope, AuthToken, LocationService, mvNotifier) {
 				mvNotifier.error('No se pudo crear la localidad');
 			}
 		})
-	}
+	};
 
 	$scope.saveLocation = function() {
 		var data = {};
@@ -71,8 +71,8 @@ function LocationCtrl($scope, AuthToken, LocationService, mvNotifier) {
 	};
 
 	function updateLocations() {
-		LocationService.get().then(function(data) {
-			$scope.locations = data;
+		LocationService.get().then(function(response) {
+			$scope.locations = response.data;
 		});
-	};
+	}
 }
