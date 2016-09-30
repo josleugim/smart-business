@@ -7,13 +7,15 @@ function ProductService($q, $http, $location, AuthToken) {
 
 	return {
     	post: post,
-        get: get
+        get: get,
+        delProduct: delProduct
     };
 
     function get(query) {
         var dfd = $q.defer();
 
-        query.token = AuthToken.getToken()
+        query.token = AuthToken.getToken();
+
         $http({
             method: 'GET',
             url: host + 'api/v1/products',
@@ -52,5 +54,28 @@ function ProductService($q, $http, $location, AuthToken) {
     	});
 
     	return dfd.promise;
-    }
+    };
+
+    function delProduct(query) {
+        var dfd = $q.defer();
+
+        query.token = AuthToken.getToken();
+        
+        //More information about the http service at: https://docs.angularjs.org/api/ng/service/$http
+        $http({
+            method: 'DELETE',
+            url: host + 'api/v1/products',
+            params: query,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function successCallback(response) {
+            response.success = true;
+            dfd.resolve(response);
+        }, function errorCallback(response) {
+            dfd.resolve(response);
+        });
+
+        return dfd.promise;
+    };
 }    

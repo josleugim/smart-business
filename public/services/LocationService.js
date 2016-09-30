@@ -23,11 +23,10 @@ angular.module('smartBusiness')
                     'Content-Type': 'application/json'
                 }
             }).then(function successCallback(response) {
-                if(response.data) {
-                    dfd.resolve(response.data);
-                }
-            }, function errorCallback() {
-                dfd.resolve(false);
+                response.success = true;
+                dfd.resolve(response);
+            }, function errorCallback(response) {
+                dfd.resolve(response.data);
             });
 
             return dfd.promise;

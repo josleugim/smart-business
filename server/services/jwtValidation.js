@@ -1,5 +1,4 @@
-var jwt = require('jsonwebtoken'),
-	jwtSecret = require('../config/configuration');
+var jwt = require('jsonwebtoken');
 
 exports.getUserId = function(token) {
 	if(token) {
@@ -16,7 +15,7 @@ exports.getLocationId = function(token) {
 		var decoded = jwt.decode(token, {complete: true});
 		if (decoded.payload) {
 			return decoded.payload.location_id;
-		};
+		}
 	}
 };
 
@@ -28,6 +27,6 @@ exports.isOwner = function(token) {
 				return false;
 			else
 				return true;
-		};
+		}
 	}
 };

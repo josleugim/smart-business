@@ -20,10 +20,11 @@ angular.module('smartBusiness')
     .controller('SellerCtrl', ['$scope', '$location', 'LocationService', '$rootScope', 'SellerService', 'mvNotifier', SellerCtrl]);
 
 function SellerCtrl($scope, $location, LocationService, $rootScope, SellerService, mvNotifier) {
-	LocationService.get().then(function(data) {
-		if(data) {
-			$scope.locations = data;
-		}
+	LocationService.get().then(function(response) {
+		if(response.success) {
+			$scope.locations = response.data;
+		} else
+			mvNotifier.error('No se pudieron cargar las locaciones. Error: ' + response.error.message + ' !!!');
 	});
 
 	updateSellers();

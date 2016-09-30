@@ -14,36 +14,70 @@
 	<div class="col-md-3"></div>
 </div>
 <div class="row">
-	<div class="col-md-3">
-		<p>Nombre</p>
+    <div class="col-md-1">
+        <p><b>Localidad</b></p>
+    </div>
+    <div class="col-md-1">
+        <p><b>Categoría</b></p>
+    </div>
+    <div class="col-md-1">
+        <p><b>Marca</b></p>
+    </div>
+	<div class="col-md-1">
+		<p><b>Nombre</b></p>
 	</div>
-	<div class="col-md-2">
-		<p>Precio</p>
+	<div class="col-md-1">
+		<p><b>Precio</b></p>
 	</div>
-	<div class="col-md-2">
-		<p>Código de barras o IMEI</p>
+	<div class="col-md-1">
+		<p><b>Código de barras o IMEI</b></p>
 	</div>
-	<div class="col-md-2">
-		<p>SIM</p>
+	<div class="col-md-1">
+		<p><b>SIM</b></p>
 	</div>
+	<div class="col-md-1">
+		<p><b>Descripción</b></p>
+	</div>
+    <div class="col-md-1">
+        <p><b>Vendido</b></p>
+    </div>
 	<div class="col-md-2">
-		<p>Opciones</p>
+		<p><b>Opciones</b></p>
 	</div>
 </div>
 <div class="row" ng-repeat="product in products">
-	<div class="col-md-3">
+    <div class="col-md-1">
+        <p>{{product.locationName}}</p>
+    </div>
+    <div class="col-md-1">
+        <p>{{product.categoryName}}</p>
+    </div>
+    <div class="col-md-1">
+        <p>{{product.brandName}}</p>
+    </div>
+	<div class="col-md-1">
 		<p>{{product.name}}</p>
 	</div>
-	<div class="col-md-2">
+	<div class="col-md-1">
 		<p>{{product.price}}</p>
 	</div>
-	<div class="col-md-2">
+	<div class="col-md-1">
 		<p>{{product.barcode}}</p>
 	</div>
-	<div class="col-md-2">
+	<div class="col-md-1">
 		<p>{{product.sim}}</p>
 	</div>
+	<div class="col-md-1">
+		<p>{{product.description}}</p>
+	</div>
+    <div class="col-md-1">
+        <p>{{product.soldOut}}</p>
+    </div>
 	<div class="col-md-2">
-		<button class="btn btn-primary" type="submit">Modificar</button>
+		<p>
+			<!--<button class="btn btn-info" type="button" ng-click="modifyProduct(product._id)">Modificar</button>-->
+			<a class="btn btn-info" href="/product/{{product._id}}" target="_self">Modificar</a>
+			<button class="btn btn-danger" ng-click="deleteProduct(product._id)" type="submit">Borrar</button>
+		</p>
 	</div>
 </div>

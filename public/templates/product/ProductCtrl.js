@@ -26,8 +26,11 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService, Cate
         $scope.brands = data;
     });
 
-    LocationService.get().then(function(data) {
-        $scope.locations = data;
+    LocationService.get().then(function(response) {
+        if(response.success){
+            $scope.locations = response.data;
+        } else
+            mvNotifier.error('No se pudieron cargar las locaciones. Error: ' + response.error.message + ' !!!');
     });
 
     CategoryService.get().then(function(data) {

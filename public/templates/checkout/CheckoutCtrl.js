@@ -36,13 +36,13 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService) {
 			addItemToList(query);
 		}
 		$scope.itemBarcode = "";
-	}
+	};
 
 	function addItemToList(query) {
 		ProductService.get(query).then(function(data) {
-			if(data) {
-				$scope.carItems.push(data);
-				total(data.price);
+			if(data.length > 0) {
+				$scope.carItems.push(data[0]);
+				total(data[0].price);
 			}
 		});
 	}
@@ -103,11 +103,5 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService) {
     	var index = $scope.carItems.indexOf(product._id);
     	$scope.carItems.splice(index, 1);
     	total(-1 * product.price);
-    })
-
-    var formatter = new Intl.NumberFormat('es-MX', {
-    	style: 'currency',
-    	currency: 'MXN',
-    	minimumFractionDigits: 2
     });
 }    

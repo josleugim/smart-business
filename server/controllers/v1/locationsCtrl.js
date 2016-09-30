@@ -27,7 +27,7 @@ exports.post = function (req, res) {
         	res.end();
 		});
 	} else {
-		res.status(500).json({success:false});
+		res.status(401).json({success:false});
 	}
 };
 
@@ -71,6 +71,12 @@ exports.get = function (req, res) {
 		if(req.query._id) {
 			console.log('Location GET By _id');
 			Location.findOne({_id: req.query._id}, function(err, doc) {
+				if(err) {
+					console.log(err);
+					res.status(500).json({success: false, error: err});
+					res.end();
+				}
+
 				if(doc) {
 					delete doc.user_id;
 					delete doc.__v;
@@ -87,7 +93,8 @@ exports.get = function (req, res) {
 			.sort({name: 1})
 			.exec(function (err, locations) {
 				if(err) {
-					res.status(500).json({success: false});
+					console.log(err);
+					res.status(500).json({success: false, error: err});
 					res.end();
 				}
 
@@ -107,7 +114,9 @@ exports.get = function (req, res) {
 			});
 		};
 	} else {
-		res.status(500).json({success: false});
+		res.status(401).json({success: false, error: {
+			message: 'Acceso denegado'
+		}});
 		res.end();
 	}
 }

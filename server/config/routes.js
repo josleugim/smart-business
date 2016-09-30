@@ -23,6 +23,7 @@ module.exports = function (app, config) {
     app.delete('/api/v1/brands', brandCtrl.del);
     app.post('/api/v1/products', upload.single('image'), productCtrl.post);
     app.get('/api/v1/products', productCtrl.get);
+    app.delete('/api/v1/products', productCtrl.del);
     app.post('/api/v1/sellers', userCtrl.postSeller);
     app.get('/api/v1/sellers', userCtrl.getSeller);
     app.put('/api/v1/sellers', userCtrl.putSeller);

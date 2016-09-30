@@ -30,6 +30,10 @@ smartBusiness.config(['$routeProvider', '$locationProvider', function ($routePro
             templateUrl: 'templates/product/product.html',
             controller: 'ProductCtrl'
         })
+        .when('/product/:id', {
+            templateUrl: 'templates/inventory/editProduct.html',
+            controller: 'editProductCtrl'
+        })
         .when('/checkout', {
             templateUrl: 'templates/checkout/index.html',
             controller: 'CheckoutCtrl'

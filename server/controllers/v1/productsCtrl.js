@@ -1,5 +1,8 @@
 var mongoose = require('mongoose'),
     Product = mongoose.model('Product'),
+    Location = mongoose.model('Location'),
+    Category = mongoose.model('Category'),
+    Brand = mongoose.model('Brand'),
     jwtValidation = require('../../services/jwtValidation'),
     getSlug = require('speakingurl');
 
@@ -44,7 +47,7 @@ exports.post = function(req, res) {
             }
         })
     }
-}
+};
 
 exports.get = function(req, res) {
     console.log('GET Product');
@@ -54,50 +57,113 @@ exports.get = function(req, res) {
             isActive: true
         };
 
-        if(jwtValidation.getLocationId(req.query.token) != undefined)
-            query.location_id = jwtValidation.getLocationId(req.query.token);
-        else
-            query.location_id = req.query.location_id;
+        // get all the products depending of the location
+        if(req.query.searchType == 'byLocation') {
 
+            if(jwtValidation.getLocationId(req.query.token) != undefined)
+                query.location_id = jwtValidation.getLocationId(req.query.token);
+            else
+                query.location_id = req.query.location_id;
+
+            findProducts(query);
+
+        }
         if(req.query.searchType == 'byName') {
             if(req.query.name)
                 query.name = {$regex: req.query.name, $options: 'i'};
+
+            findProducts(query);
         }
 
+        // this condition returns just one product
         if(req.query.searchType == 'byBarcode') {
             query.barcode = req.query.barcode;
+
+            findProducts(query);
         }
 
-        console.log(query);
+        function findProducts(query) {
+            Product.find(query)
+                .sort({name: 1})
+                .exec(function (err, products) {
+                    if(err) {
+                        console.log(err);
+                        res.status(500).json({success: false});
+                        res.end();
+                    }
+                    var objectProduct = [];
+                    var waiting = products.length;
 
-        Product.find(query)
-        .sort({name: 1})
-        .exec(function (err, products) {
-            if(err) {
+                    if(waiting > 0) {
+                        products.forEach(function(values) {
+                            // get the location name
+                            Location.findOne({_id: values.location_id}, function(err, loc) {
+                                if(loc) {
+                                    // get the category
+                                    Category.findOne({_id: values.category_id}, function (err, cat) {
+                                        if(cat) {
+
+                                            // get brand name
+                                            Brand.findOne({_id: values.brand_id}, function (err, br) {
+                                                if(br) {
+                                                    var product = values.toObject();
+
+                                                    delete product.isActive;
+                                                    delete product.__v;
+                                                    delete product.createdAt;
+                                                    delete product.updatedAt;
+                                                    product.locationName = loc.name;
+                                                    product.categoryName = cat.name;
+                                                    product.brandName = br.name;
+                                                    objectProduct.push(product);
+                                                }
+
+                                                waiting--;
+
+                                                if(waiting == 0) {
+                                                    res.status(200).json(objectProduct);
+                                                    res.end();
+                                                }
+                                            })
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                    }
+                });
+        }
+
+
+    } else {
+        res.status(401).json({success: false});
+        res.end();
+    }
+};
+
+exports.del = function(req, res) {
+    console.log('DELETE Product');
+
+    if(req.query.token) {
+        var data = {
+            isActive: false
+        };
+
+        var query = {
+            _id: req.query._id
+        };
+
+        Product.update(query, {$set: data}, function (err) {
+            if (err) {
                 console.log(err);
-                res.status(500).json({success: false});
-                res.end();
-            };
-            var objectProduct = [];
-
-            products.forEach(function(values) {
-                var product = values.toObject();
-                delete product.isActive;
-                delete product.__v;
-                delete product.createdAt;
-                delete product.updatedAt;
-                objectProduct.push(product);
-            })
-            if(req.query.searchType == 'byBarcode') {
-                res.status(200).json(objectProduct[0]);
-                res.end();
+                res.status(500).json({success: false, error: err});
             } else {
-                res.status(200).json(objectProduct);
+                res.status(201).json({success: true});
                 res.end();
             }
         });
     } else {
-        res.status(500).json({success: false});
+        res.status(401).json({success: false});
         res.end();
     }
-}    
+};
