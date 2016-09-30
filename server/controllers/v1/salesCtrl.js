@@ -8,9 +8,10 @@ exports.get = function (req, res) {
 	var query = {};
 
 	if(req.query.token) {
-		query.location_id = jwtValidation.getLocationId(req.query.token);
+		//query.location_id = jwtValidation.getLocationId(req.query.token);
 
-		//query.createdAt = '2016-09-03';
+		if(req.query.from)
+		    query.createdAt = {'$gte': req.query.from};
 
 		console.log(query);
 
@@ -21,8 +22,6 @@ exports.get = function (req, res) {
                 res.status(500).json({success: false});
                 res.end();
             }
-
-            console.log(docs);
 
             var objectCheckout = [];
 

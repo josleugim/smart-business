@@ -1,8 +1,8 @@
 "use strict";
 angular.module('smartBusiness')
-	.controller('SalesCtrl', ['$scope', 'SalesService', SalesCtrl]);
+	.controller('SalesCtrl', ['$scope', 'SalesService', '$filter', SalesCtrl]);
 
-function SalesCtrl ($scope, SalesService) {
+function SalesCtrl ($scope, SalesService, $filter) {
 	$scope.options = {
     	showWeeks: true,
     	maxDate: new Date(),
@@ -35,16 +35,31 @@ function SalesCtrl ($scope, SalesService) {
 
     console.log(day + "/" + monthIndex + "/" + year);
 
-    SalesService.get(day + "/" + monthIndex + "/" + year, day + "/" + monthIndex + "/" + year).then(function(data) {
-      if(data) {
-        console.log(data);
-        graphicData();
-      }
-    })
+
+
+	$scope.getSales = function () {
+        $('.chart').empty();
+        var query = {
+            from: $filter('date')($scope.dateOne, 'yyyy-MM-d'),
+            to: $filter('date')($scope.dateTwo, 'yyyy-MM-d')
+        };
+
+        SalesService.get(query).then(function(data) {
+            if(data) {
+                console.log(data);
+                var totals = [];
+
+                angular.forEach(data, function (value, key) {
+                    totals.push(value.total);
+                });
+                graphicData(totals);
+            }
+        });
+	};
 
     function graphicData(totals) {
-      var data = [41, 8, 15, 16, 23, 42];
-
+        var data = totals;
+        console.log(data);
       var x = d3.scale.linear()
       .domain([0, d3.max(data)])
       .range([0, 420]);

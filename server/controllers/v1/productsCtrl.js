@@ -53,9 +53,7 @@ exports.get = function(req, res) {
     console.log('GET Product');
     
     if(req.query.token) {
-        var query = {
-            isActive: true
-        };
+        var query = {};
 
         // get all the products depending of the location
         if(req.query.searchType == 'byLocation') {
@@ -72,6 +70,7 @@ exports.get = function(req, res) {
             if(req.query.name)
                 query.name = {$regex: req.query.name, $options: 'i'};
 
+            query.isActive = true;
             findProducts(query);
         }
 
@@ -79,6 +78,7 @@ exports.get = function(req, res) {
         if(req.query.searchType == 'byBarcode') {
             query.barcode = req.query.barcode;
 
+            query.isActive = true;
             findProducts(query);
         }
 
@@ -112,6 +112,10 @@ exports.get = function(req, res) {
                                                     delete product.__v;
                                                     delete product.createdAt;
                                                     delete product.updatedAt;
+                                                    if(product.soldOut)
+                                                        product.soldOut = 'Vendido';
+                                                    else
+                                                        product.soldOut = 'No';
                                                     product.locationName = loc.name;
                                                     product.categoryName = cat.name;
                                                     product.brandName = br.name;

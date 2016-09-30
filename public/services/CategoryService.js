@@ -58,7 +58,7 @@ function CategoryService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-    };
+    }
 
     function getById(query) {
         var dfd = $q.defer();
@@ -80,7 +80,7 @@ function CategoryService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-    };
+    }
 
 	function get() {
 		var dfd = $q.defer();
@@ -100,7 +100,7 @@ function CategoryService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-	};
+	}
 
 	function post(data) {
 		var dfd = $q.defer();
@@ -122,4 +122,4 @@ function CategoryService($q, $http, $location, AuthToken) {
 
         return dfd.promise;
 	}
-};
+}

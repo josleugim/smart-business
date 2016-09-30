@@ -6,15 +6,17 @@ function SalesService ($q, $http, $location, AuthToken) {
 	var host = 'http://' + $location.host() + ':5000/';
 	return {
 		get: get
-	}
+	};
 
-	function get(fromDate, toDate) {
+	function get(query) {
 		var dfd = $q.defer();
+
+		query.token = AuthToken.getToken();
 
     	$http({
     		method: 'GET',
     		url: host + 'api/v1/sales',
-    		params: {token: AuthToken.getToken()},
+    		params: query,
     		headers: {
     			'Content-Type': 'application/json'
     		}

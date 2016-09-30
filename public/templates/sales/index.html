@@ -23,8 +23,23 @@
 	<div class="col-md-6">
 		<h3>Desde: {{dateTwo | date:'dd-MM-yyyy' }}</h3>
 		<div style="display:inline-block; min-height:290px;">
-			<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dateTwo" is-open="false" datepicker-options="options" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+			<h4>Popup</h4>
+			<div class="row">
+				<div class="col-md-6">
+					<p class="input-group">
+						<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dateTwo" is-open="popup2.opened" datepicker-options="options" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+						<span class="input-group-btn">
+							<button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
+					</p>
+				</div>
+			</div>
 		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<button class="btn btn-default" ng-click="getSales()">Generar reporte</button>
 	</div>
 </div>
 <div class="row">

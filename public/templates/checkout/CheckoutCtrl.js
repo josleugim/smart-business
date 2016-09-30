@@ -10,9 +10,9 @@ angular.module('smartBusiness')
 			}
 		}
 	})
-    .controller('CheckoutCtrl', ['$scope', 'ProductService', '$rootScope', 'CheckoutService', CheckoutCtrl]);
+    .controller('CheckoutCtrl', ['$scope', 'ProductService', '$rootScope', 'CheckoutService', 'mvNotifier', CheckoutCtrl]);
 
-function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService) {
+function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService, mvNotifier) {
 	$scope.searchItems = "";
 	$scope.total = 0;
 	$scope.searchProducts = "";
@@ -52,19 +52,20 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService) {
 	}
 
 	$scope.checkout = function() {
-		console.log($scope.carItems);
 		var data = {
 			products: $scope.carItems,
 			total: $scope.total
-		}
+		};
+
 		CheckoutService.post(data).then(function(success) {
 			if(success) {
 				$scope.carItems = [];
 				$scope.total = 0;
-				console.log('Venta realizada');
-			}
+                mvNotifier.notify('Venta realizada correctamente');
+			} else
+			    mvNotifier.error('Ocurrio un error al realizar la venta!!!');
 		})
-	}
+	};
 
 	$scope.searchItem = function() {
 		$rootScope.$broadcast('updateItemsList', "");
@@ -78,15 +79,16 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService) {
 				$rootScope.$broadcast('updateItemsList', data);
 			}
 		})
-	}
+	};
 
 	$scope.removeItem = function(product) {
 		$rootScope.$broadcast('removeItemFromCheckout', product);
-	}
+	};
 
 	$scope.addToCheckoutList = function(product) {
 		$rootScope.$broadcast('updateCheckoutList', product);
-	}
+		$scope.itemName = "";
+	};
 
 	$scope.$on("updateItemsList", function(event, data){
 		$scope.searchProducts = data;

@@ -34,9 +34,13 @@
 			<button type="button" class="btn btn-default" ng-click="searchItem()" ng-disabled="itemSearchForm.$invalid">Buscar</button>
 		</form>
 		<div ng-repeat="product in searchProducts">
-			<p>{{product.name}}</p>
+			<p><strong>{{product.name}}</strong></p>
+			<p>Descripción: {{product.description}}</p>
 			<p>Precio: {{product.price}}</p>
-			<input class="amount" type="number" min="0" name="amount" ng-model="amount">
+            <p>IMEI: {{product.barcode}}</p>
+            <p>SIM: {{product.sim}}</p>
+            <p>Categoría: {{product.categoryName}}</p>
+            <p>Marca: {{product.brandName}}</p>
 			<button type="button" ng-click="addToCheckoutList(product)">Agregar al carrito</button>
 		</div>
 	</div>

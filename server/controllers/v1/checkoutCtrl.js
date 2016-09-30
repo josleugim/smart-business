@@ -37,7 +37,12 @@ exports.post = function(req, res) {
 				_id: item._id
 			};
 
-			Product.update(query, {isActive: false}, function (err, numAffected) {
+			var data = {
+				isActive: false,
+				soldOut: true
+			};
+
+			Product.update(query, data, function (err, numAffected) {
 				if (err) {
 					console.log(err);
 				}
