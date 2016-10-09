@@ -4,7 +4,8 @@ var mongoose = require('mongoose'),
     Category = mongoose.model('Category'),
     Brand = mongoose.model('Brand'),
     jwtValidation = require('../../services/jwtValidation'),
-    getSlug = require('speakingurl');
+    getSlug = require('speakingurl'),
+    moment = require('moment');
 
 exports.post = function(req, res) {
     console.log('POST Product');
@@ -84,7 +85,7 @@ exports.get = function(req, res) {
 
         function findProducts(query) {
             Product.find(query)
-                .sort({name: 1})
+                .sort({createdAt: 1})
                 .exec(function (err, products) {
                     if(err) {
                         console.log(err);
@@ -110,7 +111,6 @@ exports.get = function(req, res) {
 
                                                     delete product.isActive;
                                                     delete product.__v;
-                                                    delete product.createdAt;
                                                     delete product.updatedAt;
                                                     if(product.soldOut)
                                                         product.soldOut = 'Vendido';
@@ -119,6 +119,7 @@ exports.get = function(req, res) {
                                                     product.locationName = loc.name;
                                                     product.categoryName = cat.name;
                                                     product.brandName = br.name;
+                                                    product.createdAt = moment(product.createdAt).locale('es').format("dddd, MMMM Do YYYY");
                                                     objectProduct.push(product);
                                                 }
 
