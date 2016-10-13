@@ -54,7 +54,9 @@ exports.get = function(req, res) {
     console.log('GET Product');
     
     if(req.query.token) {
-        var query = {};
+        var query = {
+            isActive: true
+        };
 
         // get all the products depending of the location
         if(req.query.searchType == 'byLocation') {
@@ -66,24 +68,25 @@ exports.get = function(req, res) {
 
             findProducts(query);
 
-        }
-        if(req.query.searchType == 'byName') {
+        } else if(req.query.searchType == 'byName') {
+            console.log('Searching product by name....');
             if(req.query.name)
                 query.name = {$regex: req.query.name, $options: 'i'};
 
-            query.isActive = true;
             findProducts(query);
-        }
-
-        // this condition returns just one product
-        if(req.query.searchType == 'byBarcode') {
+            // this condition returns just one product
+        } else if(req.query.searchType == 'byBarcode') {
+            console.log('Searching product by barcode...');
             query.barcode = req.query.barcode;
 
-            query.isActive = true;
             findProducts(query);
+        } else {
+            query._id = req.query._id;
+            findProducts(query)
         }
 
         function findProducts(query) {
+            console.log(query);
             Product.find(query)
                 .sort({createdAt: 1})
                 .exec(function (err, products) {
@@ -122,6 +125,8 @@ exports.get = function(req, res) {
                                                     product.createdAt = moment(product.createdAt).locale('es').format("dddd, MMMM Do YYYY");
                                                     objectProduct.push(product);
                                                 }
+                                                if(err)
+                                                    console.log(err);
 
                                                 waiting--;
 
@@ -131,10 +136,17 @@ exports.get = function(req, res) {
                                                 }
                                             })
                                         }
+                                        if(err)
+                                            console.log(err);
                                     });
                                 }
+                                if(err)
+                                    console.log(err);
                             });
                         });
+                    } else {
+                        res.status(404).json({message: 'No existen productos'});
+                        res.end();
                     }
                 });
         }
@@ -162,6 +174,53 @@ exports.del = function(req, res) {
             if (err) {
                 console.log(err);
                 res.status(500).json({success: false, error: err});
+            } else {
+                res.status(201).json({success: true});
+                res.end();
+            }
+        });
+    } else {
+        res.status(401).json({success: false});
+        res.end();
+    }
+};
+
+exports.put = function (req, res) {
+    console.log('PUT Product');
+    if(req.query.token) {
+        var query = {
+            _id: req.query._id
+        };
+        console.log(req.body);
+        var data = {};
+
+        if(req.body.location_id)
+            data.location_id = req.body.location_id;
+        if(req.body.category_id)
+            data.category_id = req.body.category_id;
+        if(req.body.brand_id)
+            data.brand_id = req.body.brand_id;
+        if(req.body.name) {
+            data.name = req.body.name;
+            data.slug = getSlug(req.body.name, {lang: 'es'});
+        }
+        if(req.file)
+            data.image = req.file.filename;
+        if(req.body.price)
+            data.price = req.body.price;
+        if(req.body.barcode)
+            data.barcode = req.body.barcode;
+        if(req.body.sim)
+            data.sim = req.body.sim;
+        if(req.body.description)
+            data.description = req.body.description;
+
+        console.log(data);
+
+        Product.update(query, {$set: data}, function (err) {
+            if (err) {
+                console.log(err);
+                res.status(401).json({success: false, error: err});
             } else {
                 res.status(201).json({success: true});
                 res.end();

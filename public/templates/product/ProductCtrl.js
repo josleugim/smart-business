@@ -59,6 +59,9 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService, Cate
             cont = cont + 1;
         });*/
 
+        // check why some fields are undefined
+        console.log(data);
+
         ProductService.post(data).then(function(response) {
             if(response.success) {
                 mvNotifier.notify('Producto creado correctamente');
@@ -76,7 +79,7 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService, Cate
                 mvNotifier.error('No se pudo crear el producto. ' + response.error.message);
             }
         });
-    }
+    };
 
     /*$scope.upCountProduct = function () {
         $scope.codesCount++;

@@ -35,7 +35,7 @@ function CategoryService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-    };
+    }
 
     function put(query, data) {
         var dfd = $q.defer();

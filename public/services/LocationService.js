@@ -30,7 +30,7 @@ angular.module('smartBusiness')
             });
 
             return dfd.promise;
-        };
+        }
 
         function getById(query) {
             var dfd = $q.defer();

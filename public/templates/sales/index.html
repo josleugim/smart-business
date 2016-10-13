@@ -43,6 +43,16 @@
 	</div>
 </div>
 <div class="row">
+	<div class="col-lg-4 col-md-4 col-sm-4"></div>
+	<div class="col-lg-4 col-md-4 col-sm-4">
+		<p>Venta total del periodo: $ {{totalSell}} MXN</p>
+		<ul>
+			<li ng-repeat="product in products">{{product.productName}} $ {{product.productPrice}} MXN</li>
+		</ul>
+	</div>
+	<div class="col-lg-4 col-md-4 col-sm-4"></div>
+</div>
+<div class="row">
 	<div class="col-md-12">
 		<div class="chart"></div>
 	</div>

@@ -3,6 +3,8 @@ angular.module('smartBusiness')
 	.controller('SalesCtrl', ['$scope', 'SalesService', '$filter', SalesCtrl]);
 
 function SalesCtrl ($scope, SalesService, $filter) {
+    $scope.totalSell = 0;
+    $scope.products = [];
 	$scope.options = {
     	showWeeks: true,
     	maxDate: new Date(),
@@ -28,15 +30,6 @@ function SalesCtrl ($scope, SalesService, $filter) {
   	$scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'shortDate'];
     $scope.format = $scope.formats[0];
 
-    var date = new Date();
-    var day = date.getDate();
-    var monthIndex = date.getMonth();
-    var year = date.getFullYear();
-
-    console.log(day + "/" + monthIndex + "/" + year);
-
-
-
 	$scope.getSales = function () {
         $('.chart').empty();
         var query = {
@@ -46,29 +39,45 @@ function SalesCtrl ($scope, SalesService, $filter) {
 
         SalesService.get(query).then(function(data) {
             if(data) {
-                console.log(data);
                 var totals = [];
 
                 angular.forEach(data, function (value, key) {
-                    totals.push(value.total);
+                    var objGrap = {
+                        total: value.total,
+                        createdAt: value.createdAt
+                    };
+                    $scope.totalSell = $scope.totalSell + value.total;
+                    // pass each product to the scope
+                    angular.forEach(value.product, function (item, key) {
+                        $scope.products.push(item);
+                    });
+                    totals.push(objGrap);
                 });
                 graphicData(totals);
             }
         });
 	};
 
-    function graphicData(totals) {
-        var data = totals;
-        console.log(data);
-      var x = d3.scale.linear()
-      .domain([0, d3.max(data)])
-      .range([0, 420]);
+    function graphicData(obj) {
+        var totals = [];
+        var cont = 0;
+        angular.forEach(obj, function (value, key) {
+            totals.push(value.total);
+        });
 
-      d3.select(".chart")
-      .selectAll("div")
-      .data(data)
-      .enter().append("div")
-      .style("width", function(d) { return x(d) + "px"; })
-      .text(function(d) { return d; });
+        var data = totals;
+        var x = d3.scale.linear()
+            .domain([0, d3.max(data)])
+            .range([0, 420]);
+
+        d3.select(".chart")
+            .selectAll("div")
+            .data(data)
+            .enter().append("div")
+            .style("width", function(d) { return x(d) + "px"; })
+            .text(function(d) {
+                return 'Fecha de venta: ' + obj[cont].createdAt + ' Total de la venta: $ ' + d;
+                cont++;
+            });
     }
 }	

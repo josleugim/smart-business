@@ -1,5 +1,58 @@
 <div class="row">
     <div class="col-md-12">
-
+        <h3>Modificar producto</h3>
     </div>
+</div>
+<div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-4"></div>
+    <div class="col-md-4">
+        <form name="editProductForm">
+            <div class="form-group location">
+                <label for="locationList">Tienda</label>
+                <select ng-model="locationList" id="locationList" ng-options="location.name for location in locations track by location._id" required></select>
+            </div>
+            <div class="form-group location">
+                <label for="categoryList">Categoría</label>
+                <select ng-model="categoryList" id="categoryList" ng-options="category.name for category in categories track by category._id" required></select>
+            </div>
+            <div class="form-group location">
+                <label for="brandList">Marca</label>
+                <select ng-model="brandList" id="brandList" ng-options="brand.name for brand in brands track by brand._id" required></select>
+            </div>
+            <div class="form-group">
+                <label for="productName">Nombre del producto</label>
+                <input type="text" class="form-control" id="productName" ng-model="productName" name="productName" placeholder="Nombre" required>
+                <span class="error" ng-show="editProductForm.productName.$error.required">* requerido</span>
+            </div>
+            <div class="form-group">
+                <label for="price">Precio del producto</label>
+                <input type="number" class="form-control" id="price" ng-model="price" name="price" placeholder="Precio" required>
+                <span class="error" ng-show="editProductForm.price.$error.required">* requerido</span>
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción del producto</label>
+                <input type="text" class="form-control" id="description" ng-model="description" name="description" placeholder="Descripción">
+            </div>
+            <div class="form-group">
+                <label for="barcode">Código de barras o IMEI</label>
+                <input type="text" class="form-control" ng-model="barcode" name="barcode" placeholder="IMEI" id="barcode">
+            </div>
+            <div class="form-group">
+                <label for="sim">SIM o chip amigo</label>
+                <input type="text" class="form-control" ng-model="sim" name="sim" placeholder="SIM" id="sim">
+            </div>
+            <div class="form-group">
+                <label for="soldOut">Vendido</label>
+                <input type="checkbox" class="form-control" ng-model="soldOut" name="soldOut" id="soldOut">
+            </div>
+            <div class="form-group">
+                <label for="image">Imagen del producto</label>
+                <input type="file" id="image" ng-model="image" name="file" image-file="files">
+                <p class="help-block">La imagen del producto, ayudará a que el vendedor lo identifique visualmente en el punto de venta.</p>
+                <img ng-src="{{image}}">
+            </div>
+            <button type="button" class="btn btn-default" ng-click="saveProduct()" ng-disabled="editProductForm.$invalid">Guardar cambios</button>
+        </form>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4"></div>
 </div>

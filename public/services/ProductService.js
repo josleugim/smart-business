@@ -8,8 +8,39 @@ function ProductService($q, $http, $location, AuthToken) {
 	return {
     	post: post,
         get: get,
-        delProduct: delProduct
+        delProduct: delProduct,
+        put: put
     };
+
+    function put(query, data) {
+        var dfd = $q.defer();
+
+        var fd = new FormData();
+        for(var key in data) {
+            fd.append(key, data[key]);
+        }
+
+        query.token = AuthToken.getToken();
+
+        $http({
+            method: 'PUT',
+            url: host + 'api/v1/products',
+            params: query,
+            data: fd,
+            transformRequest: angular.indentity,
+            headers: {
+                'Content-Type': undefined
+            }
+        }).then(function successCallback(response) {
+            if(response.data.success) {
+                dfd.resolve(true);
+            }
+        }, function errorCallback(response) {
+            dfd.resolve(false);
+        });
+
+        return dfd.promise;
+    }
 
     function get(query) {
         var dfd = $q.defer();
@@ -37,14 +68,20 @@ function ProductService($q, $http, $location, AuthToken) {
     function post(data) {
     	var dfd = $q.defer();
 
+        var fd = new FormData();
+        for(var key in data) {
+            fd.append(key, data[key]);
+        }
+
     	$http({
     		method: 'POST',
     		url: host + 'api/v1/products',
     		params: {token: AuthToken.getToken()},
-    		data: data,
-    		headers: {
-    			'Content-Type': 'application/json'
-    		}
+    		data: fd,
+            transformRequest: angular.indentity,
+            headers: {
+                'Content-Type': undefined
+            }
     	}).then(function successCallback(response) {
     		if(response.data.success) {
     			dfd.resolve(response.data);
@@ -54,7 +91,7 @@ function ProductService($q, $http, $location, AuthToken) {
     	});
 
     	return dfd.promise;
-    };
+    }
 
     function delProduct(query) {
         var dfd = $q.defer();
@@ -77,5 +114,5 @@ function ProductService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-    };
+    }
 }    
