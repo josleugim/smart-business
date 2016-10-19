@@ -47,7 +47,9 @@ exports.get = function (req, res) {
                                     var data = {
                                         product_id: collection._id,
                                         productName: collection.name,
-                                        productPrice: collection.price
+                                        productPrice: collection.price,
+                                        productBarcode: collection.barcode,
+                                        productSim: collection.sim
                                     };
                                     doc.product.push(data);
                                 } else {

@@ -47,7 +47,11 @@
 	<div class="col-lg-4 col-md-4 col-sm-4">
 		<p>Venta total del periodo: $ {{totalSell}} MXN</p>
 		<ul>
-			<li ng-repeat="product in products">{{product.productName}} $ {{product.productPrice}} MXN</li>
+			<li ng-repeat="product in products">
+				<p>{{product.productName}} $ {{product.productPrice}} MXN</p>
+                <p>Código de barras o IMEI: {{product.productBarcode}}</p>
+                <p>SIM: {{product.productSim}}</p>
+			</li>
 		</ul>
 	</div>
 	<div class="col-lg-4 col-md-4 col-sm-4"></div>
