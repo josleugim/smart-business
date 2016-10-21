@@ -18,7 +18,11 @@ exports.get = function (req, res) {
 		    //http://stackoverflow.com/questions/15347589/moment-js-format-date-in-a-specific-timezone
             // http://stackoverflow.com/questions/3674539/incrementing-a-date-in-javascript
             // http://stackoverflow.com/questions/8835757/return-query-based-on-date
-            query.createdAt = {$gte: moment(req.query.from).utcOffset(60).format('YYYY-MM-DD'), $lt: moment(req.query.to).add(1, 'day').utcOffset(60).format('YYYY-MM-DD')};
+            var from = moment(req.query.from).utcOffset(60).format('YYYY-MM-DD');
+            var to = moment(req.query.to).add(1, 'day').utcOffset(60).format('YYYY-MM-DD');
+            console.log('query: ' + req.query.from);
+            console.log(from);
+            query.createdAt = {$gte: from, $lt: to};
         }
 
         console.log(query);
