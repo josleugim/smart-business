@@ -57,14 +57,19 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService, mvNot
 			total: $scope.total
 		};
 
-		CheckoutService.post(data).then(function(success) {
-			if(success) {
-				$scope.carItems = [];
-				$scope.total = 0;
-                mvNotifier.notify('Venta realizada correctamente');
-			} else
-			    mvNotifier.error('Ocurrio un error al realizar la venta!!!');
-		})
+		if($scope.carItems.length > 0) {
+            CheckoutService.post(data).then(function(success) {
+                if(success) {
+                    $scope.carItems = [];
+                    $scope.total = 0;
+                    mvNotifier.notify('Venta realizada correctamente');
+                } else
+                    mvNotifier.error('Ocurrio un error al realizar la venta!!!');
+            })
+        } else {
+            $scope.keepFocus();
+            mvNotifier.error('No has seleccionado producto para vender');
+        }
 	};
 
 	$scope.searchItem = function() {
@@ -88,6 +93,7 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService, mvNot
 	$scope.addToCheckoutList = function(product) {
 		$rootScope.$broadcast('updateCheckoutList', product);
 		$scope.itemName = "";
+        $scope.keepFocus();
 	};
 
 	$scope.$on("updateItemsList", function(event, data){
