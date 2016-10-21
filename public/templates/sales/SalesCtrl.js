@@ -35,13 +35,11 @@ function SalesCtrl ($scope, SalesService, $filter) {
         $scope.products = [];
         $('.chart').empty();
         var query = {
-            from: $filter('date')($scope.dateOne, 'yyyy-MM-d'),
-            to: $filter('date')($scope.dateTwo, 'yyyy-MM-d')
+            from: $filter('date')($scope.dateOne, 'yyyy-MM-dd'),
+            to: $filter('date')($scope.dateTwo, 'yyyy-MM-dd')
         };
-
         SalesService.get(query).then(function(data) {
             if(data) {
-                console.log(data);
                 var totals = [];
 
                 angular.forEach(data, function (value, key) {
