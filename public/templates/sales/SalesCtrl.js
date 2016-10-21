@@ -41,6 +41,7 @@ function SalesCtrl ($scope, SalesService, $filter) {
 
         SalesService.get(query).then(function(data) {
             if(data) {
+                console.log(data);
                 var totals = [];
 
                 angular.forEach(data, function (value, key) {

@@ -21,7 +21,7 @@ exports.get = function (req, res) {
             query.createdAt = {$gte: moment(req.query.from).utcOffset(60).format('YYYY-MM-DD'), $lt: moment(req.query.to).add(1, 'day').utcOffset(60).format('YYYY-MM-DD')};
         }
 
-        //console.log(query);
+        console.log(query);
 		Checkout.find(query)
         .sort({createdAt: 1})
         .exec(function (err, docs) {
@@ -30,7 +30,6 @@ exports.get = function (req, res) {
                 res.status(500).json({success: false});
                 res.end();
             }
-
             var waiting = docs.length;
             var objectCheckout = [];
 
@@ -43,46 +42,23 @@ exports.get = function (req, res) {
                     delete doc.__v;
                     delete doc.updatedAt;
                     doc.product = [];
-                    doc.createdAt = moment(doc.createdAt).locale('es').format('YYYY-MM-DD');
+                    doc.createdAt = moment(doc.createdAt).utcOffset(60).format('YYYY-MM-DD');
+                    var prodQuery = {
+                        _id: {$in: values.products}
+                    };
+                    Product.find(prodQuery)
+                        .sort({name: 1})
+                        .exec(function (err, products) {
+                            doc.product.push.apply(doc.product, products);
+                            objectCheckout.push(doc);
+                            waiting--;
 
-                    var waitingProducts = values.products.length;
+                            if(waiting == 0) {
+                                res.status(200).json(objectCheckout);
+                                res.end();
+                            }
 
-                    //loop the products to find its data
-                    if(waitingProducts > 0) {
-                        values.products.forEach(function (prod) {
-
-                            Product.findOne({_id: prod}, function (err, collection) {
-                                if(collection) {
-                                    var data = {
-                                        product_id: collection._id,
-                                        productName: collection.name,
-                                        productPrice: collection.price,
-                                        productBarcode: collection.barcode,
-                                        productSim: collection.sim
-                                    };
-                                    doc.product.push(data);
-                                } else {
-                                    var dataError = {
-                                        productName: 'Producto no encontrado'
-                                    };
-
-                                    doc.product.push(dataError);
-                                    console.log('Producto no encontrado');
-                                }
-
-                                waitingProducts--;
-                                if(waitingProducts == 0) {
-                                    objectCheckout.push(doc);
-                                    waiting--;
-                                }
-
-                                if(waiting == 0) {
-                                    res.status(200).json(objectCheckout);
-                                    res.end();
-                                }
-                            });
-                        })
-                    }
+                        });
                 });
             } else {
                 res.status(404).json({success: false});
