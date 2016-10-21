@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 
 var CheckoutSchema = mongoose.Schema({
 	location_id: {type: String},
+    username: {type: String},
     products: [{type: String}],
     total: {type: Number},
     isActive: {

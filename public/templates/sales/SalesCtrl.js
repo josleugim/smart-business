@@ -31,6 +31,8 @@ function SalesCtrl ($scope, SalesService, $filter) {
     $scope.format = $scope.formats[0];
 
 	$scope.getSales = function () {
+        $scope.totalSell = 0;
+        $scope.products = [];
         $('.chart').empty();
         var query = {
             from: $filter('date')($scope.dateOne, 'yyyy-MM-d'),
@@ -49,6 +51,7 @@ function SalesCtrl ($scope, SalesService, $filter) {
                     $scope.totalSell = $scope.totalSell + value.total;
                     // pass each product to the scope
                     angular.forEach(value.product, function (item, key) {
+                        item.username = value.username;
                         $scope.products.push(item);
                     });
                     totals.push(objGrap);
@@ -76,8 +79,9 @@ function SalesCtrl ($scope, SalesService, $filter) {
             .enter().append("div")
             .style("width", function(d) { return x(d) + "px"; })
             .text(function(d) {
-                return 'Fecha de venta: ' + obj[cont].createdAt + ' Total de la venta: $ ' + d;
+                var text = 'Fecha de venta: ' + obj[cont].createdAt + ' Total de la venta: $ ' + d;
                 cont++;
+                return text
             });
     }
 }	

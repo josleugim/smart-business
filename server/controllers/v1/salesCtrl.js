@@ -11,13 +11,22 @@ exports.get = function (req, res) {
 	if(req.query.token) {
 		//query.location_id = jwtValidation.getLocationId(req.query.token);
 
-		if(req.query.from)
-		    query.createdAt = {'$gte': req.query.from};
+		if(req.query.from && req.query.to) {
 
+		    // how to correct compare dates
+            // increment one day in the lesser than date, so it finds records
+		    //http://stackoverflow.com/questions/15347589/moment-js-format-date-in-a-specific-timezone
+            // http://stackoverflow.com/questions/3674539/incrementing-a-date-in-javascript
+            // http://stackoverflow.com/questions/8835757/return-query-based-on-date
+            query.createdAt = {$gte: moment(req.query.from).utcOffset(60).format('YYYY-MM-DD'), $lt: moment(req.query.to).add(1, 'day').utcOffset(60).format('YYYY-MM-DD')};
+        }
+
+        //console.log(query);
 		Checkout.find(query)
         .sort({createdAt: 1})
         .exec(function (err, docs) {
             if(err) {
+                console.log(err);
                 res.status(500).json({success: false});
                 res.end();
             }
@@ -34,7 +43,7 @@ exports.get = function (req, res) {
                     delete doc.__v;
                     delete doc.updatedAt;
                     doc.product = [];
-                    doc.createdAt = moment(doc.createdAt).locale('es').format("dddd, MMMM Do YYYY");
+                    doc.createdAt = moment(doc.createdAt).locale('es').format('YYYY-MM-DD');
 
                     var waitingProducts = values.products.length;
 
@@ -75,6 +84,9 @@ exports.get = function (req, res) {
                         })
                     }
                 });
+            } else {
+                res.status(404).json({success: false});
+                res.end();
             }
         });
 	}

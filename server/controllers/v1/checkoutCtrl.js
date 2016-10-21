@@ -1,7 +1,8 @@
 var mongoose = require('mongoose'),
     Checkout = mongoose.model('Checkout'),
-    Product = mongoose.model('Product')
-    jwtValidation = require('../../services/jwtValidation');
+    Product = mongoose.model('Product'),
+    jwtValidation = require('../../services/jwtValidation'),
+    User = mongoose.model('User');
 
 exports.post = function(req, res) {
 	console.log('POST Checkout');
@@ -10,22 +11,32 @@ exports.post = function(req, res) {
 		var data = {};
 		data.location_id = jwtValidation.getLocationId(req.query.token);
 
-		if(req.body.products)
-			data.products = req.body.products;
-		if(req.body.total)
-			data.total = req.body.total;
+        if(req.body.products)
+            data.products = req.body.products;
+        if(req.body.total)
+            data.total = req.body.total;
 
-		var checkout = new Checkout(data);
-		checkout.save(function(err, doc) {
-			if(err) {
-				res.status(500).json({success:false});
-				res.end();
-			} else {
-				deleteProducts(data.products);
-				res.status(201).json({success: true});
-				res.end();
-			}
-		});
+        User.findOne({_id: jwtValidation.getUserId(req.query.token)}, function (err, user) {
+            if(err) {
+                console.log(err);
+                res.status(500).json({success: false, error: err});
+                res.end();
+            }
+            if(user) {
+                data.username = user.name;
+                var checkout = new Checkout(data);
+                checkout.save(function(err, doc) {
+                    if(err) {
+                        res.status(500).json({success:false, error: err});
+                        res.end();
+                    } else {
+                        deleteProducts(data.products);
+                        res.status(201).json({success: true});
+                        res.end();
+                    }
+                });
+            }
+        })
 	} else {
 		res.status(403).json({success: false});
 		res.end();

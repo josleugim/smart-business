@@ -5,9 +5,8 @@
 </div>
 <div class="row">
 	<div class="col-md-6">
-		<h3>Desde: {{dateOne | date:'dd-MM-yyyy' }}</h3>
+		<h3>Desde el: {{dateOne | date:'dd-MM-yyyy' }}</h3>
 		<div style="display:inline-block; min-height:290px;">
-			<h4>Popup</h4>
 			<div class="row">
 				<div class="col-md-6">
 					<p class="input-group">
@@ -21,9 +20,8 @@
 		</div>
 	</div>
 	<div class="col-md-6">
-		<h3>Desde: {{dateTwo | date:'dd-MM-yyyy' }}</h3>
+		<h3>Al: {{dateTwo | date:'dd-MM-yyyy' }}</h3>
 		<div style="display:inline-block; min-height:290px;">
-			<h4>Popup</h4>
 			<div class="row">
 				<div class="col-md-6">
 					<p class="input-group">
@@ -48,6 +46,7 @@
 		<p>Venta total del periodo: $ {{totalSell}} MXN</p>
 		<ul>
 			<li ng-repeat="product in products">
+				<p>Vendido por: {{product.username}}</p>
 				<p>{{product.productName}} $ {{product.productPrice}} MXN</p>
                 <p>Código de barras o IMEI: {{product.productBarcode}}</p>
                 <p>SIM: {{product.productSim}}</p>
