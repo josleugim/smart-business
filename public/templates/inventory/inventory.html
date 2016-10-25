@@ -35,17 +35,14 @@
     <div class="col-md-1">
         <p><b>Localidad</b></p>
     </div>
-    <div class="col-md-1">
-        <p><b>Categoría</b></p>
+    <div class="col-md-2 col-lg-2 col-sm-2">
+        <p><b>Categoría</b> | <b>Marca</b></p>
     </div>
-    <div class="col-md-1">
-        <p><b>Marca</b></p>
-    </div>
-	<div class="col-md-1">
-		<p><b>Nombre</b></p>
+	<div class="col-md-2 col-lg-2 col-sm-2">
+		<p><b>Nombre</b> | <b>Precio</b></p>
 	</div>
 	<div class="col-md-1">
-		<p><b>Precio</b></p>
+		<p><b>Vendido</b></p>
 	</div>
 	<div class="col-md-1">
 		<p><b>Código de barras o IMEI</b></p>
@@ -57,12 +54,9 @@
 		<p><b>Descripción</b></p>
 	</div>
     <div class="col-md-1">
-        <p><b>Vendido</b></p>
-    </div>
-    <div class="col-md-1">
         <p><b>Fecha de ingreso</b></p>
     </div>
-	<div class="col-md-1">
+	<div class="col-md-2 col-lg-2 col-sm-2">
 		<p><b>Opciones</b></p>
 	</div>
 </div>
@@ -70,17 +64,14 @@
     <div class="col-md-1">
         <p>{{product.locationName}}</p>
     </div>
-    <div class="col-md-1">
-        <p>{{product.categoryName}}</p>
+    <div class="col-md-2 col-lg-2 col-sm-2">
+        <p>{{product.categoryName}} | {{product.brandName}}</p>
     </div>
-    <div class="col-md-1">
-        <p>{{product.brandName}}</p>
-    </div>
-	<div class="col-md-1">
-		<p>{{product.name}}</p>
+	<div class="col-md-2 col-lg-2 col-sm-2">
+		<p>{{product.name}} | ${{product.price}}</p>
 	</div>
 	<div class="col-md-1">
-		<p>{{product.price}}</p>
+		<p>{{product.soldOut}}</p>
 	</div>
 	<div class="col-md-1">
 		<p>{{product.barcode}}</p>
@@ -92,12 +83,9 @@
 		<p>{{product.description}}</p>
 	</div>
     <div class="col-md-1">
-        <p>{{product.soldOut}}</p>
-    </div>
-    <div class="col-md-1">
         <p>{{product.createdAt}}</p>
     </div>
-	<div class="col-md-1">
+	<div class="col-md-2 col-lg-2 col-sm-2">
 		<p>
 			<!--<button class="btn btn-info" type="button" ng-click="modifyProduct(product._id)">Modificar</button>-->
 			<a class="btn btn-info" href="/product/{{product._id}}" target="_self">Modificar</a>

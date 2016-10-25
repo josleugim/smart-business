@@ -53,6 +53,10 @@
                     <i class="glyphicon glyphicon-chevron-down" aria-hidden="true" ng-click="downCountProduct()"></i>
                 </div>-->
                 <div class="form-group">
+                    <label for="count">Cantidad de copias</label>
+                    <input type="number" class="form-control" id="count" ng-model="count" name="count" min="0" max="100">
+                </div>
+                <div class="form-group">
                     <label for="description">Código de barras o IMEI</label>
                     <input type="text" class="form-control" ng-model="barcode" name="barcode" placeholder="IMEI">
                 </div>

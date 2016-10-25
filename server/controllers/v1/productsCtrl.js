@@ -37,16 +37,31 @@ exports.post = function(req, res) {
             data.description = req.body.description;
 
         var product = new Product(data);
-        product.save(function(err, collection) {
-            if(err) {
-                console.log(err);
-                res.status(500).json({success: false, error: err});
-                res.end();
-            } else {
-               res.status(201).json({success: true});
-               res.end();
+
+        if(req.body.count) {
+            for(var i = 0; i < req.body.count; i++) {
+
+                product.save(function(err, collection) {
+                    if(err) {
+                        console.log(err);
+                    }
+                })
             }
-        })
+
+            if(i == req.body.count) {
+                res.status(200).json({success: true});
+                res.end();
+            }
+        } else {
+            product.save(function(err, collection) {
+                if(err) {
+                    console.log(err);
+                } else {
+                    res.status(200).json({success: true});
+                    res.end();
+                }
+            })
+        }
     }
 };
 

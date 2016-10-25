@@ -47,7 +47,8 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService, Cate
             description: $scope.description,
             image: $scope.files,
             barcode: $scope.barcode,
-            sim: $scope.sim
+            sim: $scope.sim,
+            count: $scope.count
         };
 
         /*angular.forEach($scope.product.barCodes, function(item, key) {
@@ -60,7 +61,6 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService, Cate
         });*/
 
         // check why some fields are undefined
-        console.log(data);
 
         ProductService.post(data).then(function(response) {
             if(response.success) {
@@ -71,6 +71,7 @@ function ProductCtrl($scope, BrandService, LocationService, ProductService, Cate
                 $scope.files = "";
                 $scope.sim = "";
                 $scope.barcode = "";
+                $scope.count = "";
                 /*$scope.product = {barCodes:[]};
                 $scope.item = {sims:[]};
                 $scope.codesCount = 0;
