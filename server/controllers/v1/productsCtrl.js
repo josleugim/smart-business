@@ -37,8 +37,9 @@ exports.post = function(req, res) {
             data.description = req.body.description;
 
         var product = new Product(data);
-
-        if(req.body.count) {
+        console.log(req.body.count);
+        var waitting = 0;
+        if(Number(req.body.count) > 0) {
             for(var i = 0; i < req.body.count; i++) {
 
                 product.save(function(err, collection) {
@@ -46,9 +47,10 @@ exports.post = function(req, res) {
                         console.log(err);
                     }
                 })
+                waitting++;
             }
 
-            if(i == req.body.count) {
+            if(waitting == Number(req.body.count)) {
                 res.status(200).json({success: true});
                 res.end();
             }
