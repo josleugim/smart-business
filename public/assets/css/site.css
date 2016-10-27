@@ -83,6 +83,9 @@ body {
   margin: 1px;
   color: #fff;
 }
+.inventory p {
+  font-size: 0.8em;
+}
 footer {
   background-color: #3e9bba;
 }

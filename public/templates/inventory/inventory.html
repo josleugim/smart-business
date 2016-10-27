@@ -1,95 +1,97 @@
-<div class="row">
-	<div class="col-md-12">
-		<h3>Inventario</h3>
+<section class="inventory">
+	<div class="row">
+		<div class="col-md-12">
+			<h3>Inventario</h3>
+		</div>
 	</div>
-</div>
-<div class="row">
-	<div class="col-md-3"></div>
-	<div class="col-md-3">
-		<p>Para ver el inventario de una localidad, <strong>seleccionala de la lista</strong>:</p>
+	<div class="row">
+		<div class="col-md-3"></div>
+		<div class="col-md-3">
+			<p>Para ver el inventario de una localidad, <strong>seleccionala de la lista</strong>:</p>
+		</div>
+		<div class="col-md-3">
+			<select ng-model="locList" ng-options="location.name for location in locations track by location._id" ng-change="updateInventory(locList._id)"></select>
+		</div>
+		<div class="col-md-3"></div>
 	</div>
-	<div class="col-md-3">
-		<select ng-model="locList" ng-options="location.name for location in locations track by location._id" ng-change="updateInventory(locList._id)"></select>
+	<div class="row">
+		<div class="col-md-3"></div>
+		<div class="col-md-3">
+			<p>Filtrado de campos:</p>
+		</div>
+		<div class="col-md-3 col-lg-3">
+			<div>
+				<select ng-model="q" name="q">
+					<option value="categoryName">Categoría</option>
+					<option value="brandName">Marca</option>
+					<option value="price">Precio</option>
+					<option value="-soldOut">Vendido</option>
+					<option value="-createdAt">Fecha de ingreso</option>
+				</select>
+			</div>
+		</div>
+		<div class="col-md-3"></div>
 	</div>
-	<div class="col-md-3"></div>
-</div>
-<div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-3">
-        <p>Filtrado de campos:</p>
-    </div>
-    <div class="col-md-3 col-lg-3">
-        <div>
-            <select ng-model="q" name="q">
-                <option value="categoryName">Categoría</option>
-                <option value="brandName">Marca</option>
-                <option value="price">Precio</option>
-                <option value="-soldOut">Vendido</option>
-                <option value="-createdAt">Fecha de ingreso</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-md-3"></div>
-</div>
-<div class="row">
-    <div class="col-md-1">
-        <p><b>Localidad</b></p>
-    </div>
-    <div class="col-md-2 col-lg-2 col-sm-2">
-        <p><b>Categoría</b> | <b>Marca</b></p>
-    </div>
-	<div class="col-md-2 col-lg-2 col-sm-2">
-		<p><b>Nombre</b> | <b>Precio</b></p>
+	<div class="row">
+		<div class="col-md-1">
+			<p><b>Localidad</b></p>
+		</div>
+		<div class="col-md-2 col-lg-2 col-sm-2">
+			<p><b>Categoría</b> | <b>Marca</b></p>
+		</div>
+		<div class="col-md-2 col-lg-2 col-sm-2">
+			<p><b>Nombre</b> | <b>Precio</b></p>
+		</div>
+		<div class="col-md-1">
+			<p><b>Vendido</b></p>
+		</div>
+		<div class="col-md-1">
+			<p><b>Código de barras o IMEI</b></p>
+		</div>
+		<div class="col-md-1">
+			<p><b>SIM</b></p>
+		</div>
+		<div class="col-md-1">
+			<p><b>Descripción</b></p>
+		</div>
+		<div class="col-md-1">
+			<p><b>Fecha de ingreso</b></p>
+		</div>
+		<div class="col-md-2 col-lg-2 col-sm-2">
+			<p><b>Opciones</b></p>
+		</div>
 	</div>
-	<div class="col-md-1">
-		<p><b>Vendido</b></p>
+	<div class="row" ng-repeat="product in products | orderBy: q">
+		<div class="col-md-1">
+			<p>{{product.locationName}}</p>
+		</div>
+		<div class="col-md-2 col-lg-2 col-sm-2">
+			<p>{{product.categoryName}} | {{product.brandName}}</p>
+		</div>
+		<div class="col-md-2 col-lg-2 col-sm-2">
+			<p>{{product.name}} | ${{product.price}}</p>
+		</div>
+		<div class="col-md-1">
+			<p>{{product.soldOut}}</p>
+		</div>
+		<div class="col-md-1">
+			<p>{{product.barcode}}</p>
+		</div>
+		<div class="col-md-1">
+			<p>{{product.sim}}</p>
+		</div>
+		<div class="col-md-1">
+			<p>{{product.description}}</p>
+		</div>
+		<div class="col-md-1">
+			<p>{{product.createdAt}}</p>
+		</div>
+		<div class="col-md-2 col-lg-2 col-sm-2">
+			<p>
+				<!--<button class="btn btn-info" type="button" ng-click="modifyProduct(product._id)">Modificar</button>-->
+				<a class="btn btn-info" href="/product/{{product._id}}" target="_self">Modificar</a>
+				<button class="btn btn-danger" ng-click="deleteProduct(product._id)" type="submit">Borrar</button>
+			</p>
+		</div>
 	</div>
-	<div class="col-md-1">
-		<p><b>Código de barras o IMEI</b></p>
-	</div>
-	<div class="col-md-1">
-		<p><b>SIM</b></p>
-	</div>
-	<div class="col-md-1">
-		<p><b>Descripción</b></p>
-	</div>
-    <div class="col-md-1">
-        <p><b>Fecha de ingreso</b></p>
-    </div>
-	<div class="col-md-2 col-lg-2 col-sm-2">
-		<p><b>Opciones</b></p>
-	</div>
-</div>
-<div class="row" ng-repeat="product in products | orderBy: q">
-    <div class="col-md-1">
-        <p>{{product.locationName}}</p>
-    </div>
-    <div class="col-md-2 col-lg-2 col-sm-2">
-        <p>{{product.categoryName}} | {{product.brandName}}</p>
-    </div>
-	<div class="col-md-2 col-lg-2 col-sm-2">
-		<p>{{product.name}} | ${{product.price}}</p>
-	</div>
-	<div class="col-md-1">
-		<p>{{product.soldOut}}</p>
-	</div>
-	<div class="col-md-1">
-		<p>{{product.barcode}}</p>
-	</div>
-	<div class="col-md-1">
-		<p>{{product.sim}}</p>
-	</div>
-	<div class="col-md-1">
-		<p>{{product.description}}</p>
-	</div>
-    <div class="col-md-1">
-        <p>{{product.createdAt}}</p>
-    </div>
-	<div class="col-md-2 col-lg-2 col-sm-2">
-		<p>
-			<!--<button class="btn btn-info" type="button" ng-click="modifyProduct(product._id)">Modificar</button>-->
-			<a class="btn btn-info" href="/product/{{product._id}}" target="_self">Modificar</a>
-			<button class="btn btn-danger" ng-click="deleteProduct(product._id)" type="submit">Borrar</button>
-		</p>
-	</div>
-</div>
+</section>
