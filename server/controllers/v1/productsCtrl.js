@@ -36,12 +36,13 @@ exports.post = function(req, res) {
         if(req.body.description)
             data.description = req.body.description;
 
-        var product = new Product(data);
         var nProducts = Number(req.body.count);
+        console.log(nProducts);
         var waitting = 0;
         if(nProducts > 0) {
             for(var i = 0; i < nProducts; i++) {
-
+                
+                var product = new Product(data);
                 product.save(function(err, collection) {
                     if(err)
                         console.log(err);
@@ -49,9 +50,10 @@ exports.post = function(req, res) {
                         console.log('Product created');
                 })
                 waitting++;
+                console.log(waitting);
             }
 
-            if(waitting == Number(req.body.count)) {
+            if(waitting == nProducts) {
                 res.status(200).json({success: true});
                 res.end();
             }

@@ -86,6 +86,10 @@ body {
 .inventory p {
   font-size: 0.8em;
 }
+.inventory .location {
+  font-size: 0.6em;
+  font-weight: bolder;
+}
 footer {
   background-color: #3e9bba;
 }
