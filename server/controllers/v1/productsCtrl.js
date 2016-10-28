@@ -37,7 +37,7 @@ exports.post = function(req, res) {
             data.description = req.body.description;
 
         var nProducts = Number(req.body.count);
-        console.log(nProducts);
+
         var waitting = 0;
         if(nProducts > 0) {
             for(var i = 0; i < nProducts; i++) {
@@ -48,7 +48,7 @@ exports.post = function(req, res) {
                         console.log(err);
                     if (collection)
                         console.log('Product created');
-                })
+                });
                 waitting++;
                 console.log(waitting);
             }
@@ -59,7 +59,8 @@ exports.post = function(req, res) {
             }
         } else {
             console.log('Just creating 1 product');
-            product.save(function(err, collection) {
+            var oneProduct = new Product(data);
+            oneProduct.save(function(err, collection) {
                 if(err) {
                     console.log(err);
                 } else {
