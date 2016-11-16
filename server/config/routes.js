@@ -25,6 +25,7 @@ module.exports = function (app, config) {
     app.get('/api/v1/products', productCtrl.get);
     app.delete('/api/v1/products', productCtrl.del);
     app.put('/api/v1/products', upload.single('image'), productCtrl.put);
+    app.get('/api/v1/products-count', productCtrl.count);
     app.post('/api/v1/sellers', userCtrl.postSeller);
     app.get('/api/v1/sellers', userCtrl.getSeller);
     app.put('/api/v1/sellers', userCtrl.putSeller);

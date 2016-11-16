@@ -82,11 +82,21 @@ exports.get = function(req, res) {
 
         // get all the products depending of the location
         if(req.query.searchType == 'byLocation') {
-
             if(jwtValidation.getLocationId(req.query.token) != undefined)
                 query.location_id = jwtValidation.getLocationId(req.query.token);
             else
                 query.location_id = req.query.location_id;
+
+            var nSkip = 0;
+
+            if(req.query.lastId)
+                query._id = {$gt: req.query.lastId};
+
+            if(req.query.prevId)
+                query._id = {$lt: req.query.prevId};
+
+            if(req.query.currentPage)
+                nSkip = 50 * (req.query.currentPage - 1);
 
             findProducts(query);
 
@@ -108,9 +118,10 @@ exports.get = function(req, res) {
         }
 
         function findProducts(query) {
-            console.log(query);
             Product.find(query)
                 .sort({createdAt: 1})
+                .skip(nSkip)
+                .limit(50)
                 .exec(function (err, products) {
                     if(err) {
                         console.log(err);
@@ -252,4 +263,20 @@ exports.put = function (req, res) {
         res.status(401).json({success: false});
         res.end();
     }
+};
+
+exports.count = function (req, res) {
+    Product.count({isActive: true}, function (err, docs) {
+        if(err) {
+            console.log(err);
+            res.status(500).json({success: false});
+            res.end();
+        }
+
+        if(docs) {
+            var totalPage = Math.round((docs + 50 - 1) / 50);
+            res.status(200).json(totalPage);
+            res.end();
+        }
+    })
 };

@@ -9,7 +9,8 @@ function ProductService($q, $http, $location, AuthToken) {
     	post: post,
         get: get,
         delProduct: delProduct,
-        put: put
+        put: put,
+        count: countProducts
     };
 
     function put(query, data) {
@@ -111,6 +112,30 @@ function ProductService($q, $http, $location, AuthToken) {
             dfd.resolve(response);
         }, function errorCallback(response) {
             dfd.resolve(response);
+        });
+
+        return dfd.promise;
+    }
+
+    function countProducts(query) {
+        var dfd = $q.defer();
+
+        query.token = AuthToken.getToken();
+
+        $http({
+            method: 'GET',
+            url: host + 'api/v1/products-count',
+            params: query,
+            headers: {
+                'Content-Type': 'application/json'
+                //'x-access-token': user.token
+            }
+        }).then(function successCallback(response) {
+            if(response.data) {
+                dfd.resolve(response.data);
+            }
+        }, function errorCallback() {
+            dfd.resolve(false);
         });
 
         return dfd.promise;
