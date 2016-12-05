@@ -102,8 +102,10 @@ exports.get = function(req, res) {
 
         } else if(req.query.searchType == 'byName') {
             console.log('Searching product by name....');
-            if(req.query.name)
+            if(req.query.name) {
                 query.name = {$regex: req.query.name, $options: 'i'};
+                query.location_id = jwtValidation.getLocationId(req.query.token);
+            }
 
             findProducts(query);
             // this condition returns just one product
