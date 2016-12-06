@@ -112,6 +112,7 @@ exports.get = function(req, res) {
         } else if(req.query.searchType == 'byBarcode') {
             console.log('Searching product by barcode...');
             query.barcode = req.query.barcode;
+            query.location_id = jwtValidation.getLocationId(req.query.token);
 
             findProducts(query);
         } else {
