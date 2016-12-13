@@ -22,19 +22,16 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService, mvNot
 		$scope.keepFocus();
 		var query = {
 			barcode: itemBarcode,
-			searchType: 'byBarcode'
+			searchType: 'byBarcode',
+            products_id: []
 		};
-		if($scope.carItems.length > 0) {
-			angular.forEach($scope.carItems, function(value, key) {
-				if(value.barcode.indexOf(itemBarcode) == -1) {
-					addItemToList(query);
-				} else {
-					console.log('Item already in list');
-				}
-			});
-		} else {
-			addItemToList(query);
-		}
+        // send the ids in the checkout list that will be excluded in the response
+        if($scope.carItems.length > 0) {
+            angular.forEach($scope.carItems, function (product) {
+                query.products_id.push(product._id);
+            });
+        }
+        addItemToList(query);
 		$scope.itemBarcode = "";
 	};
 
@@ -76,8 +73,16 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService, mvNot
 		$rootScope.$broadcast('updateItemsList', "");
 		var info = {
 			name: $scope.itemName,
-			searchType: 'byName'
+			searchType: 'byName',
+            products_id: []
 		};
+
+		// send the ids in the checkout list that will be excluded in the response
+        if($scope.carItems.length > 0) {
+            angular.forEach($scope.carItems, function (product) {
+                info.products_id.push(product._id);
+            });
+        }
 
 		ProductService.get(info).then(function(data) {
 			if(data) {
@@ -90,10 +95,25 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService, mvNot
 		$rootScope.$broadcast('removeItemFromCheckout', product);
 	};
 
+	// add product searched by name, to the cart
 	$scope.addToCheckoutList = function(product) {
-		$rootScope.$broadcast('updateCheckoutList', product);
-		$scope.itemName = "";
-        $scope.keepFocus();
+        var isInCart = false;
+        // validates product isn't all ready in the cart
+        if($scope.carItems.length > 0) {
+            angular.forEach($scope.carItems, function(value, key) {
+                if(value._id == product._id) {
+                    isInCart = true;
+                    mvNotifier.error('Ese producto ya se encuentra en tu lista, escoge otro del listado');
+                }
+
+            });
+        }
+
+        if(!isInCart) {
+            $rootScope.$broadcast('updateCheckoutList', product);
+            $scope.itemName = "";
+            $scope.keepFocus();
+        }
 	};
 
 	$scope.$on("updateItemsList", function(event, data){

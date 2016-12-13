@@ -104,15 +104,18 @@ exports.get = function(req, res) {
             console.log('Searching product by name....');
             if(req.query.name) {
                 query.name = {$regex: req.query.name, $options: 'i'};
+                query._id = {$nin: req.query.products_id};
                 query.location_id = jwtValidation.getLocationId(req.query.token);
             }
-
             findProducts(query);
             // this condition returns just one product
         } else if(req.query.searchType == 'byBarcode') {
             console.log('Searching product by barcode...');
             query.barcode = req.query.barcode;
             query.location_id = jwtValidation.getLocationId(req.query.token);
+            query._id = {$nin: req.query.products_id};
+
+            console.log(query);
 
             findProducts(query);
         } else {
@@ -131,58 +134,60 @@ exports.get = function(req, res) {
                         res.status(500).json({success: false});
                         res.end();
                     }
-                    var objectProduct = [];
-                    var waiting = products.length;
+                    if(products) {
+                        var objectProduct = [];
+                        var waiting = products.length;
 
-                    if(waiting > 0) {
-                        products.forEach(function(values) {
-                            // get the location name
-                            Location.findOne({_id: values.location_id}, function(err, loc) {
-                                if(loc) {
-                                    // get the category
-                                    Category.findOne({_id: values.category_id}, function (err, cat) {
-                                        if(cat) {
+                        if(waiting > 0) {
+                            products.forEach(function(values) {
+                                // get the location name
+                                Location.findOne({_id: values.location_id}, function(err, loc) {
+                                    if(loc) {
+                                        // get the category
+                                        Category.findOne({_id: values.category_id}, function (err, cat) {
+                                            if(cat) {
 
-                                            // get brand name
-                                            Brand.findOne({_id: values.brand_id}, function (err, br) {
-                                                if(br) {
-                                                    var product = values.toObject();
+                                                // get brand name
+                                                Brand.findOne({_id: values.brand_id}, function (err, br) {
+                                                    if(br) {
+                                                        var product = values.toObject();
 
-                                                    delete product.isActive;
-                                                    delete product.__v;
-                                                    delete product.updatedAt;
-                                                    if(product.soldOut)
-                                                        product.soldOut = 'Vendido';
-                                                    else
-                                                        product.soldOut = 'No';
-                                                    product.locationName = loc.name;
-                                                    product.categoryName = cat.name;
-                                                    product.brandName = br.name;
-                                                    product.createdAt = moment(product.createdAt).locale('es').format("dddd, MMMM Do YYYY");
-                                                    objectProduct.push(product);
-                                                }
-                                                if(err)
-                                                    console.log(err);
+                                                        delete product.isActive;
+                                                        delete product.__v;
+                                                        delete product.updatedAt;
+                                                        if(product.soldOut)
+                                                            product.soldOut = 'Vendido';
+                                                        else
+                                                            product.soldOut = 'No';
+                                                        product.locationName = loc.name;
+                                                        product.categoryName = cat.name;
+                                                        product.brandName = br.name;
+                                                        product.createdAt = moment(product.createdAt).locale('es').format("dddd, MMMM Do YYYY");
+                                                        objectProduct.push(product);
+                                                    }
+                                                    if(err)
+                                                        console.log(err);
 
-                                                waiting--;
+                                                    waiting--;
 
-                                                if(waiting == 0) {
-                                                    res.status(200).json(objectProduct);
-                                                    res.end();
-                                                }
-                                            })
-                                        }
-                                        if(err)
-                                            console.log(err);
-                                    });
-                                }
-                                if(err)
-                                    console.log(err);
+                                                    if(waiting == 0) {
+                                                        res.status(200).json(objectProduct);
+                                                        res.end();
+                                                    }
+                                                })
+                                            }
+                                            if(err)
+                                                console.log(err);
+                                        });
+                                    }
+                                    if(err)
+                                        console.log(err);
+                                });
                             });
-                        });
-                    } else {
-                        res.status(404).json({message: 'No existen productos'});
-                        res.end();
+                        } else {
+                            res.status(404).json({message: 'No existen productos'});
+                            res.end();
+                        }
                     }
                 });
         }

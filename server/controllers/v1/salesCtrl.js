@@ -20,8 +20,7 @@ exports.get = function (req, res) {
             // http://stackoverflow.com/questions/8835757/return-query-based-on-date
             var from = moment(req.query.from).utcOffset(60).format('YYYY-MM-DD');
             var to = moment(req.query.to).add(1, 'day').utcOffset(60).format('YYYY-MM-DD');
-            console.log('query: ' + req.query.from);
-            console.log(from);
+
             query.createdAt = {$gte: from, $lt: to};
         }
 
