@@ -4,6 +4,7 @@ angular.module('smartBusiness')
 
 function ProductService($q, $http, $location, AuthToken) {
 	var host = 'http://' + $location.host() + ':5000/';
+    var user = AuthToken.getToken();
 
 	return {
     	post: post,
@@ -21,8 +22,6 @@ function ProductService($q, $http, $location, AuthToken) {
             fd.append(key, data[key]);
         }
 
-        query.token = AuthToken.getToken();
-
         $http({
             method: 'PUT',
             url: host + 'api/v1/products',
@@ -30,7 +29,8 @@ function ProductService($q, $http, $location, AuthToken) {
             data: fd,
             transformRequest: angular.indentity,
             headers: {
-                'Content-Type': undefined
+                'Content-Type': undefined,
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data.success) {
@@ -46,14 +46,13 @@ function ProductService($q, $http, $location, AuthToken) {
     function get(query) {
         var dfd = $q.defer();
 
-        query.token = AuthToken.getToken();
-
         $http({
             method: 'GET',
             url: host + 'api/v1/products',
             params: query,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data) {
@@ -77,11 +76,11 @@ function ProductService($q, $http, $location, AuthToken) {
     	$http({
     		method: 'POST',
     		url: host + 'api/v1/products',
-    		params: {token: AuthToken.getToken()},
     		data: fd,
             transformRequest: angular.indentity,
             headers: {
-                'Content-Type': undefined
+                'Content-Type': undefined,
+                'x-access-token': user.token
             }
     	}).then(function successCallback(response) {
     		if(response.data.success) {
@@ -96,8 +95,6 @@ function ProductService($q, $http, $location, AuthToken) {
 
     function delProduct(query) {
         var dfd = $q.defer();
-
-        query.token = AuthToken.getToken();
         
         //More information about the http service at: https://docs.angularjs.org/api/ng/service/$http
         $http({
@@ -105,7 +102,8 @@ function ProductService($q, $http, $location, AuthToken) {
             url: host + 'api/v1/products',
             params: query,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             response.success = true;
@@ -120,15 +118,13 @@ function ProductService($q, $http, $location, AuthToken) {
     function countProducts(query) {
         var dfd = $q.defer();
 
-        query.token = AuthToken.getToken();
-
         $http({
             method: 'GET',
             url: host + 'api/v1/products-count',
             params: query,
             headers: {
-                'Content-Type': 'application/json'
-                //'x-access-token': user.token
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data) {

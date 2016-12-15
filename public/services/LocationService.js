@@ -4,6 +4,7 @@ angular.module('smartBusiness')
 
     function LocationService($q, $http, $location, AuthToken) {
     	var host = 'http://' + $location.host() + ':5000/';
+        var user = AuthToken.getToken();
 
     	return {
             get: getAll,
@@ -18,9 +19,9 @@ angular.module('smartBusiness')
             $http({
                 method: 'GET',
                 url: host + 'api/v1/locations',
-                params: {token: AuthToken.getToken()},
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'x-access-token': user.token
                 }
             }).then(function successCallback(response) {
                 response.success = true;
@@ -35,14 +36,13 @@ angular.module('smartBusiness')
         function getById(query) {
             var dfd = $q.defer();
 
-            query.token = AuthToken.getToken();
-
             $http({
                 method: 'GET',
                 url: host + 'api/v1/locations',
                 params: query,
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'x-access-token': user.token
                 }
             }).then(function successCallback(response) {
                 if(response.data) {
@@ -61,10 +61,10 @@ angular.module('smartBusiness')
     		$http({
     			method: 'POST',
             	url: host + 'api/v1/locations',
-            	params: {token: AuthToken.getToken()},
             	data: data,
             	headers: {
-                	'Content-Type': 'application/json'
+                	'Content-Type': 'application/json',
+                    'x-access-token': user.token
             	}
         	}).then(function successCallback(response) {
             	if(response.data.success) {
@@ -79,8 +79,6 @@ angular.module('smartBusiness')
 
         function put(query, data) {
             var dfd = $q.defer();
-
-            query.token = AuthToken.getToken();
 
             $http({
                 method: 'PUT',

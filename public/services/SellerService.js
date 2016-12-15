@@ -4,6 +4,7 @@ angular.module('smartBusiness')
 
 function SellerService($q, $http, $location, AuthToken) {
     var host = 'http://' + $location.host() + ':5000/';
+    var user = AuthToken.getToken();
 
     return {
         get: get,
@@ -15,7 +16,6 @@ function SellerService($q, $http, $location, AuthToken) {
 
     function put(query, data) {
         var dfd = $q.defer();
-        query.token = AuthToken.getToken();
         
         $http({
             method: 'PUT',
@@ -23,7 +23,8 @@ function SellerService($q, $http, $location, AuthToken) {
             params: query,
             data: data,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data.success) {
@@ -38,14 +39,14 @@ function SellerService($q, $http, $location, AuthToken) {
 
     function getById(query) {
         var dfd = $q.defer();
-        query.token = AuthToken.getToken();
 
         $http({
             method: 'GET',
             url: host + 'api/v1/sellers',
             params: query,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data) {
@@ -64,9 +65,9 @@ function SellerService($q, $http, $location, AuthToken) {
         $http({
             method: 'GET',
             url: host + 'api/v1/sellers',
-            params: {token: AuthToken.getToken()},
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data) {
@@ -77,7 +78,7 @@ function SellerService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-    };
+    }
 
     function post(data) {
     	var dfd = $q.defer();
@@ -85,10 +86,10 @@ function SellerService($q, $http, $location, AuthToken) {
     	$http({
     		method: 'POST',
     		url: host + 'api/v1/sellers',
-    		params: {token: AuthToken.getToken()},
     		data: data,
     		headers: {
-    			'Content-Type': 'application/json'
+    			'Content-Type': 'application/json',
+                'x-access-token': user.token
     		}
     	}).then(function successCallback(response) {
     		if(response.data.success) {
@@ -99,12 +100,10 @@ function SellerService($q, $http, $location, AuthToken) {
     	});
 
     	return dfd.promise;
-    };
+    }
 
     function delSeller(query) {
         var dfd = $q.defer();
-
-        query.token = AuthToken.getToken();
         
         //More information about the http service at: https://docs.angularjs.org/api/ng/service/$http
         $http({
@@ -112,7 +111,8 @@ function SellerService($q, $http, $location, AuthToken) {
             url: host + 'api/v1/sellers',
             params: query,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data.success) {

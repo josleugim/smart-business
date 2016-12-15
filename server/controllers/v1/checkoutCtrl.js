@@ -6,41 +6,37 @@ var mongoose = require('mongoose'),
 
 exports.post = function(req, res) {
 	console.log('POST Checkout');
+	var token = req.headers['x-access-token'];
 
-	if(req.query.token) {
-		var data = {};
-		data.location_id = jwtValidation.getLocationId(req.query.token);
+	var data = {};
+	data.location_id = jwtValidation.getLocationId(token);
 
-        if(req.body.products)
-            data.products = req.body.products;
-        if(req.body.total)
-            data.total = req.body.total;
+	if(req.body.products)
+		data.products = req.body.products;
+	if(req.body.total)
+		data.total = req.body.total;
 
-        User.findOne({_id: jwtValidation.getUserId(req.query.token)}, function (err, user) {
-            if(err) {
-                console.log(err);
-                res.status(500).json({success: false, error: err});
-                res.end();
-            }
-            if(user) {
-                data.username = user.name;
-                var checkout = new Checkout(data);
-                checkout.save(function(err, doc) {
-                    if(err) {
-                        res.status(500).json({success:false, error: err});
-                        res.end();
-                    } else {
-                        deleteProducts(data.products);
-                        res.status(201).json({success: true});
-                        res.end();
-                    }
-                });
-            }
-        })
-	} else {
-		res.status(403).json({success: false});
-		res.end();
-	}
+	User.findOne({_id: jwtValidation.getUserId(req.query.token)}, function (err, user) {
+		if(err) {
+			console.log(err);
+			res.status(500).json({success: false, error: err});
+			res.end();
+		}
+		if(user) {
+			data.username = user.name;
+			var checkout = new Checkout(data);
+			checkout.save(function(err, doc) {
+				if(err) {
+					res.status(500).json({success:false, error: err});
+					res.end();
+				} else {
+					deleteProducts(data.products);
+					res.status(201).json({success: true});
+					res.end();
+				}
+			});
+		}
+	});
 
 	function deleteProducts(products) {
 		products.forEach(function(item) {
@@ -66,4 +62,4 @@ exports.post = function(req, res) {
 			});
 		});
 	}
-}
+};

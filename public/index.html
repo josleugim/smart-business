@@ -14,13 +14,13 @@
     <a href="#" class="toggle-menu"></a>
     <aside class="aside-menu">
         <ul>
-            <li><a href="/checkout">Caja</a></li>
-            <li><a href="/sales">Ventas</a></li>
-            <li><a href="/inventory">Inventario</a></li>
+            <li><a ui-sref="checkout">Caja</a></li>
+            <li><a ui-sref="sales">Ventas</a></li>
+            <li><a ui-sref="inventory">Inventario</a></li>
         </ul>
     </aside>
     <section class="container-fluid views-content">
-        <ng-view></ng-view>
+        <ui-view></ui-view>
     </section>
 </section>
 <footer>
@@ -34,8 +34,8 @@
 </footer>
 <script src="vendor/jquery/dist/jquery.min.js"></script>
 <script src="vendor/angular/angular.min.js"></script>
-<script src="vendor/angular-route/angular-route.min.js"></script>
 <script src="vendor/angular-resource/angular-resource.min.js"></script>
+<script src="vendor/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="assets/js/ui-bootstrap-tpls.min.js"></script>
 <script type="text/javascript" src="vendor/toastr/toastr.js"></script>
@@ -55,7 +55,6 @@
 <script type="text/javascript" src="templates/category/CategoryCtrl.js"></script>
 <script type="text/javascript" src="templates/inventory/InventoryCtrl.js"></script>
 <script type="text/javascript" src="templates/inventory/editProductCtrl.js"></script>
-<script type="text/javascript" src="services/UserService.js"></script>
 <script type="text/javascript" src="services/AuthService.js"></script>
 <script type="text/javascript" src="services/LocationService.js"></script>
 <script type="text/javascript" src="services/BrandService.js"></script>

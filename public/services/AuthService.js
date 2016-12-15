@@ -24,7 +24,7 @@ function AuthService($q, $http, $location, AuthToken) {
             }
         }).then(function successCallback(response) {
             if(response.data.success) {
-                AuthToken.setToken(response.data.token);
+                AuthToken.setToken(response.data);
                 dfd.resolve(true);
             }
         }, function errorCallback() {

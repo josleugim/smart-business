@@ -4,6 +4,7 @@ angular.module('smartBusiness')
 
 function BrandService($q, $http, $location, AuthToken) {
 	var host = 'http://' + $location.host() + ':5000/';
+    var user = AuthToken.getToken();
 
 	return {
 		post: post,
@@ -15,15 +16,14 @@ function BrandService($q, $http, $location, AuthToken) {
 
     function getById(query) {
         var dfd = $q.defer();
-        
-        query.token = AuthToken.getToken();
 
         $http({
             method: 'GET',
             url: host + 'api/v1/brands',
             params: query,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data) {
@@ -34,16 +34,16 @@ function BrandService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-    };
+    }
 
     function get() {
         var dfd = $q.defer();
         $http({
             method: 'GET',
             url: host + 'api/v1/brands',
-            params: {token: AuthToken.getToken()},
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data) {
@@ -54,11 +54,10 @@ function BrandService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-    };
+    }
 
     function put(query, data) {
         var dfd = $q.defer();
-        query.token = AuthToken.getToken();
         
         $http({
             method: 'PUT',
@@ -66,7 +65,8 @@ function BrandService($q, $http, $location, AuthToken) {
             params: query,
             data: data,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data.success) {
@@ -77,17 +77,17 @@ function BrandService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-    };
+    }
 
 	function post(data) {
 		var dfd = $q.defer();
         $http({
             method: 'POST',
             url: host + 'api/v1/brands',
-            params: {token: AuthToken.getToken()},
             data: data,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data.success) {
@@ -98,12 +98,10 @@ function BrandService($q, $http, $location, AuthToken) {
         });
 
         return dfd.promise;
-	};
+	}
 
     function delBrand(query) {
         var dfd = $q.defer();
-
-        query.token = AuthToken.getToken();
         
         //More information about the http service at: https://docs.angularjs.org/api/ng/service/$http
         $http({
@@ -111,7 +109,8 @@ function BrandService($q, $http, $location, AuthToken) {
             url: host + 'api/v1/brands',
             params: query,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data.success) {

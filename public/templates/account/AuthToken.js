@@ -13,13 +13,16 @@ function AuthToken($window) {
     var AuthToken = {
         setToken: function(token) {
             cachedToken = token;
-            storage.setItem(userToken, token);
+            storage.setItem(userToken, angular.toJson(token));
         },
         getToken: function() {
             if(!cachedToken)
                 cachedToken = storage.getItem(userToken);
 
-            return cachedToken;
+            if(typeof cachedToken == 'string')
+                return JSON.parse(cachedToken);
+            else
+                return cachedToken;
         },
         isAuthenticated: function() {
             return !!this.getToken();
@@ -27,8 +30,12 @@ function AuthToken($window) {
         removeToken: function() {
             cachedToken = null;
             storage.removeItem(userToken);
+        },
+        isAuthorized: function (role) {
+            var user = this.getToken();
+            return !!user && user.roles.indexOf(role) > -1;
         }
-    }
+    };
 
     return AuthToken;
 }

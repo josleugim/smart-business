@@ -2,52 +2,126 @@
  * Created by Mordekaiser on 04/06/16.
  */
 "use strict";
-var smartBusiness = angular.module('smartBusiness', ['ngResource', 'ngRoute', 'ui.bootstrap']);
+var smartBusiness = angular.module('smartBusiness', ['ngResource', 'ui.router', 'ui.bootstrap']);
 
-smartBusiness.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+smartBusiness.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', function ($stateProvider, $locationProvider, $urlRouterProvider) {
     $locationProvider.html5Mode({
         enabled: true,
         requireBase: false
     });
-    $routeProvider
-        .when('/register', {
-            templateUrl: 'templates/account/register.html',
-            controller: 'RegisterCtrl'
+
+    $urlRouterProvider.otherwise('/');
+
+    $stateProvider
+        .state('home', {
+            url: '/home',
+            data: {
+                authorization: false
+            }
         })
-        .when('/location', {
+        .state('location', {
+            url: '/location',
             templateUrl: 'templates/location/location.html',
-            controller: 'LocationCtrl'
+            controller: 'LocationCtrl',
+            data: {
+                authorization: true,
+                role: ['owner']
+            }
         })
-        .when('/seller', {
+        .state('seller', {
+            url: '/seller',
             templateUrl: 'templates/account/seller.html',
-            controller: 'SellerCtrl'
+            controller: 'SellerCtrl',
+            data: {
+                authorization: true,
+                role: ['owner']
+            }
         })
-        .when('/brand', {
+        .state('brand', {
+            url: '/brand',
             templateUrl: 'templates/brand/brand.html',
-            controller: 'BrandCtrl'
+            controller: 'BrandCtrl',
+            data: {
+                authorization: true,
+                role: ['owner']
+            }
         })
-        .when('/product', {
+        .state('product', {
+            url: '/product',
             templateUrl: 'templates/product/product.html',
-            controller: 'ProductCtrl'
+            controller: 'ProductCtrl',
+            data: {
+                authorization: true,
+                role: ['owner']
+            }
         })
-        .when('/product/:id', {
+        .state('product.edit', {
+            url: '/product/:id',
             templateUrl: 'templates/inventory/editProduct.html',
-            controller: 'editProductCtrl'
+            controller: 'editProductCtrl',
+            data: {
+                authorization: true,
+                role: ['owner']
+            }
         })
-        .when('/checkout', {
+        .state('checkout', {
+            url: '/checkout',
             templateUrl: 'templates/checkout/index.html',
-            controller: 'CheckoutCtrl'
+            controller: 'CheckoutCtrl',
+            data: {
+                authorization: true,
+                role: ['seller']
+            }
         })
-        .when('/sales', {
+        .state('sales', {
+            url: '/sales',
             templateUrl: 'templates/sales/index.html',
-            controller: 'SalesCtrl'
+            controller: 'SalesCtrl',
+            data: {
+                authorization: true,
+                role: ['owner', 'seller']
+            }
         })
-        .when('/categories', {
+        .state('categories', {
+            url: '/categories',
             templateUrl: 'templates/category/index.html',
-            controller: 'CategoryCtrl'
+            controller: 'CategoryCtrl',
+            data: {
+                authorization: true,
+                role: ['owner']
+            }
         })
-        .when('/inventory', {
+        .state('inventory', {
+            url: '/inventory',
             templateUrl: 'templates/inventory/inventory.html',
-            controller: 'InventoryCtrl'
+            controller: 'InventoryCtrl',
+            data: {
+                authorization: true,
+                role: ['owner', 'seller']
+            }
         })
 }]);
+
+smartBusiness.run(function ($rootScope, $state, $log, AuthToken, mvNotifier, $location) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
+        $rootScope.toState = toState;
+        $rootScope.toStateParams = toStateParams;
+        if (!AuthToken.isAuthenticated()) {
+            $location.path('/login');
+            mvNotifier.error('No has iniciado sesión');
+        }
+    });
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        var user = AuthToken.getToken();
+        var auth = false;
+        if(user) {
+            angular.forEach(user.roles, function (role, key) {
+                if(toState.data.role.indexOf(role) !== -1)
+                    auth = true;
+            });
+            if (auth == false && toState.data.authorization) {
+                $state.go('home');
+            }
+        }
+    });
+});

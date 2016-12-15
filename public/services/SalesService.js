@@ -4,6 +4,8 @@ angular.module('smartBusiness')
 
 function SalesService ($q, $http, $location, AuthToken) {
 	var host = 'http://' + $location.host() + ':5000/';
+	var user = AuthToken.getToken();
+
 	return {
 		get: get
 	};
@@ -11,14 +13,13 @@ function SalesService ($q, $http, $location, AuthToken) {
 	function get(query) {
 		var dfd = $q.defer();
 
-		query.token = AuthToken.getToken();
-
     	$http({
     		method: 'GET',
     		url: host + 'api/v1/sales',
     		params: query,
     		headers: {
-    			'Content-Type': 'application/json'
+    			'Content-Type': 'application/json',
+                'x-access-token': user.token
     		}
     	}).then(function successCallback(response) {
     		if(response.data) {

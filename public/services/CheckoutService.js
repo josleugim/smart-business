@@ -4,6 +4,7 @@ angular.module('smartBusiness')
 
 function CheckoutService($q, $http, $location, AuthToken) {
 	var host = 'http://' + $location.host() + ':5000/';
+    var user = AuthToken.getToken();
 
 	return {
 		post: post
@@ -14,14 +15,14 @@ function CheckoutService($q, $http, $location, AuthToken) {
         $http({
             method: 'POST',
             url: host + 'api/v1/checkout',
-            params: {token: AuthToken.getToken()},
             data: data,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
             }
         }).then(function successCallback(response) {
             if(response.data.success) {
-            dfd.resolve(true);
+                dfd.resolve(true);
             }
         }, function errorCallback() {
             dfd.resolve(false);
