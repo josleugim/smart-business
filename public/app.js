@@ -121,7 +121,7 @@ smartBusiness.run(function ($rootScope, $state, $log, AuthToken, mvNotifier, $lo
                     auth = true;
             });
             if (auth == false && toState.data.authorization) {
-                $state.go('home');
+                $state.go('main');
             }
         }
     });

@@ -12,7 +12,6 @@ function InventoryCtrl($scope, mvNotifier, ProductService, LocationService) {
 
     ProductService.count({}).then(function (data) {
 		$scope.totalPage = data;
-        console.log(data);
 		$scope.totalPageArray = new Array(data);
 	});
 
