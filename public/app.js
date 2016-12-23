@@ -13,14 +13,15 @@ smartBusiness.config(['$stateProvider', '$locationProvider', '$urlRouterProvider
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
-        .state('home', {
-            url: '/home',
+        .state("main", {
+            url: "/",
             data: {
-                authorization: false
+                authorization: true,
+                role: ['owner']
             }
         })
         .state('location', {
-            url: '/location',
+            url: '^/location',
             templateUrl: 'templates/location/location.html',
             controller: 'LocationCtrl',
             data: {
