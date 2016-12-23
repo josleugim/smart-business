@@ -16,7 +16,7 @@ exports.post = function(req, res) {
 	if(req.body.total)
 		data.total = req.body.total;
 
-	User.findOne({_id: jwtValidation.getUserId(req.query.token)}, function (err, user) {
+	User.findOne({_id: jwtValidation.getUserId(token)}, function (err, user) {
 		if(err) {
 			console.log(err);
 			res.status(500).json({success: false, error: err});
