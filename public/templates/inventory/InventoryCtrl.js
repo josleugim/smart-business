@@ -1,8 +1,8 @@
 "use strict";
 angular.module('smartBusiness')
-    .controller('InventoryCtrl', ['$scope', 'mvNotifier', 'ProductService', 'LocationService', InventoryCtrl]);
+    .controller('InventoryCtrl', ['$scope', 'mvNotifier', 'ProductService', 'LocationService', 'CategoryService', InventoryCtrl]);
 
-function InventoryCtrl($scope, mvNotifier, ProductService, LocationService) {
+function InventoryCtrl($scope, mvNotifier, ProductService, LocationService, CategoryService) {
 	LocationService.get().then(function(response) {
 		if(response.success) {
 			$scope.locations = response.data;
@@ -10,12 +10,17 @@ function InventoryCtrl($scope, mvNotifier, ProductService, LocationService) {
 			mvNotifier.error('No se pudieron cargar las locaciones. Error: ' + response.error.message + ' !!!');
 	});
 
+    CategoryService.get().then(function (data) {
+		if(data)
+			$scope.categories = data;
+    });
+
     ProductService.count({}).then(function (data) {
 		$scope.totalPage = data;
 		$scope.totalPageArray = new Array(data);
 	});
 
-	$scope.updateInventory = function(id) {
+	/*$scope.updateInventory = function(id) {
 		$scope.products = "";
         $scope.location_id = id;
 		var query = {
@@ -23,7 +28,22 @@ function InventoryCtrl($scope, mvNotifier, ProductService, LocationService) {
             searchType: 'byLocation'
 		};
 		getProducts(query);
-	};
+	};*/
+
+	$scope.searchProducts = function () {
+	    $scope.products = "";
+        $scope.location_id = $scope.locList._id;
+        var query = {
+            location_id: $scope.locList._id,
+            searchType: 'byLocation',
+            name: $scope.name,
+            barcode: $scope.barcode
+        };
+        if($scope.catList)
+            query.category_id = $scope.catList._id;
+
+        getProducts(query);
+    };
 
 	$scope.deleteProduct = function(id) {
 		ProductService.delProduct({_id: id}).then(function (response) {

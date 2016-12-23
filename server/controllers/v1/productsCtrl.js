@@ -98,6 +98,14 @@ exports.get = function(req, res) {
         if(req.query.currentPage)
             nSkip = 50 * (req.query.currentPage - 1);
 
+        if(req.query.category_id)
+            query.category_id = req.query.category_id;
+
+        if(req.query.name)
+            query.name = {$regex: req.query.name, $options: 'i'};
+        if(req.query.barcode)
+            query.barcode = {$regex: req.query.barcode, $options: 'i'};
+
         findProducts(query);
 
     } else if(req.query.searchType == 'byName') {

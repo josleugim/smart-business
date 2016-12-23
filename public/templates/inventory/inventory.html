@@ -5,38 +5,35 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-3"></div>
-		<div class="col-md-3">
-			<p>Para ver el inventario de una localidad, <strong>seleccionala de la lista</strong>:</p>
-		</div>
-		<div class="col-md-3">
-			<select ng-model="locList" ng-options="location.name for location in locations track by location._id" ng-change="updateInventory(locList._id)"></select>
-		</div>
-		<div class="col-md-3"></div>
+		<div class="col-md-4"></div>
+		<form name="searchForm" class="col-md-4 col-lg-4 col-sm-4">
+            <h4>Formulario para la búsqueda de productos</h4>
+            <p class="alert alert-warning">Puedes realizar la búsqueda de productos, usando los diferentes filtros. Entre más filtros se utilizen los resultados se reduciran.</p>
+			<div class="form-group">
+                <label>Localidad</label>
+                <select ng-model="locList" name="locList" ng-options="location.name for location in locations track by location._id" required></select>
+                <span class="error" ng-show="searchForm.locList.$error.required">* Requerido</span>
+            </div>
+            <div class="form-group">
+                <label>Categoría</label>
+                <select ng-model="catList" ng-options="category.name for category in categories track by category._id"></select>
+            </div>
+            <div class="form-group">
+                <label>Nombre del producto</label>
+                <input type="text" name="name" ng-model="name">
+            </div>
+            <div class="form-group">
+                <label>Código de barras o IMEI</label>
+                <input type="text" name="barcode" ng-model="barcode">
+            </div>
+            <button type="button" class="btn btn-group" ng-click="searchProducts()" ng-disabled="searchForm.$invalid">Buscar productos</button>
+		</form>
+		<div class="col-md-4"></div>
 	</div>
 	<div class="row">
-		<div class="col-md-3"></div>
-		<div class="col-md-3">
-			<p>Orden de campos</p>
-			<p>Filtrado por nombre del producto</p>
-            <p>Filtrado por código de barras (IMEI)</p>
-            <p>Filtrado por código categoría del producto</p>
-		</div>
-		<div class="col-md-3 col-lg-3">
-			<div>
-				<select ng-model="q" name="q">
-					<option value="categoryName">Categoría</option>
-					<option value="brandName">Marca</option>
-					<option value="price">Precio</option>
-					<option value="-soldOut">Vendido</option>
-					<option value="-createdAt">Fecha de ingreso</option>
-				</select>
-			</div>
-			<p><input type="text" ng-model="prod.name"></p>
-            <p><input type="text" ng-model="prod.barcode"></p>
-            <p><input type="text" ng-model="prod.categoryName"></p>
-		</div>
-		<div class="col-md-3"></div>
+		<div class="col-md-4"></div>
+		<div class="col-md-4"></div>
+		<div class="col-md-4"></div>
 	</div>
 	<div class="row pagination-wrapper">
 		<div class="col-md-10 col-sm-10 col-lg-10 pagination-col">
