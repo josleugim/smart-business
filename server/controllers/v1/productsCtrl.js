@@ -74,6 +74,8 @@ exports.post = function(req, res) {
 exports.get = function(req, res) {
     console.log('GET Product');
 
+    var token = req.headers['x-access-token'];
+
     var query = {
         isActive: true
     };
