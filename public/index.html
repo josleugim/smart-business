@@ -8,17 +8,10 @@
     <link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css">
     <link rel="stylesheet" href="assets/css/site.css">
 </head>
-<body>
+<body ng-controller="MainCtrl">
 <ng-include src="'templates/common/menu.html'"></ng-include>
 <section class="container-fluid mark-up">
     <a href="#" class="toggle-menu"></a>
-    <aside class="aside-menu">
-        <ul>
-            <li><a ui-sref="checkout">Caja</a></li>
-            <li><a ui-sref="sales">Ventas</a></li>
-            <li><a ui-sref="inventory">Inventario</a></li>
-        </ul>
-    </aside>
     <section class="container-fluid views-content">
         <ui-view></ui-view>
     </section>
@@ -33,6 +26,7 @@
     </div>
 </footer>
 <script src="vendor/jquery/dist/jquery.min.js"></script>
+<!-- Angular -->
 <script src="vendor/angular/angular.min.js"></script>
 <script src="vendor/angular-resource/angular-resource.min.js"></script>
 <script src="vendor/angular-ui-router/release/angular-ui-router.min.js"></script>
@@ -41,6 +35,7 @@
 <script type="text/javascript" src="vendor/toastr/toastr.js"></script>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript" src="app.js"></script>
+<!-- Controllers -->
 <script type="text/javascript" src="templates/account/RegisterCtrl.js"></script>
 <script type="text/javascript" src="templates/account/LoginCtrl.js"></script>
 <script type="text/javascript" src="templates/location/LocationCtrl.js"></script>
@@ -55,6 +50,8 @@
 <script type="text/javascript" src="templates/category/CategoryCtrl.js"></script>
 <script type="text/javascript" src="templates/inventory/InventoryCtrl.js"></script>
 <script type="text/javascript" src="templates/inventory/editProductCtrl.js"></script>
+<script type="text/javascript" src="templates/common/MainCtrl.js"></script>
+<!-- Services -->
 <script type="text/javascript" src="services/AuthService.js"></script>
 <script type="text/javascript" src="services/LocationService.js"></script>
 <script type="text/javascript" src="services/BrandService.js"></script>

@@ -31,9 +31,17 @@ function AuthToken($window) {
             cachedToken = null;
             storage.removeItem(userToken);
         },
-        isAuthorized: function (role) {
+        isAuthorized: function (validRoles) {
+            var auth = false;
             var user = this.getToken();
-            return !!user && user.roles.indexOf(role) > -1;
+            if(user) {
+                angular.forEach(user.roles, function (usrRole, key) {
+                    if(validRoles.indexOf(usrRole) !== -1)
+                        auth = true;
+                });
+            }
+
+            return !!user && auth;
         }
     };
 

@@ -14,11 +14,14 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li><a ui-sref="location">Tiendas</a></li>
-                <li><a ui-sref="seller">Vendedores</a></li>
-                <li><a ui-sref="brand">Marcas</a></li>
-                <li><a ui-sref="categories">Categorías</a></li>
-                <li><a ui-sref="product">Productos</a></li>
+                <li ng-show="identity.isAuthorized('seller')"><a ui-sref="checkout"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Caja</a></li>
+                <li ng-show="identity.isAuthorized(['seller', 'owner'])"><a ui-sref="sales"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Ventas</a></li>
+                <li><a ui-sref="inventory" ng-show="identity.isAuthorized(['seller', 'owner'])"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Inventario</a></li>
+                <li><a ui-sref="location" ng-show="identity.isAuthorized('owner')"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Tiendas</a></li>
+                <li><a ui-sref="seller" ng-show="identity.isAuthorized('owner')"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Vendedores</a></li>
+                <li><a ui-sref="brand" ng-show="identity.isAuthorized('owner')"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Marcas</a></li>
+                <li><a ui-sref="categories" ng-show="identity.isAuthorized('owner')"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Categorías</a></li>
+                <li><a ui-sref="product" ng-show="identity.isAuthorized('owner')"><span class="glyphicon glyphicon-barcode" aria-hidden="true"></span> Productos</a></li>
                 <li class="dropdown" ng-hide="isAuthenticated">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Iniciar sesión <span class="caret"></span></a>
                     <ul class="dropdown-menu">
