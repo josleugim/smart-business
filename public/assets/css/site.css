@@ -14,7 +14,6 @@ body {
   font-weight: bold;
 }
 .mark-up {
-  height: 100%;
   background-color: #3e9bba;
   position: relative;
 }
@@ -33,7 +32,6 @@ body {
 }
 .mark-up .views-content {
   background-color: #f8f8f8;
-  height: 100%;
 }
 .mark-up .views-content .product-form #save-location {
   display: none;
@@ -94,6 +92,9 @@ body {
 .inventory .location {
   font-size: 0.6em;
   font-weight: bolder;
+}
+.inventory table {
+  width: 100%;
 }
 footer {
   background-color: #3e9bba;
