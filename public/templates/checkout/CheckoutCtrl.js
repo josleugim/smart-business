@@ -49,6 +49,9 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService, mvNot
 	}
 
 	$scope.checkout = function() {
+		$('#sell').hide();
+		$('#removeProduct').hide();
+		$('#loader').css('display', 'block');
 		var data = {
 			products: $scope.carItems,
 			total: $scope.total
@@ -60,6 +63,9 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService, mvNot
                     $scope.carItems = [];
                     $scope.total = 0;
                     mvNotifier.notify('Venta realizada correctamente');
+                    $('#sell').show();
+                    $('#removeProduct').show();
+                    $('#loader').css('display', 'none');
                 } else
                     mvNotifier.error('Ocurrio un error al realizar la venta!!!');
             })

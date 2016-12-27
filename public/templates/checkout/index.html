@@ -9,7 +9,8 @@
 			<input type="text" name="itemBarcode" ng-model="itemBarcode" barcode-focus="keepFocus" autofocus autocomplete="off">
 			<button type="submit" class="btn btn-default" ng-click="addItem(itemBarcode)" ng-disabled="itemForm.$invalid"></button>
 		</form>
-		<div>
+		<div class="cart-wrapper">
+            <div id="loader"></div>
 			<div ng-repeat="product in carItems track by $index" class="checkout-product">
 				<p><strong>{{product.name}}</strong></p>
                 <p>Descripción: {{product.description}}</p>
@@ -18,14 +19,14 @@
 				<p>SIM: {{product.sim}}</p>
 				<p>Categoría: {{product.categoryName}}</p>
                 <p>Marca: {{product.brandName}}</p>
-				<a href="#" class="remove-icon" ng-click="removeItem(product)">Quitar producto</a>
+				<a id="removeProduct" href="#" class="remove-icon" ng-click="removeItem(product)">Quitar producto</a>
 			</div>
 		</div>
 		<div class="total">
 			<p>Total: {{total}}</p>
 		</div>
 		<div>
-			<button type="button" class="checkout-btn" ng-click="checkout()" class="btn btn-default">Realizar venta</button>
+			<button id="sell" type="button" class="checkout-btn" ng-click="checkout()" class="btn btn-default">Realizar venta</button>
 		</div>
 	</div>
 	<div class="col-md-6">

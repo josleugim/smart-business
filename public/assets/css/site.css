@@ -45,6 +45,23 @@ body {
 .mark-up .views-content .seller-form #save-seller {
   display: none;
 }
+.mark-up .views-content .cart-wrapper {
+  min-height: 200px;
+  position: relative;
+}
+.mark-up .views-content .cart-wrapper #loader {
+  background-image: url("../images/loader.gif");
+  background-color: transparent;
+  background-position: center center;
+  display: none;
+  height: 150px;
+  left: 50%;
+  margin-left: -100px;
+  position: absolute;
+  top: 1px;
+  width: 200px;
+  z-index: 1;
+}
 .checkout-product {
   background-color: #82dabf;
   border: 2px transparent;
