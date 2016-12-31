@@ -33,9 +33,7 @@ function ProductService($q, $http, $location, AuthToken) {
                 'x-access-token': user.token
             }
         }).then(function successCallback(response) {
-            if(response.data.success) {
-                dfd.resolve(true);
-            }
+            dfd.resolve(response.data.success);
         }, function errorCallback(response) {
             dfd.resolve(false);
         });

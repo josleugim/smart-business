@@ -56,7 +56,7 @@ smartBusiness.config(['$stateProvider', '$locationProvider', '$urlRouterProvider
                 role: ['owner']
             }
         })
-        .state('product.edit', {
+        .state('product-edit', {
             url: '/product/:id',
             templateUrl: 'templates/inventory/editProduct.html',
             controller: 'editProductCtrl',

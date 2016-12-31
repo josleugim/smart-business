@@ -3,10 +3,10 @@
  */
 "use strict";
 angular.module('smartBusiness')
-    .controller('editProductCtrl', ['$scope', 'mvNotifier', 'ProductService', 'LocationService', '$routeParams', 'CategoryService', 'BrandService', '$timeout', '$location', '$window', editProductCtrl]);
+    .controller('editProductCtrl', ['$scope', 'mvNotifier', 'ProductService', 'LocationService', '$stateParams', 'CategoryService', 'BrandService', '$timeout', '$state', editProductCtrl]);
 
-function editProductCtrl($scope, mvNotifier, ProductService, LocationService, $routeParams, CategoryService, BrandService, $timeout, $location, $window) {
-    if($routeParams.id) {
+function editProductCtrl($scope, mvNotifier, ProductService, LocationService, $stateParams, CategoryService, BrandService, $timeout, $state) {
+    if($stateParams.id) {
         LocationService.get().then(function(response) {
             if(response.success) {
                 $scope.locations = response.data;
@@ -23,7 +23,7 @@ function editProductCtrl($scope, mvNotifier, ProductService, LocationService, $r
         });
 
         var query = {
-            _id: $routeParams.id
+            _id: $stateParams.id
         };
 
         ProductService.get(query).then(function (data) {
@@ -37,10 +37,7 @@ function editProductCtrl($scope, mvNotifier, ProductService, LocationService, $r
                 $scope.barcode = data[0].barcode;
                 $scope.sim = data[0].sim;
                 $scope.image = data[0].image;
-                if(data[0].soldOut === 'Vendido')
-                    $scope.soldOut = true;
-                else
-                    $scope.soldOut = false;
+                $scope.soldOut = data[0].soldOut === 'Vendido';
                 mvNotifier.notify('Producto cargado en formulario correctamente.');
             } else
                 mvNotifier.error('Error al cargar el producto');
@@ -51,7 +48,7 @@ function editProductCtrl($scope, mvNotifier, ProductService, LocationService, $r
     $scope.saveProduct = function () {
         var data = {};
         var query = {
-            _id: $routeParams.id
+            _id: $stateParams.id
         };
 
         if(!$scope.editProductForm.productName.$pristine)
@@ -69,14 +66,11 @@ function editProductCtrl($scope, mvNotifier, ProductService, LocationService, $r
         if($scope.files)
             data.image = $scope.files;
 
-        console.log(data);
-
         ProductService.put(query, data).then(function (success) {
             if(success) {
                 mvNotifier.notify('Producto actualizado correctamente');
                 $timeout(function(){
-                    $location.path('/inventory');
-                    $window.location.reload();
+                    $state.go('inventory');
                 },300);
             } else
                 mvNotifier.error('El producto no se pudo actualizar.');

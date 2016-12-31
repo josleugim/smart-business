@@ -83,7 +83,7 @@
             <td>{{product.description}}</td>
             <td>{{product.createdAt}}</td>
             <td>
-                <a class="btn btn-info" href="/product/{{product._id}}" target="_self">Modificar</a>
+                <a class="btn btn-info" ui-sref="product-edit({id: product._id})" target="_self">Modificar</a>
                 <button class="btn btn-danger" ng-click="deleteProduct(product._id)" type="submit">Borrar</button>
             </td>
         </tr>
