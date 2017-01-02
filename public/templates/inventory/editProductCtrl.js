@@ -65,6 +65,10 @@ function editProductCtrl($scope, mvNotifier, ProductService, LocationService, $s
             data.soldOut = $scope.soldOut;
         if($scope.files)
             data.image = $scope.files;
+        if($scope.brandList)
+            data.brand_id = $scope.brandList._id;
+        if($scope.categoryList)
+            data.category_id = $scope.categoryList._id;
 
         ProductService.put(query, data).then(function (success) {
             if(success) {
