@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
     Brand = mongoose.model('Brand'),
     jwtValidation = require('../../services/jwtValidation'),
     getSlug = require('speakingurl'),
-    moment = require('moment');
+    moment = require('moment'),
+    lodash = require('lodash');
 
 exports.post = function(req, res) {
     console.log('POST Product');
@@ -143,6 +144,11 @@ exports.get = function(req, res) {
                     res.end();
                 }
                 if(products) {
+                    // get the total amount of the prices
+                    var sum = lodash.reduce(products, function (sum, n) {
+                        return sum + Number(n.price);
+                    }, 0);
+
                     var objectProduct = [];
                     var waiting = products.length;
 
@@ -179,7 +185,12 @@ exports.get = function(req, res) {
                                                 waiting--;
 
                                                 if(waiting == 0) {
-                                                    res.status(200).json(objectProduct);
+                                                    var objRes = {
+                                                        total: sum,
+                                                        objectProduct: objectProduct
+                                                    };
+
+                                                    res.status(200).json(objRes);
                                                     res.end();
                                                 }
                                             })

@@ -83,11 +83,11 @@ function InventoryCtrl($scope, mvNotifier, ProductService, LocationService, Cate
 
 	function getProducts(query) {
 		ProductService.get(query).then(function(data) {
-			if(data.length > 0) {
+			if(data.objectProduct.length > 0) {
 				mvNotifier.notify('Productos cargados');
-                var lastIndex = data.length;
-                $scope.lastId = data[lastIndex - 1]._id;
-				$scope.products = data;
+                var lastIndex = data.objectProduct.length;
+                $scope.lastId = data.objectProduct[lastIndex - 1]._id;
+				$scope.products = data.objectProduct;
 
 			} else {
 				mvNotifier.error('No se pudo cargar los productos.');
