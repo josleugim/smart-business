@@ -187,6 +187,7 @@ exports.get = function(req, res) {
                                                 if(waiting == 0) {
                                                     var objRes = {
                                                         total: sum,
+                                                        count: products.length,
                                                         objectProduct: objectProduct
                                                     };
 
