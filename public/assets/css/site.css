@@ -121,3 +121,7 @@ footer {
   position: fixed;
   width: 100%;
 }
+footer p {
+  color: #fff;
+  margin-top: 10px;
+}
