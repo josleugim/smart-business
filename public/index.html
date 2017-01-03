@@ -19,8 +19,11 @@
 <footer>
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <p>Heuristic Forge</p>
+            <div class="col-md-4 col-lg-4 col-sm-4">
+                <p class="small"><span ng-if="online" class="glyphicon glyphicon-ok"></span> <span ng-if="online == false" class="glyphicon glyphicon-remove"></span> Conexión a internet</p>
+            </div>
+            <div class="col-md-4 col-lg-4 col-sm-4">
+                <p><span class="small">Desarrollado por:</span> Heuristic Forge</p>
             </div>
         </div>
     </div>

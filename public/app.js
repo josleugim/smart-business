@@ -103,7 +103,7 @@ smartBusiness.config(['$stateProvider', '$locationProvider', '$urlRouterProvider
         })
 }]);
 
-smartBusiness.run(function ($rootScope, $state, $log, AuthToken, mvNotifier, $location) {
+smartBusiness.run(function ($rootScope, $state, $log, AuthToken, mvNotifier, $location, $window) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
         $rootScope.toState = toState;
         $rootScope.toStateParams = toStateParams;
@@ -125,4 +125,15 @@ smartBusiness.run(function ($rootScope, $state, $log, AuthToken, mvNotifier, $lo
             }
         }
     });
+    $rootScope.online = navigator.onLine;
+    $window.addEventListener("offline", function () {
+        $rootScope.$apply(function() {
+            $rootScope.online = false;
+        });
+    }, false);
+    $window.addEventListener("online", function () {
+        $rootScope.$apply(function() {
+            $rootScope.online = true;
+        });
+    }, false);
 });

@@ -15,6 +15,7 @@ body {
 }
 .mark-up {
   background-color: #3e9bba;
+  margin-bottom: 50px;
   position: relative;
 }
 .mark-up .toggle-menu {
@@ -115,4 +116,8 @@ body {
 }
 footer {
   background-color: #3e9bba;
+  bottom: 0;
+  height: 50px;
+  position: fixed;
+  width: 100%;
 }
