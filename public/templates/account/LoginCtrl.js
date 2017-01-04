@@ -13,6 +13,7 @@ function LoginCtrl($scope, AuthService, $location, AuthToken, $window, mvNotifie
         };
         AuthService.authenticate(query).then(function (success) {
             if(success) {
+                $window.ga('send', 'event', 'Action', 'Login', $scope.email);
                 mvNotifier.notify('Acceso exitoso');
                 $timeout(function(){
                     $location.path('/products');
@@ -21,7 +22,7 @@ function LoginCtrl($scope, AuthService, $location, AuthToken, $window, mvNotifie
             } else
                 mvNotifier.error('No se puedo iniciar sesión');
         });
-    }
+    };
 
     $scope.logout = function() {
         console.log('Sesisón finalizada');
