@@ -13,7 +13,7 @@ function LoginCtrl($scope, AuthService, $location, AuthToken, $window, mvNotifie
         };
         AuthService.authenticate(query).then(function (success) {
             if(success) {
-                $window.ga('send', 'event', 'Action', 'Login', $scope.email);
+                //$window.ga('send', 'event', 'Action', 'Login', $scope.email);
                 mvNotifier.notify('Acceso exitoso');
                 $timeout(function(){
                     $location.path('/products');

@@ -16,6 +16,10 @@ exports.post = function(req, res) {
 	if(req.body.total)
 		data.total = req.body.total;
 
+    // create an correct date for America/Mexico_City
+    var now = new Date();
+    data.createdAt = new Date(now.getTime() - (now.getTimezoneOffset() * 60000));
+
 	User.findOne({_id: jwtValidation.getUserId(token)}, function (err, user) {
 		if(err) {
 			console.log(err);

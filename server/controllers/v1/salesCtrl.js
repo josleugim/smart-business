@@ -2,13 +2,11 @@ var mongoose = require('mongoose'),
     Checkout = mongoose.model('Checkout'),
     Product = mongoose.model('Product'),
     jwtValidation = require('../../services/jwtValidation'),
-    moment = require('moment');
+    moment = require('moment'),
+    _ = require('lodash');
 
 exports.get = function (req, res) {
-	console.log('GET Sales');
 	var query = {};
-
-    //query.location_id = jwtValidation.getLocationId(req.query.token);
 
     if(req.query.from && req.query.to) {
 
@@ -32,30 +30,39 @@ exports.get = function (req, res) {
                 res.end();
             }
             var waiting = docs.length;
-            var objectCheckout = [];
+            var resObj = {
+                sales: [],
+                total: 0
+            };
 
             if(waiting > 0) {
                 // loop the checkout documents
                 docs.forEach(function(values) {
+                    var docObj = {
+                        createdAt: moment(values.createdAt).utcOffset(60).format('LL'),
+                        userName: values.username,
+                        products: []
+                    };
 
-                    var doc = values.toObject();
-                    delete doc.isActive;
-                    delete doc.__v;
-                    delete doc.updatedAt;
-                    doc.product = [];
-                    doc.createdAt = moment(doc.createdAt).utcOffset(60).format('YYYY-MM-DD');
                     var prodQuery = {
                         _id: {$in: values.products}
                     };
                     Product.find(prodQuery)
                         .sort({name: 1})
                         .exec(function (err, products) {
-                            doc.product.push.apply(doc.product, products);
-                            objectCheckout.push(doc);
+                            var totalCheck = _.reduce(products, function(sum, n) {
+                                return sum + n.price;
+                            }, 0);
+                            resObj.total = resObj.total + totalCheck;
+                            docObj.products.push.apply(docObj.products, products);
+
+                            // push the sale with all their fields
+                            resObj.sales.push(docObj);
+
                             waiting--;
 
                             if(waiting == 0) {
-                                res.status(200).json(objectCheckout);
+                                res.status(200).json(resObj);
                                 res.end();
                             }
 

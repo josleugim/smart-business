@@ -36,27 +36,27 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-6">
 		<button class="btn btn-default" ng-click="getSales()">Generar reporte</button>
 	</div>
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <p ng-show="totalSell">Total de la venta: <strong>{{totalSell}}</strong></p>
+    </div>
 </div>
-<div class="row">
-	<div class="col-lg-4 col-md-4 col-sm-4"></div>
-	<div class="col-lg-4 col-md-4 col-sm-4">
-		<p>Venta total del periodo: $ {{totalSell}} MXN</p>
-		<ul>
-			<li ng-repeat="product in products">
-				<p>Vendido por: {{product.username}}</p>
-				<p>{{product.name}} $ {{product.price}} MXN</p>
-                <p>Código de barras o IMEI: {{product.barcode}}</p>
-                <p>SIM: {{product.sim}}</p>
-			</li>
-		</ul>
-	</div>
-	<div class="col-lg-4 col-md-4 col-sm-4"></div>
-</div>
-<div class="row">
-	<div class="col-md-12">
-		<div class="chart"></div>
-	</div>
+<div class="row" ng-repeat="sale in sales">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p>{{sale.userName}}</p>
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-10">
+        <table class="table table-bordered">
+            <tbody>
+            <tr ng-repeat="product in sale.products">
+                <td class="col-lg-3 col-md-3 col-sm-3">{{product.name}}</td>
+                <td class="col-lg-3 col-md-3 col-sm-3">$ {{product.price}} MXN</td>
+                <td class="col-lg-3 col-md-3 col-sm-3">{{product.barcode}}</td>
+                <td class="col-lg-3 col-md-3 col-sm-3">{{product.sim}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
