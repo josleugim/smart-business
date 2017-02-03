@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require('mongoose'),
     Product = mongoose.model('Product'),
     Location = mongoose.model('Location'),
@@ -6,7 +8,8 @@ var mongoose = require('mongoose'),
     jwtValidation = require('../../services/jwtValidation'),
     getSlug = require('speakingurl'),
     moment = require('moment'),
-    lodash = require('lodash');
+    lodash = require('lodash'),
+    Q = require('q');
 
 exports.post = function(req, res) {
     console.log('POST Product');
@@ -73,8 +76,6 @@ exports.post = function(req, res) {
 };
 
 exports.get = function(req, res) {
-    console.log('GET Product');
-
     var token = req.headers['x-access-token'];
 
     var query = {
@@ -93,11 +94,11 @@ exports.get = function(req, res) {
         if(req.query.lastId)
             query._id = {$gt: req.query.lastId};
 
-        if(req.query.prevId)
+        /*if(req.query.prevId)
             query._id = {$lt: req.query.prevId};
 
         if(req.query.currentPage)
-            nSkip = 50 * (req.query.currentPage - 1);
+            nSkip = 50 * (req.query.currentPage - 1);*/
 
         if(req.query.category_id)
             query.category_id = req.query.category_id;
@@ -124,18 +125,80 @@ exports.get = function(req, res) {
         query.location_id = jwtValidation.getLocationId(token);
         query._id = {$nin: req.query.products_id};
 
-        console.log(query);
-
         findProducts(query);
     } else {
         query._id = req.query._id;
         findProducts(query)
     }
 
+    Q.fcall(searchProducts)
+        .then(function (products) {
+            var dfd = Q.defer();
+            for(var i = 0; i < products.length; i++) {
+                console.log(i);
+                Q.fcall(getLocationName(products[i]))
+                    .then(function (locationName) {
+                        console.log(locationName);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                    .done(function () {
+                        console.log('async location ended');
+                    });
+                if(i == products.length -1)
+                    dfd.resolve();
+            }
+
+            return dfd.promise;
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+        .done(function () {
+            console.log('done');
+            //res.end();
+        });
+
+    function searchProducts(query) {
+        var dfd = Q.defer();
+        Product.find(query)
+            .sort({createdAt: 1})
+            .limit(50)
+            .exec(function (err, products) {
+                if(err)
+                    console.log(err);
+                if(products.length > 0) {
+                    dfd.resolve(products);
+                } else
+                    dfd.reject();
+            });
+
+        return dfd.promise;
+    }
+
+    function getLocationName(product) {
+        var dfd = Q.defer();
+        var query = {
+            _id: product.location_id
+        };
+        Location.findOne(query, function (err, location) {
+            if(err)
+                console.log(err);
+            if(location) {
+                console.log(location.name);
+                dfd.resolve(location.name);
+            }
+            else
+                dfd.reject();
+        });
+
+        return dfd.promise;
+    }
+
     function findProducts(query) {
         Product.find(query)
             .sort({createdAt: 1})
-            .skip(nSkip)
             .limit(50)
             .exec(function (err, products) {
                 if(err) {
