@@ -56,3 +56,13 @@ exports.validateToken = function(req, res, next) {
 
 	}
 };
+
+exports.getUserRol = function(token) {
+    if(token) {
+        var decoded = jwt.decode(token, {complete: true});
+
+        if(decoded.payload) {
+            return decoded.payload.roles;
+        }
+    }
+};

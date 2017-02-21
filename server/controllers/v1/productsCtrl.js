@@ -89,16 +89,11 @@ exports.get = function(req, res) {
         else
             query.location_id = req.query.location_id;
 
-        var nSkip = 0;
-
         if(req.query.lastId)
             query._id = {$gt: req.query.lastId};
 
-        /*if(req.query.prevId)
-            query._id = {$lt: req.query.prevId};
-
-        if(req.query.currentPage)
-            nSkip = 50 * (req.query.currentPage - 1);*/
+        if(req.query.last_id)
+            query._id = {$gt: req.query.last_id};
 
         if(req.query.category_id)
             query.category_id = req.query.category_id;
@@ -131,37 +126,7 @@ exports.get = function(req, res) {
         findProducts(query)
     }
 
-    Q.fcall(searchProducts)
-        .then(function (products) {
-            var dfd = Q.defer();
-            for(var i = 0; i < products.length; i++) {
-                console.log(i);
-                Q.fcall(getLocationName(products[i]))
-                    .then(function (locationName) {
-                        console.log(locationName);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
-                    .done(function () {
-                        console.log('async location ended');
-                    });
-                if(i == products.length -1)
-                    dfd.resolve();
-            }
-
-            return dfd.promise;
-        })
-        .catch(function (error) {
-            console.log(error);
-        })
-        .done(function () {
-            console.log('done');
-            //res.end();
-        });
-
-    function searchProducts(query) {
-        var dfd = Q.defer();
+    function findProducts(query) {
         Product.find(query)
             .sort({createdAt: 1})
             .limit(50)
@@ -169,110 +134,99 @@ exports.get = function(req, res) {
                 if(err)
                     console.log(err);
                 if(products.length > 0) {
-                    dfd.resolve(products);
-                } else
-                    dfd.reject();
-            });
+                    // get the total amount of the prices
+                    var sum = lodash.reduce(products, function (sum, n) {
+                        return sum + Number(n.price);
+                    }, 0);
+                    var inventory = [];
 
-        return dfd.promise;
+                    for(var i = 0; i < products.length; i++) {
+                        var customProduct = {
+                            _id: products[i]._id,
+                            location_id: products[i].location_id,
+                            category_id: products[i].category_id,
+                            brand_id: products[i].brand_id,
+                            name: products[i].name,
+                            price: products[i].price,
+                            description: products[i].description,
+                            barcode: products[i].barcode,
+                            sim: products[i].sim,
+                            createdAt: moment(products[i].createdAt).locale('es').format('LL')
+                        };
+                        (function (productData, index) {
+                            Q.all([
+                                findLocation(productData)
+                                    .then(findCategory(productData))
+                                    .then(findBrand(productData))
+                                    .then(function (productData) {
+                                        inventory.push(productData);
+                                    })
+                                    .done(function () {
+                                        if(index == Number(products.length -1)) {
+                                            var objResponse = {
+                                                total: sum,
+                                                productCount: products.length,
+                                                inventory: inventory
+                                            };
+
+                                            res.status(200).json(objResponse);
+                                            res.end();
+                                        }
+                                    })
+                            ]);
+                        })(customProduct, i);
+
+                    }
+                } else {
+                    res.status(404).json({success: false});
+                    res.end();
+                }
+            });
     }
 
-    function getLocationName(product) {
+    function findLocation(productData) {
         var dfd = Q.defer();
-        var query = {
-            _id: product.location_id
-        };
-        Location.findOne(query, function (err, location) {
+        Location.findOne({_id: productData.location_id}, function (err, location) {
             if(err)
                 console.log(err);
             if(location) {
-                console.log(location.name);
-                dfd.resolve(location.name);
-            }
-            else
+                productData.locationName = location.name;
+                dfd.resolve(productData);
+            } else
                 dfd.reject();
         });
 
         return dfd.promise;
     }
 
-    function findProducts(query) {
-        Product.find(query)
-            .sort({createdAt: 1})
-            .limit(50)
-            .exec(function (err, products) {
-                if(err) {
-                    console.log(err);
-                    res.status(500).json({success: false});
-                    res.end();
-                }
-                if(products) {
-                    // get the total amount of the prices
-                    var sum = lodash.reduce(products, function (sum, n) {
-                        return sum + Number(n.price);
-                    }, 0);
+    function findCategory(productData) {
+        var dfd = Q.defer();
+        Category.findOne({_id: productData.category_id}, function (err, category) {
+            if(err)
+                console.log(err);
+            if(category) {
+                productData.categoryName = category.name;
+                dfd.resolve(productData);
+            } else
+                dfd.reject();
+        });
 
-                    var objectProduct = [];
-                    var waiting = products.length;
+        return dfd.promise;
+    }
 
-                    if(waiting > 0) {
-                        products.forEach(function(values) {
-                            // get the location name
-                            Location.findOne({_id: values.location_id}, function(err, loc) {
-                                if(loc) {
-                                    // get the category
-                                    Category.findOne({_id: values.category_id}, function (err, cat) {
-                                        if(cat) {
+    function findBrand(productData) {
+        var dfd = Q.defer();
+        Brand.findOne({_id: productData.brand_id}, function (err, brand) {
+            if(err)
+                console.log(err);
+            if(brand) {
+                productData.brandName = brand.name;
+                dfd.resolve(productData);
+            } else
+                dfd.reject();
+        });
 
-                                            // get brand name
-                                            Brand.findOne({_id: values.brand_id}, function (err, br) {
-                                                if(br) {
-                                                    var product = values.toObject();
-
-                                                    delete product.isActive;
-                                                    delete product.__v;
-                                                    delete product.updatedAt;
-                                                    if(product.soldOut)
-                                                        product.soldOut = 'Vendido';
-                                                    else
-                                                        product.soldOut = 'No';
-                                                    product.locationName = loc.name;
-                                                    product.categoryName = cat.name;
-                                                    product.brandName = br.name;
-                                                    product.createdAt = moment(product.createdAt).locale('es').format("dddd, MMMM Do YYYY");
-                                                    objectProduct.push(product);
-                                                }
-                                                if(err)
-                                                    console.log(err);
-
-                                                waiting--;
-
-                                                if(waiting == 0) {
-                                                    var objRes = {
-                                                        total: sum,
-                                                        count: products.length,
-                                                        objectProduct: objectProduct
-                                                    };
-
-                                                    res.status(200).json(objRes);
-                                                    res.end();
-                                                }
-                                            })
-                                        }
-                                        if(err)
-                                            console.log(err);
-                                    });
-                                }
-                                if(err)
-                                    console.log(err);
-                            });
-                        });
-                    } else {
-                        res.status(404).json({message: 'No existen productos'});
-                        res.end();
-                    }
-                }
-            });
+        return dfd.promise;
     }
 };
 

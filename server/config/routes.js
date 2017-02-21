@@ -10,7 +10,8 @@ var userCtrl = require('../controllers/v1/usersCtrl'),
     checkoutCtrl = require('../controllers/v1/checkoutCtrl'),
     salesCtrl = require('../controllers/v1/salesCtrl'),
     categoriesCtrl = require('../controllers/v1/categoriesCtrl'),
-    jwt = require('../services/jwtValidation');
+    jwt = require('../services/jwtValidation'),
+    auth = require('../config/authentication');
 
 module.exports = function (app, config) {
 	// api routes
@@ -24,7 +25,7 @@ module.exports = function (app, config) {
     app.delete('/api/v1/brands', jwt.validateToken, brandCtrl.del);
     app.post('/api/v1/products', jwt.validateToken, upload.single('image'), productCtrl.post);
     app.get('/api/v1/products', jwt.validateToken, productCtrl.get);
-    app.delete('/api/v1/products',jwt.validateToken, productCtrl.del);
+    app.delete('/api/v1/products',jwt.validateToken, auth.requiresRole('owner'), productCtrl.del);
     app.put('/api/v1/products', jwt.validateToken, upload.single('image'), productCtrl.put);
     app.get('/api/v1/products-count', productCtrl.count);
     app.post('/api/v1/sellers', jwt.validateToken, userCtrl.postSeller);

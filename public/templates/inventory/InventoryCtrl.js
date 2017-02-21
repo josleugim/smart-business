@@ -3,6 +3,7 @@ angular.module('smartBusiness')
     .controller('InventoryCtrl', ['$scope', 'mvNotifier', 'ProductService', 'LocationService', 'CategoryService', InventoryCtrl]);
 
 function InventoryCtrl($scope, mvNotifier, ProductService, LocationService, CategoryService) {
+    $scope.products = [];
 	LocationService.get().then(function(response) {
 		if(response.success) {
 			$scope.locations = response.data;
@@ -15,23 +16,8 @@ function InventoryCtrl($scope, mvNotifier, ProductService, LocationService, Cate
 			$scope.categories = data;
     });
 
-    ProductService.count({}).then(function (data) {
-		$scope.totalPage = data;
-		$scope.totalPageArray = new Array(data);
-	});
-
-	/*$scope.updateInventory = function(id) {
-		$scope.products = "";
-        $scope.location_id = id;
-		var query = {
-			location_id: id,
-            searchType: 'byLocation'
-		};
-		getProducts(query);
-	};*/
-
 	$scope.searchProducts = function () {
-	    $scope.products = "";
+	    $scope.products = [];
         $scope.location_id = $scope.locList._id;
         var query = {
             location_id: $scope.locList._id,
@@ -55,47 +41,39 @@ function InventoryCtrl($scope, mvNotifier, ProductService, LocationService, Cate
 		})
 	};
 
-    $scope.changePage = function (index) {
-        if($scope.currentPage != index) {
-            var query = {
-                currentPage: index,
-                location_id: $scope.location_id,
-                searchType: 'byLocation'
-            };
-            getProducts(query);
-            $scope.currentPage = index;
-        }
-    };
+	$scope.viewMoreProducts = function () {
+	    var query = {
+            location_id: $scope.locList._id,
+            searchType: 'byLocation',
+            last_id: $scope.lastId
+        };
 
-    $scope.nextId = function () {
-        if($scope.currentPage < $scope.totalPage) {
-            getProducts({lastId: $scope.lastId, location_id: $scope.location_id, searchType: 'byLocation'});
-            $scope.currentPage = $scope.currentPage + 1;
-        }
-    };
-
-    $scope.previousId = function () {
-        if($scope.currentPage > 1) {
-            getProducts({prevId: $scope.lastId, location_id: $scope.location_id, searchType: 'byLocation'});
-            $scope.currentPage = $scope.currentPage -1;
-        }
+	    if($scope.lastId)
+	        getProducts(query);
+	    else
+	        mvNotifier.error('No hay más productos');
     };
 
 	function getProducts(query) {
 		ProductService.get(query).then(function(data) {
-			if(data.objectProduct.length > 0) {
-			    $scope.additionalInfo = {
-			        totalAmount: data.total,
-                    productCount: data.count
-                };
-				mvNotifier.notify('Productos cargados');
-                var lastIndex = data.objectProduct.length;
-                $scope.lastId = data.objectProduct[lastIndex - 1]._id;
-				$scope.products = data.objectProduct;
+			if(data) {
+                if(data.inventory.length > 0) {
+                    mvNotifier.notify('Productos cargados');
+                    $scope.additionalInfo = {
+                        totalProductsPrice: data.total,
+                        productsCount: data.productCount
+                    };
 
-			} else {
-				mvNotifier.error('No se pudo cargar los productos.');
-			}
+                    var lastIndex = data.inventory.length;
+                    $scope.lastId = data.inventory[lastIndex - 1]._id;
+
+                    angular.forEach(data.inventory, function (product) {
+                        $scope.products.push(product);
+                    });
+
+                }
+            } else
+                mvNotifier.error('No hay más productos con esos filtros');
 		});
 	}
 }    
