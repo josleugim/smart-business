@@ -1,8 +1,10 @@
 /**
  * Created by Mordekaiser on 04/06/16.
  */
-var userCtrl = require('../controllers/v1/usersCtrl'),
-	locationCtrl = require('../controllers/v1/locationsCtrl'),
+var mongoose = require('mongoose'),
+    Location = mongoose.model('Location'),
+    userCtrl = require('../controllers/v1/usersCtrl'),
+	locationCtrl = require('../controllers/v1/locationsCtrl')(Location),
 	brandCtrl = require('../controllers/v1/brandsCtrl'),
     productCtrl = require('../controllers/v1/productsCtrl'),
     multer = require('multer'),

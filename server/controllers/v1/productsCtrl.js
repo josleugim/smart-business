@@ -169,7 +169,6 @@ exports.get = function(req, res) {
                                                 inventory: inventory
                                             };
 
-                                            console.log(objResponse);
                                             res.status(200).json(objResponse);
                                             res.end();
                                         }
