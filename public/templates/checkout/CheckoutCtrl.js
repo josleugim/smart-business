@@ -37,9 +37,9 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService, mvNot
 
 	function addItemToList(query) {
 		ProductService.get(query).then(function(data) {
-			if(data.objectProduct.length > 0) {
-				$scope.carItems.push(data.objectProduct[0]);
-				total(data.objectProduct[0].price);
+			if(data.inventory.length > 0) {
+				$scope.carItems.push(data.inventory[0]);
+				total(data.inventory[0].price);
 			}
 		});
 	}
@@ -91,8 +91,8 @@ function CheckoutCtrl($scope, ProductService, $rootScope, CheckoutService, mvNot
         }
 
 		ProductService.get(info).then(function(data) {
-			if(data.objectProduct.length > 0) {
-				$rootScope.$broadcast('updateItemsList', data.objectProduct);
+			if(data.inventory.length > 0) {
+				$rootScope.$broadcast('updateItemsList', data.inventory);
 			}
 		})
 	};

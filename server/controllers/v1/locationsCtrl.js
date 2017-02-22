@@ -6,7 +6,6 @@ var mongoose = require('mongoose'),
     jwtValidation = require('../../services/jwtValidation');
 
 exports.post = function (req, res) {
-	console.log('Location POST');
 	var data = {};
     var token = req.headers['x-access-token'];
 
@@ -16,17 +15,23 @@ exports.post = function (req, res) {
 	if(req.body.description)
 		data.description = req.body.description;
 
-	var location = new Location(data);
-	location.save(function(err, doc) {
-		if(err) {
-			res.status(500).json({success:false});
-			res.end();
-		}
+    var location = new Location(data);
+    location.save(function(err, doc) {
+        if(err)
+            console.log(err);
 
-		res.status(201).json({success: true});
-		res.end();
-	});
+        if(doc) {
+            res.status(201).json({success: true});
+            res.end();
+		}
+        else {
+            res.status(500).json({success:false});
+            res.end();
+		}
+    });
 };
+
+
 
 exports.put = function (req, res) {
 	console.log('Location PUT');
