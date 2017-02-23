@@ -27,17 +27,17 @@ function editProductCtrl($scope, mvNotifier, ProductService, LocationService, $s
         };
 
         ProductService.get(query).then(function (data) {
-            if(data.objectProduct[0]) {
-                $scope.locationList = {'_id': data.objectProduct[0].location_id, 'name': data.objectProduct[0].locationName};
-                $scope.categoryList = {'_id': data.objectProduct[0].category_id, 'name': data.objectProduct[0].categoryName};
-                $scope.brandList = {'_id': data.objectProduct[0].brand_id, 'name': data.objectProduct[0].brandName};
-                $scope.productName = data.objectProduct[0].name;
-                $scope.price = data.objectProduct[0].price;
-                $scope.description = data.objectProduct[0].description;
-                $scope.barcode = data.objectProduct[0].barcode;
-                $scope.sim = data.objectProduct[0].sim;
-                $scope.image = data.objectProduct[0].image;
-                $scope.soldOut = data.objectProduct[0].soldOut === 'Vendido';
+            if(data.inventory[0]) {
+                $scope.locationList = {'_id': data.inventory[0].location_id, 'name': data.inventory[0].locationName};
+                $scope.categoryList = {'_id': data.inventory[0].category_id, 'name': data.inventory[0].categoryName};
+                $scope.brandList = {'_id': data.inventory[0].brand_id, 'name': data.inventory[0].brandName};
+                $scope.productName = data.inventory[0].name;
+                $scope.price = data.inventory[0].price;
+                $scope.description = data.inventory[0].description;
+                $scope.barcode = data.inventory[0].barcode;
+                $scope.sim = data.inventory[0].sim;
+                $scope.image = data.inventory[0].image;
+                $scope.soldOut = data.inventory[0].soldOut === 'Vendido';
                 mvNotifier.notify('Producto cargado en formulario correctamente.');
             } else
                 mvNotifier.error('Error al cargar el producto');

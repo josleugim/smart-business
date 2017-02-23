@@ -133,7 +133,7 @@ exports.get = function(req, res) {
             .exec(function (err, products) {
                 if(err)
                     console.log(err);
-                if(products.length > 0) {
+                if(products.length >= 0) {
                     // get the total amount of the prices
                     var sum = lodash.reduce(products, function (sum, n) {
                         return sum + Number(n.price);
@@ -253,7 +253,6 @@ exports.del = function(req, res) {
 };
 
 exports.put = function (req, res) {
-    console.log('PUT Product');
     var query = {
         _id: req.query._id
     };
