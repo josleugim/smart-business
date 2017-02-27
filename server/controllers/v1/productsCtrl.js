@@ -127,13 +127,14 @@ exports.get = function(req, res) {
     }
 
     function findProducts(query) {
+        console.log(query);
         Product.find(query)
-            .sort({createdAt: 1})
+            .sort({_id: 1})
             .limit(50)
             .exec(function (err, products) {
                 if(err)
                     console.log(err);
-                if(products.length >= 0) {
+                if(products.length >= 0 && products[0]) {
                     // get the total amount of the prices
                     var sum = lodash.reduce(products, function (sum, n) {
                         return sum + Number(n.price);

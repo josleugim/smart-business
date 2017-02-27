@@ -22,7 +22,7 @@ gulp.task('default', function () {
 
 gulp.task('mocha', function () {
     return gulp.src('tests/*.js', {read: false})
-        .pipe(gulpMocha({reporter: 'list'}))
+        .pipe(gulpMocha({reporter: 'nyan'}))
         .on('error', gutil.log);
 });
 

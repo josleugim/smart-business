@@ -6,10 +6,13 @@ var mongoose = require('mongoose'),
     timestamps = require('mongoose-timestamp');
 
 var LocationSchema = mongoose.Schema({
-    user_id: {type: String},
+    user_id: {
+        type: String,
+        required: 'user_id is required'
+    },
     name: {
         type: String,
-        required: 'Nombre requerido'
+        required: 'Location name required'
     },
     description: {type: String},
     isActive: {

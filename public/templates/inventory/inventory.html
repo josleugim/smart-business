@@ -43,6 +43,7 @@
     <table class="table-condensed table-striped">
         <thead>
         <tr>
+            <th>_id</th>
             <th>Localidad</th>
             <th>Categoría</th>
             <th>Marca</th>
@@ -58,6 +59,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="product in products | filter: prod | orderBy: q">
+            <td>{{product._id}}</td>
             <td>{{product.locationName}}</td>
             <td>{{product.categoryName}}</td>
             <td>{{product.brandName}}</td>

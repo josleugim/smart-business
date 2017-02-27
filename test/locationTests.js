@@ -23,13 +23,12 @@ describe('Location Controller Tests', function () {
     });
 
     describe('POST', function () {
-        var Location = function (location) {
-            this.save = function () {
-
-            }
-        };
-
         it('should not allow empty location name', function () {
+            var Location = function (location) {
+                this.save = function () {
+
+                }
+            };
             var req = {
                 body: {
                     description: 'Ubicada en Molango'
@@ -48,6 +47,18 @@ describe('Location Controller Tests', function () {
             locationCtrl.post(req, res);
             res.status.calledWith(400).should.equal(true, 'Bad Status ' + res.status.args);
             res.send.calledWith('Location name is required').should.equal(true);
+        });
+
+        it('should be invalid if location name and user_id are empty', function (done) {
+            var location = new Location({
+                description: 'Ubicada en...',
+                isActive: true
+            });
+            location.validate(function (err) {
+                expect(err.errors.name).to.exist;
+                expect(err.errors.user_id).to.exist;
+                done();
+            })
         })
     });
 
@@ -63,5 +74,5 @@ describe('Location Controller Tests', function () {
                 done();
             })
         })
-    })
+    });
 });

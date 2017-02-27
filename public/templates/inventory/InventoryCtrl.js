@@ -19,6 +19,7 @@ function InventoryCtrl($scope, mvNotifier, ProductService, LocationService, Cate
 	$scope.searchProducts = function () {
 	    $scope.products = [];
         $scope.location_id = $scope.locList._id;
+        $scope.lastId = "";
         var query = {
             location_id: $scope.locList._id,
             searchType: 'byLocation',
