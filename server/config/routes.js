@@ -41,6 +41,8 @@ module.exports = function (app, config) {
     app.put('/api/v1/categories', jwt.validateToken, categoriesCtrl.put);
     app.delete('/api/v1/categories', jwt.validateToken, categoriesCtrl.del);
 
+    app.get('/api/v1/test', brandCtrl.that);
+
     app.get('*', function (req, res) {
         res.sendFile(config.rootPath + 'public/index.html');
     })

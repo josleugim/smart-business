@@ -12,7 +12,8 @@ var LocationSchema = mongoose.Schema({
     },
     name: {
         type: String,
-        required: 'Location name required'
+        required: 'Location name required',
+        unique: true
     },
     description: {type: String},
     isActive: {

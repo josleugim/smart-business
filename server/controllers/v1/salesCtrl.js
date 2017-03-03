@@ -3,13 +3,16 @@ var mongoose = require('mongoose'),
     Product = mongoose.model('Product'),
     jwtValidation = require('../../services/jwtValidation'),
     moment = require('moment'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    locationHelpers = require('../../services/locationHelpers');
 
 exports.get = function (req, res) {
 	var query = {};
+    var token = req.headers['x-access-token'];
+
+    query.location_id = locationHelpers.getLocationId(token, req.query.location_id);
 
     if(req.query.from && req.query.to) {
-
         // how to correct compare dates
         // increment one day in the lesser than date, so it finds records
         //http://stackoverflow.com/questions/15347589/moment-js-format-date-in-a-specific-timezone
@@ -21,6 +24,7 @@ exports.get = function (req, res) {
         query.createdAt = {$gte: from, $lt: to};
     }
 
+    console.log(query);
     Checkout.find(query)
         .sort({createdAt: 1})
         .exec(function (err, docs) {

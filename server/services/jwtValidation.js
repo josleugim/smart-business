@@ -11,6 +11,7 @@ exports.getUserId = function(token) {
 	}
 };
 
+// returns the location_id based in the user token
 exports.getLocationId = function(token) {
 	if(token) {
 		var decoded = jwt.decode(token, {complete: true});
