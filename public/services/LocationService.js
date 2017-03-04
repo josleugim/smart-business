@@ -53,7 +53,7 @@ angular.module('smartBusiness')
             });
 
             return dfd.promise;
-        };
+        }
 
     	function post(data) {
     		var dfd = $q.defer();
@@ -67,15 +67,14 @@ angular.module('smartBusiness')
                     'x-access-token': user.token
             	}
         	}).then(function successCallback(response) {
-            	if(response.data.success) {
-                	dfd.resolve(true);
-            	}
+        	    if(response)
+                    dfd.resolve(true);
         	}, function errorCallback() {
             	dfd.resolve(false);
         	});
 
         	return dfd.promise;
-    	};
+    	}
 
         function put(query, data) {
             var dfd = $q.defer();

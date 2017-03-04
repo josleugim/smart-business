@@ -14,6 +14,9 @@ var mongoose = require('mongoose');
 require('sinon-mongoose');
 
 var Location = require('../server/models/Location');
+var jwt = require('jsonwebtoken'),
+    config = require('../server/config/configuration'),
+    locationHelpers = require('../server/services/locationHelpers');
 
 chai.should();
 
@@ -75,4 +78,22 @@ describe('Location Controller Tests', function () {
             })
         })
     });
+
+    describe('Helpers', function () {
+        it('should return the location id when role is owner', function(done){
+            var token = jwt.sign({roles: ['colaborador'], user_id: '5894d38624a03303b488751e', location_id: "5894d54a24a03303b488751f"}, config.development.tokenSecret);
+            expect(locationHelpers.getLocationId(token, '')).to.exist;
+            done();
+        });
+
+        it('should return the location id when role is seller', function (done) {
+            expect(locationHelpers.getLocationId('', '5894d54a24a03303b488751f')).to.exist;
+            done();
+        });
+
+        it('should return undefined if no parameters passed', function (done) {
+            expect(locationHelpers.getLocationId('', '')).to.be.equal('');
+            done();
+        })
+    })
 });

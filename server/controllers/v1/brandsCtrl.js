@@ -113,3 +113,72 @@ exports.del = function(req, res) {
     });
 
 };
+
+exports.that = function(req, res) {
+    var query = {};
+    var data = {
+        delegacion: 'delegacion',
+        disciplina: 'disc',
+        periodo: 'periodo',
+        nivel: 1,
+        anio: 2017
+    };
+
+    data.notas = {
+        '584878b97d60ab072930fba9':
+            {
+                '58ae61d38f89a5574c28bdd4': 8.5
+            },
+        '57e4393fcc6f162d3166925e': {
+            '58a71819fc82f69b0e1cf70b': 10,
+            '58ae61d38f89a5574c28bdd4': 7.5
+        }
+    };
+
+    query.delegacion = data.delegacion;
+    query.disciplina = data.disciplina;
+    query.periodo    = data.periodo;
+    query.nivel      = data.nivel;
+    query.anio       = data.anio;
+
+
+    for (var alumno in data.notas) {
+        var id_alumno = alumno;
+        for (var materia in data.notas[alumno]) {
+            var id_materia = materia;
+            var nro_nota   = data.notas[alumno][materia];
+
+            query.alumno = id_alumno;
+            query.materia = id_materia;
+
+            agregarNota(query, nro_nota, function (success) {
+
+            })
+        }
+    }
+
+    function agregarNota(query, nro_nota, callback) {
+        Nota.find(query)
+            .exec(function(err, result) {
+                if (err) res.send(err);
+                if (result.data) {
+                    result.nota = nro_nota;
+                    result.save(function(err, doc) { });
+                } else {
+                    var notas = new Nota();
+                    notas.delegacion = data.delegacion;
+                    notas.disciplina = data.disciplina;
+                    notas.periodo  = data.periodo;
+                    notas.nivel    = data.nivel;
+                    notas.anio     = data.anio;
+                    notas.alumno   = id_alumno;
+                    notas.materia  = id_materia;
+                    notas.fecha    = req.body.fecha;
+                    notas.nota     = nro_nota;
+                    notas.recupera = false;
+
+                    notas.save(function(err, doc) { });
+                }
+            });
+    }
+};
