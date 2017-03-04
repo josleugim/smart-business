@@ -127,7 +127,6 @@ exports.get = function(req, res) {
     }
 
     function findProducts(query) {
-        console.log(query);
         Product.find(query)
             .sort({_id: 1})
             .limit(50)
