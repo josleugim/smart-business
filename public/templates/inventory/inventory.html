@@ -43,7 +43,6 @@
     <table class="table-condensed table-striped">
         <thead>
         <tr>
-            <th>_id</th>
             <th>Localidad</th>
             <th>Categoría</th>
             <th>Marca</th>
@@ -59,7 +58,6 @@
         </thead>
         <tbody>
         <tr ng-repeat="product in products | filter: prod | orderBy: q">
-            <td>{{product._id}}</td>
             <td>{{product.locationName}}</td>
             <td>{{product.categoryName}}</td>
             <td>{{product.brandName}}</td>
@@ -72,7 +70,7 @@
             <td>{{product.createdAt}}</td>
             <td>
                 <a class="btn btn-info" ui-sref="product-edit({id: product._id})" target="_self">Modificar</a>
-                <button class="btn btn-danger" ng-click="deleteProduct(product._id)" type="submit">Borrar</button>
+                <button ng-show="identity.isAuthorized('owner')" class="btn btn-danger" ng-click="deleteProduct(product._id)" type="submit">Borrar</button>
             </td>
         </tr>
         </tbody>
