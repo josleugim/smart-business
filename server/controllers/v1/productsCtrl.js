@@ -9,17 +9,14 @@ var mongoose = require('mongoose'),
     getSlug = require('speakingurl'),
     moment = require('moment'),
     lodash = require('lodash'),
-    Q = require('q');
+    Q = require('q'),
+    locationHelpers = require('../../services/locationHelpers');
 
 exports.post = function(req, res) {
-    console.log('POST Product');
     var token = req.headers['x-access-token'];
 
     var data = {};
-    if(req.body.location_id)
-        data.location_id = req.body.location_id;
-    else
-        data.location_id = jwtValidation.getLocationId(token);
+    data.location_id = locationHelpers.getLocationId('', req.body.location_id);
 
     if(req.body.category_id)
         data.category_id = req.body.category_id;
@@ -42,36 +39,40 @@ exports.post = function(req, res) {
 
     var nProducts = Number(req.body.count);
 
-    var waitting = 0;
     if(nProducts > 0) {
         for(var i = 0; i < nProducts; i++) {
+            (function (index) {
+                addProduct(data, function () {
+                    if(index == Number(nProducts - 1)) {
+                        res.status(200).json({success: true});
+                        res.end();
+                    }
+                });
+            })(i);
 
-            var product = new Product(data);
-            product.save(function(err, collection) {
-                if(err)
-                    console.log(err);
-                if (collection)
-                    console.log('Product created');
-            });
-            waitting++;
-            console.log(waitting);
-        }
-
-        if(waitting == nProducts) {
-            res.status(200).json({success: true});
-            res.end();
         }
     } else {
-        console.log('Just creating 1 product');
-        var oneProduct = new Product(data);
-        oneProduct.save(function(err, collection) {
-            if(err) {
-                console.log(err);
+        addProduct(data, function (success) {
+            if(success) {
+                res.status(201).json({success: true});
+                res.end();
             } else {
-                res.status(200).json({success: true});
+                res.status(500).json({success: false});
                 res.end();
             }
         })
+    }
+
+    function addProduct(data, callback) {
+        var product = new Product(data);
+        product.save(function(err, collection) {
+            if(err)
+                console.log(err);
+            if (collection)
+                callback(true);
+            else
+                callback(false);
+        });
     }
 };
 
@@ -84,10 +85,7 @@ exports.get = function(req, res) {
 
     // get all the products depending of the location
     if(req.query.searchType == 'byLocation') {
-        if(jwtValidation.getLocationId(token) != undefined)
-            query.location_id = jwtValidation.getLocationId(token);
-        else
-            query.location_id = req.query.location_id;
+        query.location_id = locationHelpers.getLocationId(token, req.query.location_id);
 
         if(req.query.lastId)
             query._id = {$gt: req.query.lastId};
@@ -106,7 +104,6 @@ exports.get = function(req, res) {
         findProducts(query);
 
     } else if(req.query.searchType == 'byName') {
-        console.log('Searching product by name....');
         if(req.query.name) {
             query.name = {$regex: req.query.name, $options: 'i'};
             query._id = {$nin: req.query.products_id};
@@ -115,7 +112,6 @@ exports.get = function(req, res) {
         findProducts(query);
         // this condition returns just one product
     } else if(req.query.searchType == 'byBarcode') {
-        console.log('Searching product by barcode...');
         query.barcode = req.query.barcode;
         query.location_id = jwtValidation.getLocationId(token);
         query._id = {$nin: req.query.products_id};
@@ -151,7 +147,8 @@ exports.get = function(req, res) {
                             description: products[i].description,
                             barcode: products[i].barcode,
                             sim: products[i].sim,
-                            createdAt: moment(products[i].createdAt).locale('es').format('LL')
+                            createdAt: moment(products[i].createdAt).locale('es').format('LL'),
+                            image: "/assets/products/" + products[i].image
                         };
                         (function (productData, index) {
                             Q.all([
@@ -231,8 +228,6 @@ exports.get = function(req, res) {
 };
 
 exports.del = function(req, res) {
-    console.log('DELETE Product');
-
     var data = {
         isActive: false
     };

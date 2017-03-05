@@ -18,28 +18,28 @@ var mongoose = require('mongoose'),
 module.exports = function (app, config) {
 	// api routes
     app.post('/api/v1/login', userCtrl.login);
-    app.post('/api/v1/locations', jwt.validateToken, locationCtrl.post);
+    app.post('/api/v1/locations', jwt.validateToken, auth.requiresRole('owner'), locationCtrl.post);
     app.get('/api/v1/locations', jwt.validateToken, locationCtrl.get);
-    app.put('/api/v1/locations', jwt.validateToken, locationCtrl.put);
-    app.post('/api/v1/brands', jwt.validateToken, brandCtrl.post);
+    app.put('/api/v1/locations', jwt.validateToken, auth.requiresRole('owner'), locationCtrl.put);
+    app.post('/api/v1/brands', jwt.validateToken, auth.requiresRole('owner'), brandCtrl.post);
     app.get('/api/v1/brands', jwt.validateToken, brandCtrl.get);
-    app.put('/api/v1/brands', jwt.validateToken, brandCtrl.put);
-    app.delete('/api/v1/brands', jwt.validateToken, brandCtrl.del);
-    app.post('/api/v1/products', jwt.validateToken, upload.single('image'), productCtrl.post);
+    app.put('/api/v1/brands', jwt.validateToken, auth.requiresRole('owner'), brandCtrl.put);
+    app.delete('/api/v1/brands', jwt.validateToken, auth.requiresRole('owner'), brandCtrl.del);
+    app.post('/api/v1/products', jwt.validateToken, auth.requiresRole('owner'), upload.single('image'), productCtrl.post);
     app.get('/api/v1/products', jwt.validateToken, productCtrl.get);
     app.delete('/api/v1/products',jwt.validateToken, auth.requiresRole('owner'), productCtrl.del);
-    app.put('/api/v1/products', jwt.validateToken, upload.single('image'), productCtrl.put);
+    app.put('/api/v1/products', jwt.validateToken, auth.requiresRole('owner'), upload.single('image'), productCtrl.put);
     app.get('/api/v1/products-count', productCtrl.count);
-    app.post('/api/v1/sellers', jwt.validateToken, userCtrl.postSeller);
+    app.post('/api/v1/sellers', jwt.validateToken, auth.requiresRole('owner'), userCtrl.postSeller);
     app.get('/api/v1/sellers', jwt.validateToken, userCtrl.getSeller);
-    app.put('/api/v1/sellers', jwt.validateToken, userCtrl.putSeller);
-    app.delete('/api/v1/sellers', jwt.validateToken, userCtrl.delSeller);
+    app.put('/api/v1/sellers', jwt.validateToken, auth.requiresRole('owner'), userCtrl.putSeller);
+    app.delete('/api/v1/sellers', jwt.validateToken, auth.requiresRole('owner'), userCtrl.delSeller);
     app.post('/api/v1/checkout', jwt.validateToken, checkoutCtrl.post);
     app.get('/api/v1/sales', jwt.validateToken, salesCtrl.get);
-    app.post('/api/v1/categories', jwt.validateToken, categoriesCtrl.post);
+    app.post('/api/v1/categories', jwt.validateToken, auth.requiresRole('owner'), categoriesCtrl.post);
     app.get('/api/v1/categories', jwt.validateToken, categoriesCtrl.get);
-    app.put('/api/v1/categories', jwt.validateToken, categoriesCtrl.put);
-    app.delete('/api/v1/categories', jwt.validateToken, categoriesCtrl.del);
+    app.put('/api/v1/categories', jwt.validateToken, auth.requiresRole('owner'), categoriesCtrl.put);
+    app.delete('/api/v1/categories', jwt.validateToken, auth.requiresRole('owner'), categoriesCtrl.del);
 
     app.get('/api/v1/test', brandCtrl.that);
 

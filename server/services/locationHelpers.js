@@ -2,7 +2,7 @@
  * Created by Latin on 3/3/2017.
  */
 'use strict';
-const jwt = require('jsonwebtoken');
+var jwt = require('jsonwebtoken');
 
 // get the location depending of the user role
 exports.getLocationId = function (token, location_id) {

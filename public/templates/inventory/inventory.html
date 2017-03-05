@@ -43,12 +43,11 @@
     <table class="table-condensed table-striped">
         <thead>
         <tr>
-            <th>Localidad</th>
             <th>Categoría</th>
             <th>Marca</th>
             <th>Nombre</th>
             <th>Precio</th>
-            <th>Vendido</th>
+            <th>Thumbnail</th>
             <th>Código de barras o IMEI</th>
             <th>SIM</th>
             <th>Descripción</th>
@@ -58,12 +57,11 @@
         </thead>
         <tbody>
         <tr ng-repeat="product in products | filter: prod | orderBy: q">
-            <td>{{product.locationName}}</td>
             <td>{{product.categoryName}}</td>
             <td>{{product.brandName}}</td>
             <td>{{product.name}}</td>
             <td>${{product.price}}</td>
-            <td>{{product.soldOut}}</td>
+            <td><img src="{{product.image}}" class="img-thumbnail" width="140px" height="140px"></td>
             <td>{{product.barcode}}</td>
             <td>{{product.sim}}</td>
             <td>{{product.description}}</td>
