@@ -2,6 +2,13 @@
 	<div class="col-md-12">
 		<h3>Reporte de ventas</h3>
 	</div>
+	<div class="col-md-12 col-lg-12 col-sm-12">
+        <p>Selecciona la tienda de la cual quieres obtener el reporte de ventas.</p>
+        <div ng-repeat="location in locations">
+            <p><input type="radio" ng-model="$parent.location_id" name="location_id" ng-value="location._id" required/> {{location.name}}</p>
+        </div>
+        <span class="error" ng-show="productForm.location_id.$error.required">* requerido</span>
+    </div>
 </div>
 <div class="row">
 	<div class="col-md-6">

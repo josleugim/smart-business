@@ -16,7 +16,7 @@ var locationCtrl = function (Location) {
             data.description = req.body.description;
 
         if(!data.name) {
-            res.status(400).json({success: false});
+            res.status(400);
             res.send('Location name is required');
         } else {
             var location = new Location(data);

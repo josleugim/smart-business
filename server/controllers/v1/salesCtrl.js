@@ -24,7 +24,6 @@ exports.get = function (req, res) {
         query.createdAt = {$gte: from, $lt: to};
     }
 
-    console.log(query);
     Checkout.find(query)
         .sort({createdAt: 1})
         .exec(function (err, docs) {

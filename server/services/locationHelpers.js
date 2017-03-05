@@ -6,14 +6,14 @@ const jwt = require('jsonwebtoken');
 
 // get the location depending of the user role
 exports.getLocationId = function (token, location_id) {
-    if (!token) {
-        if (location_id)
-            return location_id;
-    } else {
+    if (token && typeof location_id == 'undefined') {
         var decoded = jwt.decode(token, {complete: true});
         if (decoded.payload) {
             return decoded.payload.location_id;
         }
+    } else {
+        if (location_id)
+            return location_id;
     }
 
     return '';

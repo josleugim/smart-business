@@ -1,8 +1,8 @@
 "use strict";
 angular.module('smartBusiness')
-	.controller('SalesCtrl', ['$scope', 'SalesService', '$filter', SalesCtrl]);
+	.controller('SalesCtrl', ['$scope', 'SalesService', '$filter', 'LocationService', SalesCtrl]);
 
-function SalesCtrl ($scope, SalesService, $filter) {
+function SalesCtrl ($scope, SalesService, $filter, LocationService) {
     $scope.totalSell = 0;
     $scope.products = [];
 	$scope.options = {
@@ -10,6 +10,13 @@ function SalesCtrl ($scope, SalesService, $filter) {
     	maxDate: new Date(),
     	dateFormat: 'dd-MMMM-yyyy'
   	};
+
+    LocationService.get().then(function(response) {
+        if(response.success){
+            $scope.locations = response.data;
+        } else
+            mvNotifier.error('No se pudieron cargar las locaciones. Error: ' + response.error.message + ' !!!');
+    });
 
   	$scope.open1 = function() {
     	$scope.popup1.opened = true;
@@ -36,7 +43,8 @@ function SalesCtrl ($scope, SalesService, $filter) {
         $('.chart').empty();
         var query = {
             from: $filter('date')($scope.dateOne, 'yyyy-MM-dd'),
-            to: $filter('date')($scope.dateTwo, 'yyyy-MM-dd')
+            to: $filter('date')($scope.dateTwo, 'yyyy-MM-dd'),
+            location_id: $scope.location_id
         };
         SalesService.get(query).then(function(data) {
             if(data) {
