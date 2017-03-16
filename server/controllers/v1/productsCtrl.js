@@ -78,7 +78,6 @@ exports.post = function(req, res) {
 
 exports.get = function(req, res) {
     var token = req.headers['x-access-token'];
-
     var query = {
         isActive: true
     };
@@ -87,15 +86,13 @@ exports.get = function(req, res) {
     if(req.query.searchType == 'byLocation') {
         query.location_id = locationHelpers.getLocationId(token, req.query.location_id);
 
-        if(req.query.lastId)
-            query._id = {$gt: req.query.lastId};
+        /*if(req.query.lastId)
+            query._id = {$gt: req.query.lastId};*/
 
         if(req.query.last_id)
             query._id = {$gt: req.query.last_id};
-
         if(req.query.category_id)
             query.category_id = req.query.category_id;
-
         if(req.query.name)
             query.name = {$regex: req.query.name, $options: 'i'};
         if(req.query.barcode)
@@ -124,7 +121,6 @@ exports.get = function(req, res) {
 
     function findProducts(query) {
         Product.find(query)
-            .sort({_id: 1})
             .limit(50)
             .exec(function (err, products) {
                 if(err)

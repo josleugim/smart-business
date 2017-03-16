@@ -29,6 +29,7 @@ function InventoryCtrl($scope, mvNotifier, ProductService, LocationService, Cate
         if($scope.catList)
             query.category_id = $scope.catList._id;
 
+        $scope.products = [];
         getProducts(query);
     };
 
@@ -49,6 +50,12 @@ function InventoryCtrl($scope, mvNotifier, ProductService, LocationService, Cate
             last_id: $scope.lastId
         };
 
+        if($scope.catList)
+            query.category_id = $scope.catList._id;
+        if($scope.barcode)
+            query.barcode = $scope.barcode;
+        if($scope.name)
+            query.name = $scope.name;
 	    if($scope.lastId)
 	        getProducts(query);
 	    else
